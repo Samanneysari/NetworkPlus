@@ -1,8 +1,8 @@
 {
-  "name": "networkplus-fa-docs",
+  "name": "networkplus-n10-009-course",
   "private": true,
   "version": "1.0.0",
-  "description": "Persian RTL Network+ N10-009 course documentation",
+  "description": "Complete English Network+ N10-009 course documentation",
   "scripts": {
     "check": "node scripts/check-docs.mjs"
   },

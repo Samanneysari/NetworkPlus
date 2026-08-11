@@ -1,339 +1,295 @@
-<div dir="rtl" align="right">
+# Chapter 2 — Networking Concepts
 
-# فصل ۲ — مفاهیم شبکه
+This chapter covers Domain 1 except Objective 1.1, which is taught in the dedicated OSI chapter. The goal is to select the correct appliance, service, medium, address, and architecture for a real requirement.
 
-این فصل دامنه‌ی ۱ آزمون N10-009 را، به‌جز مدل OSI که در [فصل قبل](01-osi-tcp-ip-tls.md) با جزئیات آمده است، پوشش می‌دهد. هدف فقط حفظ‌کردن واژه‌ها نیست؛ باید بتوانید برای یک نیاز واقعی ابزار، رسانه، آدرس و معماری مناسب را انتخاب کنید.
+## 1.2 — Appliances, applications, and functions
 
-## ۱.۲ — تجهیزات، سرویس‌ها و کارکردهای شبکه
+### Routers, switches, and security devices
 
-### روتر و سوئیچ چه فرقی دارند؟
-
-سوئیچ لایه ۲ معمولاً فریم را با جدول MAC داخل یک LAN جابه‌جا می‌کند. روتر بسته را با جدول مسیریابی بین شبکه‌های IP می‌فرستد. سوئیچ لایه ۳ هر دو قابلیت را دارد و می‌تواند برای VLANها دروازه بسازد.
-
-| جزء | کار اصلی | تصمیم بر اساس | نمونه کاربرد |
+| Component | Primary job | Decision basis | Example use |
 |---|---|---|---|
-| Router | اتصال شبکه‌های IP | مقصد IP و جدول Route | اتصال LAN به اینترنت |
-| Layer 2 switch | اتصال اعضای یک LAN/VLAN | MAC مقصد | اتصال رایانه‌ها به شبکه اداره |
-| Layer 3 switch | Switching و Routing سریع | MAC و IP | مسیریابی میان VLANها |
-| Firewall | اجازه یا رد ترافیک طبق Policy | آدرس، پورت، برنامه، هویت | جداکردن اینترنت از LAN |
-| IDS | تشخیص و هشدار | امضا و رفتار | مشاهده حمله بدون مسدودسازی مستقیم |
-| IPS | تشخیص و جلوگیری | امضا و رفتار | Drop کردن ترافیک مخرب در مسیر |
-| Load balancer | پخش درخواست بین Backendها | سلامت، Session و الگوریتم | توزیع HTTPS میان چند وب‌سرور |
-| Proxy | واسطه Client و مقصد | Policy، URL و Cache | کنترل وب‌گردی کاربران |
-| NAS | فایل روی شبکه | SMB/NFS | پوشه اشتراکی و Backup |
-| SAN | Block storage | iSCSI/FC | Disk برای Hypervisor یا Database |
-| Access point | پل بی‌سیم به LAN | SSID، BSSID و Association | اتصال Wi-Fi |
-| Wireless controller | مدیریت متمرکز APها | Policy و RF | WLAN سازمانی |
+| Router | Connect IP networks | Destination IP and route table | Connect a LAN to a WAN |
+| Layer 2 switch | Connect devices in a VLAN | Destination MAC | Access switching |
+| Layer 3 switch | Switch and route at high speed | MAC and IP | Inter-VLAN routing |
+| Firewall | Enforce traffic policy | Address, port, application, identity, and state | Separate trusted and untrusted zones |
+| IDS | Detect and alert | Signatures and behavior | Out-of-band attack visibility |
+| IPS | Detect and block | Signatures and behavior | In-line threat prevention |
+| Load balancer | Distribute requests | Health, sessions, and algorithms | Share HTTPS across web servers |
+| Forward proxy | Act for clients | URL, policy, cache, and identity | Control outbound web access |
+| Reverse proxy | Act for servers | Hostname, path, health, and policy | Protect `www.realsam.ir` |
+| NAS | Provide file storage | SMB or NFS files | Shared folders and backups |
+| SAN | Provide block storage | iSCSI or Fibre Channel blocks | Hypervisor or database disks |
+| Access point | Bridge wireless clients | SSID, BSSID, authentication | Wi-Fi access |
+| Wireless controller | Manage APs centrally | RF and security policy | Enterprise WLAN |
 
-**Firewall با IDS/IPS:** فایروال نسل جدید می‌تواند با شناخت برنامه، کاربر، TLS و تهدید، امکانات IDS/IPS را هم داشته باشد. IDS معمولاً خارج از مسیر و فقط ناظر است؛ IPS در مسیر قرار می‌گیرد و می‌تواند بسته را Drop کند. قرار دادن IPS در مسیر، محافظت مستقیم ولی حساسیت بیشتر به خطای تشخیص دارد.
+An IDS usually observes and alerts. An IPS is in the forwarding path and can drop traffic, which provides direct protection but also makes false positives more operationally important.
 
-**Load balancer:** الگوریتم‌هایی مانند Round Robin، Least Connections یا Hash درخواست را انتخاب می‌کنند. Health Check باید سرور خراب را از Pool خارج کند. اگر TLS روی Load balancer خاتمه یابد، به آن TLS termination می‌گویند؛ مسیر تا Backend نیز در صورت نیاز باید دوباره رمز شود.
+A load balancer may use round robin, least connections, or hashing. A health check removes failed backends. If TLS ends at the load balancer, this is TLS termination; the backend path may still require re-encryption.
 
-**Proxyها:** Forward proxy از طرف کاربر به اینترنت می‌رود؛ Reverse proxy از طرف سرورها درخواست ورودی را می‌گیرد. `proxy.realsam.ir` می‌تواند Forward proxy و `www.realsam.ir` پشت Reverse proxy باشد.
+NAS exposes files and directories. SAN exposes raw blocks so the client system creates a filesystem. They solve different storage problems.
 
-**NAS و SAN:** NAS فایل تحویل می‌دهد و Client فایل‌سیستم را می‌بیند؛ SAN بلوک خام تحویل می‌دهد و سیستم‌عامل روی آن فایل‌سیستم می‌سازد. Ethernet معمولی برای iSCSI و شبکه اختصاصی Fibre Channel برای FC رایج است.
+### CDN, VPN, QoS, and TTL
 
-### CDN، VPN، QoS و TTL
+- A **CDN** caches content at edge locations near users, reducing latency and origin load.
+- A **VPN** creates a protected tunnel across an untrusted or shared network. It does not make an infected endpoint safe.
+- **QoS** classifies, marks, queues, polices, or shapes traffic. It controls behavior during congestion; it does not create bandwidth.
+- IPv4 **TTL** and IPv6 **Hop Limit** decrease at each router. A packet is discarded at zero to prevent indefinite routing loops. Traceroute uses this behavior.
 
-- **CDN:** نسخه Cacheشده محتوا را در نقطه‌ای نزدیک کاربر ارائه می‌کند؛ تأخیر و بار Origin کم می‌شود. DNS یا Anycast می‌تواند کاربر را به Edge مناسب ببرد.
-- **VPN:** روی شبکه‌ای نامطمئن تونل رمز‌شده می‌سازد. VPN حریم مسیر را بهتر می‌کند، اما Endpoint آلوده را سالم نمی‌کند.
-- **QoS:** ترافیک را Classify و Mark می‌کند و در ازدحام به صف‌های مهم‌تر اولویت می‌دهد. QoS پهنای‌باند خلق نمی‌کند.
-- **TTL در IPv4 / Hop Limit در IPv6:** هر روتر مقدار را یک واحد کم می‌کند. در صفر، بسته حذف می‌شود تا حلقه بی‌پایان نشود. `traceroute` از همین رفتار کمک می‌گیرد.
+## 1.3 — Cloud and virtual networking
 
-## ۱.۳ — مفاهیم Cloud و Virtual Networking
+### Virtualization and NFV
 
-### Virtualization و NFV
+A hypervisor divides a physical host among virtual machines. Containers normally share the host kernel and are lighter. Network Functions Virtualization runs firewalls, routers, load balancers, and similar functions as software rather than dedicated appliances.
 
-Hypervisor منابع یک میزبان را میان ماشین‌های مجازی تقسیم می‌کند. Containerها Kernel میزبان را به‌اشتراک می‌گذارند و معمولاً سبک‌ترند. **NFV** وظایفی مانند Router، Firewall یا Load balancer را به نرم‌افزار تبدیل می‌کند. مجازی‌بودن مسئولیت امنیت، ظرفیت و افزونگی را حذف نمی‌کند.
+Virtualization does not remove the need for capacity planning, segmentation, patching, monitoring, and redundancy.
 
-### VPC و کنترل‌های امنیتی
+### VPC and cloud controls
 
-VPC یک شبکه منطقی جدا در Cloud است و معمولاً Subnet، Route table، Gateway و کنترل دسترسی دارد. نام دقیق قابلیت‌ها میان ارائه‌دهندگان فرق می‌کند:
+A Virtual Private Cloud is a logically isolated cloud network containing subnets, routes, gateways, and security policy.
 
-- **Security group:** معمولاً Stateful است؛ پاسخ یک ارتباط مجاز خودکار پذیرفته می‌شود.
-- **Network ACL:** معمولاً Stateless و در مرز Subnet است؛ مسیر رفت و برگشت جداگانه تعریف می‌شود.
-- **Internet gateway:** اتصال منابع مجاز VPC به اینترنت.
-- **NAT gateway:** خروج منابع Private بدون پذیرش مستقیم اتصال ورودی ناخواسته.
-- **Cloud VPN:** تونل رمز‌شده روی اینترنت.
-- **Direct connection:** پیوند اختصاصی سازمان تا Cloud؛ معمولاً قابل‌پیش‌بینی‌تر، ولی گران‌تر است. رمزنگاری را نباید بدون بررسی فرض کرد.
+- **Security group:** commonly stateful; return traffic for an allowed connection is recognized.
+- **Network ACL:** commonly stateless at a subnet boundary; both directions require rules.
+- **Internet gateway:** connects eligible cloud resources to the Internet.
+- **NAT gateway:** gives private resources outbound IPv4 access without directly accepting unsolicited inbound sessions.
+- **Cloud VPN:** encrypted tunnel over the Internet.
+- **Direct connection:** dedicated private connectivity with more predictable performance; encryption must not be assumed without verification.
 
-### مدل‌های استقرار و خدمت
+### Deployment and service models
 
-| مدل | مفهوم | مسئولیت بیشتر مشتری |
+| Model | Meaning | Typical customer responsibility |
 |---|---|---|
-| Public cloud | زیرساخت مشترک ارائه‌دهنده با جداسازی منطقی | داده، هویت و پیکربندی |
-| Private cloud | Cloud مختص یک سازمان | زیرساخت تا برنامه، بسته به قرارداد |
-| Hybrid cloud | اتصال Private/On-premises به Public | یکپارچگی، Route، هویت و Policy |
-| SaaS | برنامه آماده | داده، کاربر و تنظیمات |
-| PaaS | محیط اجرای مدیریت‌شده | کد، داده و تنظیم برنامه |
-| IaaS | VM، شبکه و Disk | سیستم‌عامل، Patch و برنامه |
+| Public cloud | Provider infrastructure shared with logical isolation | Data, identity, configuration, and workloads |
+| Private cloud | Cloud environment dedicated to one organization | More of the platform and infrastructure stack |
+| Hybrid cloud | Integrated private/on-premises and public cloud | Identity, routing, policy, and data integration |
+| SaaS | Finished application | Users, data, and application settings |
+| PaaS | Managed application platform | Code, data, and application configuration |
+| IaaS | Compute, storage, and virtual networking | Guest OS, patching, applications, data, and access |
 
-**Scalability** یعنی توان رشد ظرفیت؛ Vertical با بزرگ‌ترکردن یک ماشین و Horizontal با افزودن نمونه‌ها. **Elasticity** یعنی افزایش و کاهش خودکار ظرفیت بر حسب بار. **Multitenancy** یعنی چند مشتری از زیرساخت مشترک با جداسازی منطقی استفاده می‌کنند.
+**Scalability** is the ability to grow. Vertical scaling makes one node larger; horizontal scaling adds nodes. **Elasticity** changes capacity up and down with demand. **Multitenancy** serves several customers on shared infrastructure while maintaining logical isolation.
 
-## ۱.۴ — پورت‌ها، پروتکل‌ها و نوع ترافیک
+## 1.4 — Ports, protocols, services, and traffic types
 
-پورت منطقی، سرویس را در یک Host مشخص می‌کند. پورت `443` پریز فیزیکی نیست؛ عددی در Header TCP/UDP است. Client معمولاً یک Ephemeral port موقت انتخاب می‌کند و به Well-known port سرور وصل می‌شود.
+A logical port identifies a service on a host. Server port 443 is not a physical socket. A client normally chooses a temporary ephemeral port and connects to the server's known port.
 
-| سرویس | پورت پیش‌فرض | انتقال | کاربرد و نکته |
+| Service | Default port | Transport | Purpose and note |
 |---|---:|---|---|
-| FTP | 20/21 | TCP | داده/کنترل؛ رمزنگاری پیش‌فرض ندارد |
-| SFTP / SSH | 22 | TCP | انتقال فایل روی SSH / مدیریت امن |
-| Telnet | 23 | TCP | مدیریت متن ساده و ناامن |
-| SMTP | 25 | TCP | انتقال Mail بین سرورها |
-| DNS | 53 | UDP/TCP | Query عادی بیشتر UDP؛ پاسخ بزرگ/Zone transfer روی TCP |
-| DHCPv4 | 67/68 | UDP | Server/Client |
-| TFTP | 69 | UDP | انتقال ساده بدون امنیت ذاتی |
-| HTTP | 80 | TCP | وب بدون TLS |
-| NTP | 123 | UDP | همگام‌سازی زمان |
-| SNMP | 161/162 | UDP | Poll/Trap؛ نسخه 3 امن‌تر است |
-| LDAP | 389 | TCP/UDP | Directory؛ بدون TLS ذاتی |
-| HTTPS | 443 | TCP و در HTTP/3، UDP | HTTP امن با TLS |
-| SMB | 445 | TCP | اشتراک فایل/چاپ |
-| Syslog | 514 | UDP | ثبت رویداد؛ TLS معمولاً روی پورت دیگری پیکربندی می‌شود |
-| SMTP submission | 587 | TCP | ارسال Mail از Client، معمولاً STARTTLS |
-| LDAPS | 636 | TCP | LDAP داخل TLS |
+| FTP | 20/21 | TCP | Data/control; no default confidentiality |
+| SSH/SFTP | 22 | TCP | Secure management and file transfer |
+| Telnet | 23 | TCP | Insecure clear-text management |
+| SMTP | 25 | TCP | Mail transfer between servers |
+| DNS | 53 | UDP/TCP | Normal queries often UDP; large answers and transfers use TCP |
+| DHCPv4 | 67/68 | UDP | Server/client configuration |
+| TFTP | 69 | UDP | Simple transfer without built-in security |
+| HTTP | 80 | TCP | Web without TLS |
+| NTP | 123 | UDP | Time synchronization |
+| SNMP | 161/162 | UDP | Poll/trap; prefer SNMPv3 |
+| LDAP | 389 | TCP/UDP | Directory access; protect with TLS where required |
+| HTTPS | 443 | TCP; HTTP/3 uses UDP | HTTP protected by TLS |
+| SMB | 445 | TCP | File and printer sharing |
+| Syslog | 514 | UDP | Traditional event transport |
+| SMTP submission | 587 | TCP | Authenticated client mail submission, commonly with STARTTLS |
+| LDAPS | 636 | TCP | LDAP inside TLS |
 | SQL Server | 1433 | TCP | Microsoft SQL Server |
-| RDP | 3389 | TCP/UDP | Remote Desktop |
-| SIP | 5060/5061 | UDP/TCP / TLS | سیگنالینگ VoIP؛ Media معمولاً RTP است |
+| RDP | 3389 | TCP/UDP | Remote desktop |
+| SIP | 5060/5061 | UDP/TCP/TLS | VoIP signaling; media normally uses RTP |
 
-پورت پیش‌فرض الزام نیست؛ مدیر می‌تواند پورت را تغییر دهد. تغییر پورت، جای احراز هویت و Patch را نمی‌گیرد.
+Default ports can be changed. Changing a port does not replace authentication, patching, and filtering.
 
-### پروتکل‌های بدون مفهوم Port
+### Protocols without TCP/UDP ports
 
-- **ICMP:** گزارش خطا و عیب‌یابی؛ `ping` از Echo استفاده می‌کند. مسدودکردن کامل آن می‌تواند Path MTU و عیب‌یابی را خراب کند.
-- **GRE:** Encapsulation ساده برای تونل؛ به‌تنهایی رمزنگاری و صحت‌سنجی ندارد.
-- **IPsec AH:** صحت و احراز اصالت، بدون محرمانگی Payload؛ با NAT سازگاری دشوارتری دارد.
-- **IPsec ESP:** محرمانگی و معمولاً صحت؛ گزینه رایج IPsec.
-- **IKE:** مذاکره همتا، الگوریتم و کلیدهای IPsec؛ IKEv2 معمولاً UDP 500 و با NAT-T روی UDP 4500 است.
+- **ICMP/ICMPv6:** errors, echo, path MTU, and critical IPv6 neighbor functions. Blocking all ICMP can break networking.
+- **GRE:** simple encapsulation; no confidentiality or integrity by itself.
+- **IPsec AH:** integrity and source authentication without payload confidentiality; less NAT-friendly.
+- **IPsec ESP:** confidentiality and usually integrity; common for IPsec data protection.
+- **IKE/IKEv2:** negotiates IPsec peers, algorithms, and keys, commonly on UDP 500 and UDP 4500 for NAT Traversal.
 
-### Unicast، Broadcast، Multicast و Anycast
+### Unicast, broadcast, multicast, and anycast
 
-| نوع | یک مبدأ به | مثال |
+| Type | One source sends to | Example |
 |---|---|---|
-| Unicast | یک مقصد مشخص | SSH به یک سرور |
-| Broadcast | همه اعضای Broadcast domain در IPv4 | DHCP Discover |
-| Multicast | اعضای یک گروه | پخش کنترل‌شده و بعضی پروتکل‌های Routing |
-| Anycast | نزدیک‌ترین/بهترین عضو از چند مقصد با یک IP | DNS و CDN توزیع‌شده |
+| Unicast | One specific destination | SSH to one server |
+| Broadcast | All members of an IPv4 broadcast domain | DHCP Discover |
+| Multicast | Members of a subscribed group | Routing or media distribution |
+| Anycast | One selected instance sharing an address | Distributed DNS or CDN edge |
 
-IPv6 Broadcast ندارد و برای کارهای مشابه از Multicast استفاده می‌کند. Anycast معمولاً با Routing پیاده می‌شود، نه با تکثیر یک بسته برای همه مقصدها.
+IPv6 has no broadcast and uses multicast for equivalent functions. Anycast is normally a routing selection, not a copy delivered to every instance.
 
-## ۱.۵ — رسانه انتقال، Transceiver و Connector
+## 1.5 — Media, transceivers, and connectors
 
-### مس در برابر فیبر
+### Copper and fiber
 
-| ویژگی | Twisted-pair copper | Multimode fiber | Single-mode fiber |
+| Characteristic | Twisted-pair copper | Multimode fiber | Single-mode fiber |
 |---|---|---|---|
-| سیگنال | الکتریکی | نور، هسته بزرگ‌تر | نور، هسته کوچک‌تر |
-| فاصله معمول | کوتاه‌تر | متوسط | بلند |
-| EMI | حساس | مقاوم | مقاوم |
-| هزینه | معمولاً کمتر | میانه | تجهیزات نوری معمولاً گران‌تر |
-| کاربرد | میز کار و Access | ساختمان/Data center | Backbone و WAN |
+| Signal | Electrical | Light with a larger core | Light with a smaller core |
+| Typical relative distance | Shorter | Medium | Long |
+| EMI sensitivity | Yes | No | No |
+| Typical use | Access and desks | Building/data center | Backbone and WAN |
 
-حد دقیق فاصله به استاندارد Ethernet، سرعت، نوع کابل و Optic وابسته است؛ عددی را بدون ذکر استاندارد تعمیم ندهید.
+Exact distance depends on Ethernet standard, speed, cable, optic, and installation quality.
 
-### Categoryهای رایج مس
+### Copper categories
 
-| Category | کاربرد معمول آموزشی | نکته |
+| Category | Common use | Important note |
 |---|---|---|
-| Cat 5e | 1GbE تا 100 متر Channel در شرایط استاندارد | کیفیت Termination حیاتی است |
-| Cat 6 | 1GbE و 10GbE در فاصله کوتاه‌تر طبق نصب | Crosstalk و Bundle مهم‌اند |
-| Cat 6A | 10GbE تا 100 متر Channel | ضخیم‌تر و مدیریت کابل مهم‌تر |
-| Cat 7 | کابل Shielded تحت استانداردهای ISO/IEC | Connector/استاندارد نصب را بررسی کنید؛ نام بازاری کافی نیست |
-| Cat 8 | 25/40GbE در Channel کوتاه Data center | برای Horizontal office عمومی طراحی اصلی نیست |
+| Cat 5e | 1 GbE channels | Termination and pair quality matter |
+| Cat 6 | 1 GbE and shorter 10 GbE runs | Crosstalk limits high-speed reach |
+| Cat 6A | 10 GbE up to a 100 m channel | Larger cable and bundle management |
+| Cat 7 | Shielded ISO/IEC systems | Verify connector and installation standard |
+| Cat 8 | 25/40 GbE short data-center channels | Not intended as general office horizontal cabling |
 
-عدد ۱۰۰ متر معمولاً شامل ۹۰ متر Permanent link و Patch cordهاست. Tester ساده Wiremap، عملکرد کامل Category را تأیید نمی‌کند؛ Certification tester لازم است. Straight-through/Crossover تاریخی با جابه‌جایی Pairهای Tx/Rx مطرح بود؛ Auto-MDI/MDIX در تجهیزات مدرن معمولاً آن را خودکار می‌کند، ولی Objective عیب‌یابی هنوز TX/RX transposed را می‌سنجد.
+A basic continuity tester does not certify category performance. A certification tester measures parameters such as insertion loss, return loss, and crosstalk.
 
-### نام سرعت‌های Ethernet
+### Other media
 
-| نام | سرعت | رسانه نمونه |
-|---|---:|---|
-| 100BASE-TX | 100 Mb/s | مس |
-| 1000BASE-T | 1 Gb/s | مس |
-| 1000BASE-SX/LX | 1 Gb/s | فیبر کوتاه/بلندتر طبق Optic |
-| 10GBASE-T | 10 Gb/s | مس سازگار |
-| 10GBASE-SR/LR | 10 Gb/s | MMF/SMF طبق Optic |
-| 25/40/100GbE | سرعت‌های Data center/backbone | DAC یا Opticهای گوناگون |
+- **DAC/Twinax:** short copper assemblies with attached transceiver ends, common inside racks.
+- **Coaxial:** central conductor and shielding, used for cable broadband and some legacy systems.
+- **Plenum-rated cable:** low-smoke jacket for air-handling spaces, subject to local building rules.
+- **802.11 wireless:** a shared radio LAN medium.
+- **Cellular:** carrier-operated radio access such as 4G and 5G.
+- **Satellite:** broad coverage; distance and orbit affect latency.
 
-در نام‌ها، `BASE` یعنی Baseband و بخش پایانی Media/reach را مشخص می‌کند؛ فاصله را از استاندارد و Datasheet همان Transceiver بخوانید.
+### Transceivers and connectors
 
-**DAC/Twinax** کابل مسی کوتاه با Transceiver متصل است و در رک Data center کاربرد دارد. **Coaxial** رسانای مرکزی و Shield دارد و در Cable broadband یا سامانه‌های قدیمی دیده می‌شود. کابل **Plenum-rated** روکش کم‌دود/کم‌سم برای فضای عبور هوای ساختمان دارد و باید با مقررات محلی هماهنگ باشد.
+SFP, SFP+, SFP28, and QSFP families support different speeds and media. A matching shape does not guarantee compatibility. Verify speed, wavelength, fiber type, reach, connector, encoding, and platform support.
 
-### Wireless
-
-- **802.11 Wi-Fi:** LAN بی‌سیم؛ Shared medium و Half-duplex عملی.
-- **Cellular:** پوشش اپراتور و سلول‌ها؛ 4G/5G نمونه‌اند.
-- **Satellite:** پوشش نقاط دور؛ فاصله زیاد می‌تواند Latency را بالا ببرد، به‌خصوص مدار زمین‌ثابت.
-
-### Transceiver و Connector
-
-SFP/SFP+/SFP28 و QSFPها ماژول‌هایی برای سرعت‌ها و فیبر/مس متفاوت‌اند. شکل یکسان سازگاری را تضمین نمی‌کند؛ Speed، wavelength، fiber type، reach و پشتیبانی Vendor باید مطابق باشند. Fibre Channel نیز Transceiver دارد، ولی پروتکل ذخیره‌سازی است و نباید هر Optic آن را Ethernet فرض کرد.
-
-| اتصال | کاربرد متداول |
+| Connector | Common use |
 |---|---|
-| RJ45 (نام رایج 8P8C) | Ethernet روی Twisted pair |
-| RJ11 | تلفن/DSL |
-| LC | فیبر کوچک و رایج در Transceiver |
-| SC | فیبر Push-pull با اندازه بزرگ‌تر |
-| ST | فیبر قفل چرخشی، بیشتر قدیمی |
-| MPO/MTP | چند رشته فیبر در یک Connector |
-| F-type | Coax تلویزیون/Cable modem |
-| BNC | Coax قفل Bayonet، ابزار و شبکه‌های قدیمی |
+| RJ45/8P8C | Ethernet over twisted pair |
+| RJ11 | Telephone and some DSL connections |
+| LC | Compact fiber connection on transceivers |
+| SC | Larger push-pull fiber connector |
+| ST | Twist-lock fiber connector, often legacy |
+| MPO/MTP | Several fiber strands in one connector |
+| F-type | Cable television and cable modem coax |
+| BNC | Bayonet coax connection for tools and legacy systems |
 
-هرگز به انتهای فیبر روشن نگاه نکنید؛ نور نامرئی می‌تواند به چشم آسیب بزند. از Dust cap و ابزار تمیزکاری مناسب استفاده کنید.
+Never look into a fiber end. Invisible optical energy can damage eyes. Inspect and clean connectors with approved procedures.
 
-## ۱.۶ — Topology و جریان ترافیک
+## 1.6 — Topologies, architectures, and traffic flow
 
-- **Star:** همه Endpointها به دستگاه مرکزی وصل‌اند. خرابی یک کابل فقط همان عضو؛ خرابی مرکز گسترده است.
-- **Mesh:** چند مسیر میان گره‌ها؛ افزونگی خوب و هزینه/پیچیدگی بیشتر. Full mesh همه‌به‌همه و Partial mesh محدود است.
-- **Hybrid:** ترکیب چند Topology.
-- **Hub-and-spoke:** شعب به Hub مرکزی؛ ساده‌تر ولی Hub می‌تواند گلوگاه/نقطه خرابی باشد.
-- **Point-to-point:** پیوند مستقیم دو نقطه.
-- **Three-tier:** Access، Distribution و Core.
-- **Collapsed core:** Distribution و Core در یک لایه؛ مناسب شبکه کوچک‌تر.
-- **Spine-leaf:** هر Leaf به همه Spineها وصل است؛ مسیرهای هم‌طول و مناسب East-west در Data center.
+- **Star:** endpoints connect to a central device. One access cable failure affects one endpoint; central failure has wide impact.
+- **Mesh:** nodes have several paths. Full mesh maximizes connectivity but greatly increases links and cost.
+- **Hybrid:** combines topologies.
+- **Hub-and-spoke:** branches connect through a central hub; simple but the hub needs capacity and redundancy.
+- **Point-to-point:** a direct link between two endpoints.
+- **Three-tier:** access, distribution, and core.
+- **Collapsed core:** combines distribution and core for a smaller network.
+- **Spine-leaf:** every leaf connects to every spine, creating predictable equal-cost paths for data-center traffic.
 
-**North-south traffic** میان Data center و بیرون است؛ **East-west** میان Workloadهای داخل Data center. این جهت‌ها جغرافیایی نیستند.
+**North-south traffic** enters or leaves a data center. **East-west traffic** moves between internal workloads. The names describe logical direction, not geography.
 
-## ۱.۷ — IPv4 از صفر تا Subnetting
+## 1.7 — IPv4, CIDR, VLSM, and classes
 
-IPv4 سی‌ودو بیت و معمولاً چهار Octet ده‌دهی دارد. Prefix مشخص می‌کند چند بیت اول شبکه‌اند. در `192.0.2.10/24`، ۲۴ بیت شبکه و ۸ بیت Host است.
+IPv4 contains 32 bits, normally shown as four decimal octets. A prefix states how many leading bits identify the network. In `192.0.2.10/24`, 24 bits are the network portion and eight are the host portion.
 
-### دامنه‌های مهم
+### Important ranges
 
-| نوع | محدوده | کاربرد |
+| Type | Range | Use |
 |---|---|---|
-| Private RFC1918 | `10.0.0.0/8` | شبکه داخلی |
-| Private RFC1918 | `172.16.0.0/12` | شبکه داخلی |
-| Private RFC1918 | `192.168.0.0/16` | شبکه داخلی |
-| APIPA/Link-local | `169.254.0.0/16` | انتخاب خودکار هنگام نبود DHCP؛ Route نمی‌شود |
-| Loopback | `127.0.0.0/8` | خود Host؛ معمولاً `127.0.0.1` |
-| Documentation | `192.0.2.0/24`، `198.51.100.0/24`، `203.0.113.0/24` | مثال امن در مستندات |
+| RFC 1918 private | `10.0.0.0/8` | Internal addressing |
+| RFC 1918 private | `172.16.0.0/12` | Internal addressing |
+| RFC 1918 private | `192.168.0.0/16` | Internal addressing |
+| Link-local/APIPA | `169.254.0.0/16` | Automatic local address when normal configuration fails |
+| Loopback | `127.0.0.0/8` | The local host |
+| Documentation | `192.0.2.0/24`, `198.51.100.0/24`, `203.0.113.0/24` | Safe examples |
 
-Private مساوی امن نیست؛ Firewall و کنترل دسترسی همچنان لازم است. برای دسترسی اینترنت معمولاً NAT/PAT انجام می‌شود. Public IP نیز ممکن است پشت Firewall باشد.
+Private does not mean secure. A firewall and access controls are still required.
 
-### محاسبه Subnet مرحله‌به‌مرحله
+### Subnet example
 
-مسئله: `192.0.2.77/27` در چه Subnetی است؟
+Find the subnet for `192.0.2.77/27`:
 
-1. `/27` یعنی ۵ بیت Host.
-2. تعداد کل آدرس‌ها برابر `2^5 = 32` است.
-3. گام Subnet در Octet آخر ۳۲ است: ۰، ۳۲، ۶۴، ۹۶ و ... .
-4. عدد ۷۷ میان ۶۴ و ۹۵ است.
-5. Network برابر `192.0.2.64` و Broadcast برابر `192.0.2.95` است.
-6. بازه Host معمولی `192.0.2.65` تا `192.0.2.94` و تعداد آن ۳۰ است.
+1. `/27` leaves five host bits.
+2. Each block contains `2^5 = 32` addresses.
+3. Boundaries in the last octet are 0, 32, 64, 96, and so on.
+4. 77 falls between 64 and 95.
+5. Network: `192.0.2.64`; broadcast: `192.0.2.95`.
+6. Normal host range: `192.0.2.65` through `192.0.2.94`, for 30 hosts.
 
-فرمول معمول Hostهای قابل‌استفاده `2^h - 2` است؛ `/31` در پیوند Point-to-point استثنا و `/32` یک Host route است.
+The usual host formula is `2^h - 2`; `/31` point-to-point links and `/32` host routes are important exceptions.
 
-**CIDR** وابستگی Prefix به Class قدیمی را برداشت. **VLSM** اجازه می‌دهد داخل یک طرح از Prefixهای متفاوت استفاده کنیم تا آدرس هدر نرود. Class A/B/C برای تاریخچه و سؤال آزمون مهم است، ولی Routing مدرن Classless است؛ D و E به‌ترتیب Multicast و Experimental/Reserved شناخته می‌شوند.
+CIDR removed the fixed relationship between prefix and historical class. VLSM uses different prefix lengths in one plan to reduce waste. Class A, B, and C remain historical exam vocabulary; Class D is multicast and Class E is experimental/reserved. Modern routing is classless.
 
-## ۱.۸ — شبکه مدرن
+## IPv6 from zero
 
-### IPv6 از صفر
-
-IPv6 صدوبیست‌وهشت بیت دارد و به هشت گروه Hex شانزده‌بیتی نوشته می‌شود. صفرهای ابتدای هر گروه حذف و فقط یک‌بار می‌توان طولانی‌ترین زنجیره گروه‌های صفر را با `::` فشرده کرد.
-
-</div>
-
-<div dir="ltr" align="left">
+IPv6 is 128 bits and uses eight hexadecimal groups. Leading zeroes in a group may be removed, and one continuous sequence of zero groups may be replaced by `::` once.
 
 ```text
 2001:0db8:0000:0000:0000:0000:0000:0080
 2001:db8::80
 ```
 
-</div>
+These lines represent the same address.
 
-<div dir="rtl" align="right">
-
-دو خط یک آدرس‌اند. Prefix رایج LAN برابر `/64` است؛ ۶۴ بیت Network و ۶۴ بیت Interface identifier. نوع‌های مهم:
-
-| نوع | محدوده/نمونه | کاربرد |
+| Type | Range/example | Purpose |
 |---|---|---|
-| Global unicast | معمولاً `2000::/3` | Route عمومی؛ Documentation=`2001:db8::/32` |
-| Link-local | `fe80::/10` | ارتباط همان Link، ND و Default gateway؛ Router آن را Forward نمی‌کند |
-| Unique local | `fc00::/7`، معمولاً `fd...` | شبکه خصوصی‌مانند، ولی NAT الزام/هدف نیست |
-| Loopback | `::1/128` | خود Host |
-| Unspecified | `::/128` | هنوز آدرس مشخص نیست؛ مقصد معتبر عادی نیست |
-| Multicast | `ff00::/8` | Group؛ IPv6 Broadcast ندارد |
-| Anycast | آدرس Unicast روی چند Interface | Routing نزدیک‌ترین/بهترین را انتخاب می‌کند |
+| Global unicast | Commonly `2000::/3` | Publicly routed; documentation uses `2001:db8::/32` |
+| Link-local | `fe80::/10` | Same-link communication, ND, and gateway use |
+| Unique local | `fc00::/7`, commonly `fd...` | Private internal use without a NAT requirement |
+| Loopback | `::1/128` | Local host |
+| Unspecified | `::/128` | No address selected yet |
+| Multicast | `ff00::/8` | Group delivery; IPv6 has no broadcast |
+| Anycast | A unicast address on several interfaces | Routing selects an instance |
 
-Neighbor Discovery با ICMPv6 کارهای ARP، Router discovery و Duplicate Address Detection را انجام می‌دهد. Link-local یکسان روی Interfaceهای مختلف ممکن است وجود داشته باشد، پس در فرمان مقصدی مانند `fe80::1%eth0` Zone/interface لازم است.
+Neighbor Discovery uses ICMPv6 for address resolution, router discovery, and Duplicate Address Detection. A link-local destination may require an interface zone such as `fe80::1%eth0`.
 
-SLAAC Interface identifier را از روش Privacy/random یا الگوریتم‌هایی مانند Modified EUI-64 می‌سازد. در Modified EUI-64، MAC 48-bit با افزودن `ff:fe` و تغییر بیت U/L به 64-bit تبدیل می‌شد؛ Privacy addressها برای جلوگیری از Tracking رایج‌ترند. حفظ‌کردن EUI-64 نباید باعث فرض شود همه Clientهای جدید از MAC آدرس می‌سازند.
+SLAAC can create an address from Router Advertisements. An interface identifier may be stable, private/randomized, or historically derived with Modified EUI-64. Modern clients often use privacy addresses, so do not assume an IPv6 address contains the MAC.
 
-### SDN و SD-WAN
+## 1.8 — Modern networking
 
-SDN کنترل منطقی را از Forwarding جدا و Policy را متمرکز می‌کند. Controller دید مرکزی دارد و دستگاه‌ها طبق Rule بسته را می‌فرستند. SD-WAN این ایده را برای WAN به‌کار می‌گیرد:
+### SDN and SD-WAN
 
-- **Application-aware:** مسیر بر اساس نوع برنامه و SLA انتخاب می‌شود.
-- **Zero-touch provisioning:** دستگاه شعبه با کمترین تنظیم محلی Policy می‌گیرد.
-- **Transport agnostic:** MPLS، Broadband و Cellular می‌توانند هم‌زمان Underlay باشند.
-- **Central policy management:** Policy از مرکز تعریف و توزیع می‌شود.
+Software-Defined Networking separates logical control from packet forwarding and centralizes policy. SD-WAN applies centralized, application-aware policy to WAN links:
 
-Controller نقطه حساس است و باید افزونه، امن و قابل‌دسترسی طراحی شود.
+- Application-aware path selection.
+- Zero-touch provisioning.
+- Transport independence across MPLS, broadband, and cellular.
+- Central policy management.
 
-### VXLAN و DCI
+Controllers are critical systems and require redundancy, authentication, logging, and secure management.
 
-VXLAN فریم لایه ۲ را داخل UDP روی شبکه لایه ۳ حمل می‌کند و با شناسه ۲۴ بیتی VNI دامنه‌های بیشتری از VLAN می‌دهد. VTEP عمل Encapsulation/Decapsulation را انجام می‌دهد. **Data Center Interconnect** اتصال امن و دارای ظرفیت میان Data centerهاست؛ کش‌دادن لایه ۲ فقط در صورت نیاز و با شناخت Failure domain انجام می‌شود.
+### VXLAN and DCI
 
-### ZTA، SASE و SSE
+VXLAN encapsulates Layer 2 frames inside UDP over Layer 3. A 24-bit VNI supports far more logical segments than the 12-bit VLAN ID. A VTEP performs encapsulation and decapsulation. Data Center Interconnect links facilities; extending Layer 2 between sites should be a deliberate decision because it expands the failure domain.
 
-- **Zero Trust Architecture:** به مکان شبکه اعتماد دائمی نمی‌کند؛ هویت، وضعیت دستگاه، کمترین دسترسی و ارزیابی پیوسته مهم‌اند.
-- **SSE:** مجموعه خدمات امنیتی Cloud مانند Secure Web Gateway، CASB و ZTNA.
-- **SASE:** قابلیت‌های WAN و SSE را به‌صورت Cloud-delivered نزدیک کاربر ترکیب می‌کند.
+### ZTA, SSE, and SASE
 
-Zero Trust یک محصول واحد نیست و جمله «هرگز اعتماد نکن» به معنی سؤال‌کردن رمز در هر بسته نیست؛ تصمیم دسترسی با Context و Session کنترل می‌شود.
+- **Zero Trust Architecture:** no permanent trust based only on network location; use identity, device posture, context, least privilege, and continuous evaluation.
+- **Security Service Edge:** cloud-delivered security functions such as secure web gateway, CASB, and ZTNA.
+- **Secure Access Service Edge:** combines WAN capabilities with SSE services.
+
+Zero Trust is an architecture, not a single product.
 
 ### Infrastructure as Code
 
-IaC وضعیت مطلوب شبکه را در فایل قابل نسخه‌بندی تعریف می‌کند. مزایا: تکرارپذیری، Review، Audit و Rollback. Secret نباید داخل Git ذخیره شود. Pipeline باید Syntax، Policy و تغییر برنامه‌ریزی‌شده را قبل از Production آزمایش کند.
+IaC stores intended infrastructure state in version-controlled files. Benefits include review, repeatability, auditability, and rollback. Secrets must not be committed to Git. A pipeline should validate syntax, policy, and planned changes before production.
 
-### چالش IPv6 و راه‌های گذار
+### IPv6 transition
 
-IPv4 محدود است؛ IPv6 فضای آدرس بزرگ‌تر و Neighbor Discovery دارد. راهکارهای گذار:
+- **Dual stack:** run IPv4 and IPv6 together; clear but requires operating both securely.
+- **Tunneling:** carry one protocol through another; adds MTU and troubleshooting complexity.
+- **NAT64 with DNS64:** allows IPv6-only clients to reach IPv4-only services; applications using literal IPv4 addresses may fail.
 
-- **Dual stack:** اجرای هم‌زمان IPv4 و IPv6؛ روشن ولی نیازمند مدیریت هر دو.
-- **Tunneling:** حمل یک پروتکل داخل دیگری؛ MTU و پیچیدگی را در نظر بگیرید.
-- **NAT64 + DNS64:** Client فقط IPv6 را به مقصد IPv4 می‌رساند؛ با بعضی برنامه‌های دارای IPv4 literal مشکل دارد.
+IPv6 is not automatically secure. Firewalling, patching, logging, and monitoring are required for both stacks.
 
-IPv6 به‌صورت خودکار امن‌تر نیست؛ Firewall، Patch، Monitoring و دانش تیم برای هر دو Stack لازم است.
+### Wi-Fi generations
 
-### نسل‌های رایج Wi-Fi برای تطبیق نام‌ها
-
-| IEEE | نام بازاری | باند اصلی | نکته |
+| IEEE | Common name | Main bands | Key idea |
 |---|---|---|---|
-| 802.11a | Wi-Fi قدیمی | 5 GHz | قدیمی، OFDM |
-| 802.11b/g | Wi-Fi قدیمی | 2.4 GHz | سرعت/سازگاری قدیمی می‌تواند Airtime را مصرف کند |
-| 802.11n | Wi-Fi 4 | 2.4/5 GHz | MIMO و Channel bonding |
-| 802.11ac | Wi-Fi 5 | 5 GHz | Channel عریض و MU-MIMO در نسل‌ها |
-| 802.11ax | Wi-Fi 6/6E | 2.4/5 و برای 6E، 6 GHz | OFDMA، کارایی بهتر محیط متراکم |
-| 802.11be | Wi-Fi 7 | 2.4/5/6 GHz | Multi-Link و Channel عریض در تجهیزات سازگار |
+| 802.11a | Legacy | 5 GHz | OFDM |
+| 802.11b/g | Legacy | 2.4 GHz | Older rates consume airtime |
+| 802.11n | Wi-Fi 4 | 2.4/5 GHz | MIMO and channel bonding |
+| 802.11ac | Wi-Fi 5 | 5 GHz | Wider channels and MU-MIMO evolution |
+| 802.11ax | Wi-Fi 6/6E | 2.4/5/6 GHz | OFDMA and dense-environment efficiency |
+| 802.11be | Wi-Fi 7 | 2.4/5/6 GHz | Multi-Link Operation and wider channels |
 
-حداکثر تبلیغ‌شده با Throughput واقعی برابر نیست و به تعداد Spatial stream، Channel width، Modulation، Signal، Client و مقررات بستگی دارد.
+Advertised maximum rate is not real throughput. Spatial streams, channel width, modulation, signal, interference, client capability, and regulatory rules all matter.
 
-## جمع‌بندی تشخیصی
+## End-of-chapter exercises
 
-| اگر سؤال می‌گوید... | ابتدا به این فکر کنید |
-|---|---|
-| نزدیک‌کردن محتوای وب به کاربر | CDN |
-| Block storage برای Hypervisor | SAN |
-| فایل اشتراکی ساده | NAS |
-| چند مسیر مساوی در Data center | Spine-leaf |
-| رشد و کاهش خودکار Cloud | Elasticity |
-| خط‌مشی WAN مرکزی و چند Underlay | SD-WAN |
-| حمل Layer 2 روی Layer 3 | VXLAN |
-| کمترین اعتماد بر اساس هویت/وضعیت | ZTA |
-| Client بدون DHCP و آدرس `169.254.x.x` | APIPA و مشکل DHCP |
-
-## تمرین پایان فصل
-
-1. برای دفتر ۴۰ نفره، نقش Router، Switch، AP، Firewall و NAS را در یک جمله بنویسید.
-2. تفاوت Stateful security group و Stateless ACL را با مسیر برگشت توضیح دهید.
-3. مشخص کنید کدام سرویس‌های جدول پورت به‌صورت پیش‌فرض متن واضح یا فاقد احراز هویت امن‌اند.
-4. شبکه، Broadcast و Host range آدرس `198.51.100.141/28` را حساب کنید.
-5. برای ارتباط دو Data center بگویید چرا «فقط کش‌دادن VLAN» ممکن است خطرناک باشد.
-6. بین Dual stack و NAT64 برای یک شبکه تازه، مزایا و محدودیت‌ها را مقایسه کنید.
-
-پاسخ تشریحی تمرین‌ها در [پاسخ‌نامه](../practice/answers.md) و تمرین بیشتر در [کارگاه Subnetting](../practice/subnetting.md) قرار دارد.
-
-</div>
+1. Describe the role of a router, switch, access point, firewall, and NAS in a 40-person office.
+2. Explain stateful security groups versus stateless ACLs, including return traffic.
+3. Identify which listed legacy protocols lack default confidentiality.
+4. Calculate the network, broadcast, and host range for `198.51.100.141/28`.
+5. Explain why extending one VLAN between data centers can create a large failure domain.
+6. Compare dual stack with NAT64 for a new network.

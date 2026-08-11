@@ -35,11 +35,8 @@ for (const path of markdownFiles) {
   const text = readFileSync(path, 'utf8');
   if (!text.endsWith('\n')) errors.push(`${file}: missing final newline`);
   if ((text.match(/```/g) ?? []).length % 2 !== 0) errors.push(`${file}: unbalanced code fences`);
-  const rtlOpen = (text.match(/<div dir="rtl" align="right">/g) ?? []).length;
-  const ltrOpen = (text.match(/<div dir="ltr" align="left">/g) ?? []).length;
-  const closes = (text.match(/<\/div>/g) ?? []).length;
-  if (rtlOpen + ltrOpen !== closes) errors.push(`${file}: unbalanced RTL/LTR divs`);
-  if (!text.includes('<div dir="rtl" align="right">')) errors.push(`${file}: no RTL wrapper`);
+  if (/[\u0600-\u06ff]/u.test(text)) errors.push(`${file}: contains Persian/Arabic-script characters`);
+  if (/<div\s+dir=["']rtl["']/i.test(text)) errors.push(`${file}: contains an RTL wrapper`);
 
   const links = [...text.matchAll(/\[[^\]]+\]\(([^)]+)\)/g)].map((match) => match[1]);
   for (const target of links) {
@@ -62,6 +59,37 @@ const expectedObjectives = [
 for (const code of expectedObjectives) {
   const count = (objectives.match(new RegExp(`\\| ${code.replace('.', '\\.')} \\|`, 'g')) ?? []).length;
   if (count !== 1) errors.push(`OBJECTIVES.md: objective ${code} appears ${count} times`);
+}
+
+const corpus = markdownFiles.map((path) => readFileSync(path, 'utf8')).join('\n').toLowerCase();
+const requiredTerms = [
+  'osi', 'router', 'layer 2 switch', 'layer 3 switch', 'firewall', 'ids', 'ips',
+  'load balancer', 'forward proxy', 'reverse proxy', 'nas', 'san', 'access point',
+  'wireless controller', 'cdn', 'vpn', 'qos', 'ttl', 'nfv', 'vpc', 'security group',
+  'network acl', 'internet gateway', 'nat gateway', 'multitenancy', 'saas', 'paas', 'iaas',
+  'ftp', 'sftp', 'ssh', 'telnet', 'smtp', 'dns', 'dhcp', 'tftp', 'http', 'https',
+  'ntp', 'snmp', 'ldap', 'smb', 'syslog', 'sql server', 'rdp', 'sip', 'icmp',
+  'gre', 'ipsec ah', 'ipsec esp', 'ike', 'unicast', 'multicast', 'anycast', 'broadcast',
+  'single-mode fiber', 'multimode fiber', 'twinax', 'coaxial', 'plenum', 'transceiver',
+  'spine-leaf', 'hub-and-spoke', 'three-tier', 'collapsed core', 'north-south', 'east-west',
+  'rfc 1918', 'apipa', 'vlsm', 'cidr', 'sdn', 'sd-wan', 'vxlan', 'zero trust', 'sase',
+  'sse', 'infrastructure as code', 'dual stack', 'nat64', 'bgp', 'eigrp', 'ospf', 'pat',
+  'fhrp', 'virtual ip', 'subinterface', '802.1q', 'spanning tree', 'lacp', 'jumbo frame',
+  'wpa2', 'wpa3', 'captive portal', 'autonomous ap', 'lightweight ap', 'mdf', 'idf',
+  'ups', 'pdu', 'poe', 'change management', 'golden configuration', 'snmpv3', 'flow data',
+  'port mirroring', 'siem', 'rpo', 'rto', 'mttr', 'mtbf', 'cold', 'warm', 'hot',
+  'slaac', 'dnssec', 'doh', 'dot', 'ptr', 'reverse dns', 'forward-confirmed reverse dns', 'ptp', 'nts',
+  'jump host', 'out-of-band', 'confidentiality', 'integrity', 'availability', 'pki', 'mfa',
+  'sso', 'radius', 'tacacs+', 'saml', 'least privilege', 'rbac', 'geofencing', 'honeypot',
+  'pci dss', 'gdpr', 'iot', 'iiot', 'scada', 'ics', 'ot', 'byod', 'ddos', 'vlan hopping',
+  'mac flooding', 'arp poisoning', 'evil twin', 'on-path', 'phishing', 'malware',
+  '802.1x', 'dhcp snooping', 'dynamic arp inspection', 'port security', 'screened subnet',
+  'troubleshooting methodology', 'crosstalk', 'attenuation', 'crc', 'runts', 'giants',
+  'err-disabled', 'poe budget', 'pool exhaustion', 'duplicate ip', 'latency', 'jitter',
+  'packet loss', 'wireshark', 'tcpdump', 'nmap', 'lldp', 'cdp', 'tdr', 'otdr'
+];
+for (const term of requiredTerms) {
+  if (!corpus.includes(term)) errors.push(`Official coverage term is missing: ${term}`);
 }
 
 function numberedEntries(file) {
@@ -97,4 +125,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Documentation checks passed: ${markdownFiles.length} Markdown files, 25 objectives, 200 questions, 26 labs.`);
+console.log(`Documentation checks passed: ${markdownFiles.length} English Markdown files, 25 objectives, 200 questions, 26 labs.`);

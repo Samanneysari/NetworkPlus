@@ -1,100 +1,79 @@
-<div dir="rtl" align="right">
+# Course Guide
 
-# راهنمای استفاده از دوره
+## How each topic is taught
 
-## روش تدریس این جزوه
+Every major topic follows this order:
 
-هر موضوع با این ترتیب آموزش داده می‌شود:
+1. **Definition:** what the technology is.
+2. **Purpose:** the problem it solves.
+3. **Operation:** how frames, packets, sessions, or messages move.
+4. **Components:** addresses, headers, tables, devices, and roles.
+5. **Implementation:** small, ordered configuration or testing steps.
+6. **Line-by-line explanation:** what each important command does.
+7. **Verification:** positive and negative tests that prove the result.
+8. **Failure modes:** symptoms, likely causes, and safe isolation steps.
+9. **Exam practice:** questions, labs, and PBQ-style scenarios.
 
-۱. **این چیست؟** تعریف ساده بدون فرض دانش قبلی  
-۲. **چرا ساخته شده است؟** مشکلی که فناوری حل می‌کند  
-۳. **چگونه کار می‌کند؟** مسیر فریم، بسته، Session یا پیام  
-۴. **اجزای آن چیست؟** آدرس‌ها، جدول‌ها، Headerها، دستگاه‌ها و نقش‌ها  
-۵. **چگونه پیاده‌سازی یا آزمایش می‌شود؟** مراحل دقیق و کوچک  
-۶. **هر خط چه می‌کند؟** توضیح خط‌به‌خط فرمان‌ها و تنظیمات  
-۷. **چگونه صحت آن را ثابت کنیم؟** خروجی قابل مشاهده و تست مثبت/منفی  
-۸. **چگونه خراب می‌شود؟** نشانه، علت، روش جداسازی و اصلاح  
-۹. **چگونه برای آزمون تمرین کنیم؟** سؤال، Lab و سناریوی PBQ
+Do not memorize a command before understanding the path of the data. For every problem, ask:
 
-## یک قانون مهم
+- Which layer is currently responsible?
+- Which address or identifier is used for the decision?
+- Which table or policy is consulted?
+- What evidence would prove the theory?
 
-فرمان را قبل از فهمیدن مسیر داده حفظ نکنید. برای هر مسئله چهار سؤال بپرسید:
+## Suggested 14-week plan
 
-- داده اکنون در کدام لایه است؟
-- آدرس یا شناسهٔ تصمیم‌گیری چیست؟
-- کدام جدول یا Policy بررسی می‌شود؟
-- چه مدرکی ثابت می‌کند نتیجه درست یا غلط است؟
-
-## برنامهٔ پیشنهادی ۱۴ هفته‌ای
-
-| هفته | موضوع | خروجی قابل سنجش |
+| Week | Topic | Measurable outcome |
 |---:|---|---|
-| ۱ | شبکه از صفر، بیت/بایت، کلاینت/سرور | بتوانید مسیر یک درخواست را با زبان خودتان تعریف کنید |
-| ۲ | هفت لایه OSI و Encapsulation | برای هر لایه وظیفه، PDU، آدرس، دستگاه و خطا بگویید |
-| ۳ | TCP/IP، TCP، UDP، ICMP، پورت‌ها | Handshake، ACK، Window و تفاوت UDP را توضیح دهید |
-| ۴ | IPv4، Binary، CIDR و VLSM | حداقل ۳۰ Subnet را بدون ابزار درست محاسبه کنید |
-| ۵ | IPv6، کابل، Fiber، Connector و Topology | Media مناسب یک سناریو را انتخاب کنید |
-| ۶ | Routing، NAT/PAT و FHRP | تصمیم Longest Prefix را از Routing Table بخوانید |
-| ۷ | Switching، VLAN، Trunk، LACP و STP | یک شبکهٔ چند VLAN بدون Loop بسازید |
-| ۸ | Wireless و نصب فیزیکی | Band/Channel/Security/آنتن مناسب را انتخاب کنید |
-| ۹ | مستندسازی، Change و Configuration Management | Change Plan و Rollback قابل اجرا بنویسید |
-| ۱۰ | Monitoring، SNMP، Flow، Log و Capture | یک Baseline بسازید و ناهنجاری را تشخیص دهید |
-| ۱۱ | DHCP، DNS، NTP/PTP/NTS، VPN و مدیریت | مسیر کامل دریافت IP و Resolve نام را عیب‌یابی کنید |
-| ۱۲ | امنیت، PKI، IAM، حملات و Segmentation | برای هر حمله چند کنترل دفاعی پیشنهاد دهید |
-| ۱۳ | روش عیب‌یابی و ابزارها | پنج خرابی را بدون حدس و با Evidence حل کنید |
-| ۱۴ | Lab جامع، PBQ و مرور | دو آزمون زمان‌دار و یک Capstone کامل انجام دهید |
+| 1 | Network foundations | Explain a complete web request in your own words |
+| 2 | OSI and encapsulation | Name each layer, PDU, identifier, device, and common fault |
+| 3 | TCP/IP, TCP, UDP, ICMP, and ports | Explain handshakes, acknowledgments, windows, and UDP trade-offs |
+| 4 | IPv4, binary, CIDR, and VLSM | Correctly solve at least 30 subnetting problems without tools |
+| 5 | IPv6, cabling, fiber, connectors, and topology | Select appropriate media and addressing for a scenario |
+| 6 | Routing, NAT/PAT, and FHRP | Read a route table and explain longest-prefix selection |
+| 7 | Switching, VLANs, trunks, LACP, and STP | Build a multi-VLAN network without a loop |
+| 8 | Wireless and physical installation | Choose bands, channels, security, antennas, power, and placement |
+| 9 | Documentation and change management | Write an executable change and rollback plan |
+| 10 | Monitoring, SNMP, flow, logs, and capture | Build a baseline and identify a real anomaly |
+| 11 | DHCP, DNS, NTP/PTP/NTS, VPNs, and management | Troubleshoot address assignment and name resolution end to end |
+| 12 | Security, PKI, IAM, attacks, and segmentation | Match threats to preventive, detective, and corrective controls |
+| 13 | Troubleshooting methodology and tools | Resolve five faults using evidence instead of guesses |
+| 14 | Capstone lab and timed review | Complete the final lab and two timed practice sessions |
 
-## ابزارهای موردنیاز
+## How to perform a lab correctly
 
-| ابزار | دلیل استفاده |
+Record the following for every lab:
+
+| Section | What to record |
 |---|---|
-| Packet Tracer | ساخت توپولوژی، VLAN، Routing و سرویس‌های پایه |
-| Wireshark | مشاهدهٔ Headerها و Handshakeها به‌جای تصور ذهنی |
-| VirtualBox/VMware | ساخت حداقل دو VM آزمایشگاهی |
-| Linux | تمرین `ip`، `ss`، `dig`، `tcpdump`، `traceroute` و سرویس‌ها |
-| Windows | تمرین `ipconfig`، `route`، `arp`، `nslookup` و PowerShell |
-| Git/GitHub | ثبت نسخه، مقایسهٔ تغییر، مستندسازی و IaC مقدماتی |
+| Objective | Official objective code and intended behavior |
+| Topology | Devices, interfaces, VLANs, subnets, and media |
+| Prediction | What should happen before you run the test |
+| Baseline | Initial tables, counters, logs, and state |
+| Execution | Small changes and the reason for each one |
+| Verification | A successful test, a negative test, and useful output |
+| Fault injection | One controlled failure and its symptoms |
+| Root cause | The underlying cause, not only the command that hid it |
+| Prevention | Documentation, monitoring, policy, or design improvement |
 
-## روش درست انجام Lab
+## How to answer scenario questions
 
-برای هر Lab یک گزارش کوتاه بسازید:
+1. Identify whether the question asks for the **first**, **best**, **most secure**, or **most likely** action.
+2. Determine the layer and scope of the problem.
+3. Remove options contradicted by the evidence.
+4. Separate a symptom from a root cause.
+5. For a first action, prefer low-risk evidence collection.
+6. For a solution, consider side effects and verification.
 
-| بخش | چه چیزی ثبت شود؟ |
-|---|---|
-| هدف | کد Objective و رفتاری که باید ایجاد شود |
-| توپولوژی | دستگاه، Interface، VLAN، Subnet و کابل |
-| پیش‌بینی | قبل از اجرا بنویسید چه اتفاقی باید بیفتد |
-| Baseline | جدول‌ها، Counterها و وضعیت اولیه |
-| اجرا | تغییرهای کوچک و دلیل هر تغییر |
-| Verification | تست مثبت، تست منفی و خروجی مهم |
-| Fault Injection | یک خرابی کنترل‌شده و نشانهٔ آن |
-| Root Cause | علت واقعی، نه فقط فرمانی که مشکل را پنهان کرد |
-| Prevention | مستند، Alert، Policy یا طراحی پیشگیرانه |
+## Completion standard
 
-## روش مطالعه برای فرد کاملاً تازه‌کار
+Reading alone is not enough. You should be able to:
 
-اگر یک اصطلاح را نفهمیدید، متوقف شوید و آن را در [واژه‌نامه](GLOSSARY.md) پیدا کنید. سپس مثال را با دست رسم کنید. شبکه در ابتدا پر از مخفف به نظر می‌رسد، اما تقریباً همهٔ موضوع‌ها به چند مفهوم برمی‌گردند: **آدرس، مسیر، نام، Session، Policy، ظرفیت و Evidence**.
-
-## روش پاسخ‌دادن به سؤال‌های سناریویی
-
-۱. خواستهٔ سؤال را مشخص کنید: بهترین، امن‌ترین، اولین اقدام، محتمل‌ترین علت یا ابزار مناسب.  
-۲. لایه و محدودهٔ خرابی را تعیین کنید.  
-۳. گزینه‌هایی را که مدرک مسئله رد می‌کند حذف کنید.  
-۴. بین «علت» و «نشانه» تفاوت بگذارید.  
-۵. اگر سؤال «اولین اقدام» می‌خواهد، سراغ کم‌خطرترین اقدام جمع‌آوری Evidence بروید.  
-۶. اگر سؤال «راه‌حل» می‌خواهد، اثر جانبی و Verification را هم در ذهن داشته باشید.
-
-## استاندارد پایان دوره
-
-تنها خواندن فایل‌ها کافی نیست. زمانی آماده‌اید که بتوانید:
-
-- مسیر بازشدن یک وب‌سایت را از DNS تا TLS و HTTP توضیح دهید؛
-- از روی Packet Capture، Ethernet/IP/TCP/DNS/TLS را تشخیص دهید؛
-- Subnet، Gateway، Broadcast و Route را محاسبه کنید؛
-- VLAN، Trunk، STP و Route را از جدول و نشانه‌ها عیب‌یابی کنید؛
-- میان Bandwidth، Throughput، Latency، Jitter و Loss تفاوت بگذارید؛
-- از `ping` فقط به‌عنوان یک مدرک محدود استفاده کنید، نه پاسخ همه‌چیز؛
-- یک تغییر امن همراه Backup، Rollback و Validation طراحی کنید؛
-- برای یک حمله، کنترل پیشگیرانه، تشخیصی و اصلاحی پیشنهاد دهید.
-
-</div>
+- Explain a web request from DNS through TLS and HTTP.
+- Identify Ethernet, IP, TCP, UDP, DNS, and TLS in a packet capture.
+- Calculate networks, gateways, broadcasts, host ranges, and summaries.
+- Diagnose VLANs, trunks, STP, routes, ACLs, and DHCP from tables and counters.
+- Distinguish bandwidth, throughput, goodput, latency, jitter, and loss.
+- Treat `ping` as limited evidence rather than a universal answer.
+- Design a change with backup, rollback, validation, and documentation.
+- Recommend multiple defensive controls for a stated threat.

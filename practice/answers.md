@@ -1,240 +1,236 @@
-<div dir="rtl" align="right">
+# Explained Answer Key
 
-# پاسخ‌نامه تشریحی
+Compare the reasoning, not only the final letter.
 
-پاسخ را با استدلال خود مقایسه کنید؛ حفظ حرف گزینه کافی نیست.
+## Answers 1–25
 
-## پاسخ ۱ تا ۲۵
+1. **A, Physical.** Missing media or signal begins at Layer 1 and affects every higher layer.
+2. **B, destination MAC.** The source MAC is learned; the destination MAC drives forwarding.
+3. **B, packet.** Frame is Layer 2; packet is Layer 3; segment/datagram is Layer 4.
+4. **SYN → SYN-ACK → ACK.** Sequence and acknowledgment values establish two-way TCP state.
+5. **B.** UDP is connectionless and has no built-in acknowledgment, ordering, or retransmission.
+6. **B.** The certificate and CA chain bind a verified identity/hostname to a public key.
+7. **B.** Four seconds after TLS but before the first byte points to application/backend processing.
+8. **Data → segment/datagram → packet → frame → bits/signals.** Decapsulation is the reverse.
+9. **B, SAN.** SAN provides blocks; NAS provides files.
+10. **A, load balancer.** Health checks should remove unhealthy backends.
+11. IDS generally observes and alerts; IPS is inline and can block/drop traffic.
+12. **A, forward proxy.** A reverse proxy represents inbound servers.
+13. **B, router.** A capable Layer 3 switch can also route.
+14. Classification/marking and queue priority are examples; QoS cannot create bandwidth.
+15. TTL decreases by one per router and is discarded at zero to stop endless loops.
+16. It lowers user latency and origin load; it can also improve scale and DDoS absorption.
+17. **A, customer.** In IaaS the customer manages guest OS and applications.
+18. **B, elasticity.** Scalability permits growth; elasticity adjusts capacity dynamically.
+19. Stateful groups recognize return traffic; stateless ACLs need explicit rules in both directions.
+20. **A, direct connection.** It is dedicated; encryption still needs explicit verification.
+21. **A, hybrid.** It integrates private/on-premises and public cloud.
+22. NFV implements a network function in software, such as a virtual firewall.
+23. **B, data and user access.** The shared-responsibility model never removes those duties.
+24. Horizontal scaling adds nodes; vertical scaling adds resources to one node.
+25. **B, 22.** Both SSH and SFTP normally use TCP/22.
 
-1. **الف، Physical.** نبود سیگنال/رسانه از لایه ۱ شروع می‌شود؛ اثرش به لایه‌های بالاتر می‌رسد.
-2. **ب، Destination MAC.** Source MAC برای یادگیری و Destination برای تصمیم Forward است.
-3. **ب، Packet.** Frame لایه ۲، Packet لایه ۳ و Segment/Datagram لایه ۴ است.
-4. **SYN → SYN-ACK → ACK.** شماره‌های Sequence/Acknowledgment توانایی ارتباط دوطرفه را هماهنگ می‌کنند.
-5. **ب.** UDP Connectionless است و ACK، ترتیب و Retransmission ذاتی TCP را ندارد.
-6. **ب.** Certificate نام/Identity را از طریق امضای CA به Public key وصل می‌کند؛ Client زمان، SAN و Chain را هم می‌سنجد.
-7. **ب.** تأخیر چهارثانیه‌ای پس از TLS تا First byte به برنامه، Backend یا Query داخلی اشاره دارد.
-8. **Data → Segment/UDP datagram → Packet → Frame → Bits/signals.** در مقصد Decapsulation معکوس است.
-9. **ب، SAN.** SAN Block device می‌دهد؛ NAS فایل‌سطح است.
-10. **الف، Load balancer.** Health check باید Backend ناسالم را از Pool خارج کند.
-11. **IDS** معمولاً ناظر و هشداردهنده است؛ **IPS** در مسیر می‌تواند Drop/Block کند.
-12. **الف، Forward proxy.** Reverse proxy از سمت سرویس‌های ورودی دفاع/واسطه‌گری می‌کند.
-13. **ب، Router.** Layer 3 switch نیز می‌تواند همین Routing را انجام دهد.
-14. Classify/mark و اولویت صف برای Voice دو کاربردند؛ QoS ظرفیت جدید نمی‌سازد و عمدتاً در ازدحام اثر دارد.
-15. یک واحد کم می‌شود؛ در صفر Packet حذف و ICMP تولید می‌شود تا Loop بی‌پایان نماند.
-16. Cache نزدیک‌تر Latency را کم و بار/Bandwidth Origin را کاهش می‌دهد؛ می‌تواند DDoS absorption هم بهتر کند.
-17. **الف، مشتری.** در IaaS ارائه‌دهنده زیرساخت/Hypervisor و مشتری OS و Application را مدیریت می‌کند.
-18. **ب، Elasticity.** Scalability توان رشد و Elasticity تنظیم پویا با تقاضاست.
-19. Stateful پاسخ ارتباط مجاز را می‌شناسد؛ Stateless Rule رفت و برگشت جدا می‌خواهد.
-20. **الف، Direct connection.** VPN روی اینترنت ارزان‌تر است ولی Dedicated path نیست؛ Direct link نیز الزاماً Encrypt نیست.
-21. **ب، Hybrid cloud.** اتصال و عملیات یکپارچه دو محیط بخش مهم آن است.
-22. NFV وظیفه Network appliance را نرم‌افزاری می‌کند؛ مثلاً Virtual firewall روی Hypervisor.
-23. **ب، داده و دسترسی کاربران.** Shared responsibility هرگز مسئولیت هویت/داده مشتری را حذف نمی‌کند.
-24. افقی Instance/Node اضافه می‌کند؛ عمودی CPU/RAM یک Node را بزرگ‌تر می‌کند.
-25. **ب، 22.** SSH و SFTP هر دو معمولاً TCP/22‌اند.
+## Answers 26–50
 
-## پاسخ ۲۶ تا ۵۰
+26. **B, server 67 and client 68.** A relay carries the exchange across subnets.
+27. Large answers, DNSSEC, truncation retry, and zone transfer can require TCP.
+28. **B, SSH/SFTP.** The other pairs include clear-text or unprotected protocols.
+29. **A, 161/162.** Polls normally reach agents on 161; traps reach managers on 162.
+30. **C, anycast.** Routing selects one suitable instance.
+31. **B, confidentiality.** GRE encapsulates but does not encrypt or authenticate by itself.
+32. It is a temporary client port that distinguishes simultaneous conversations in the five-tuple.
+33. **B, single-mode fiber.** It supports long distances and is immune to EMI.
+34. **A, LC.** It is compact and common on SFP-family optics.
+35. **A.** MPO/MTP carries several fibers in one connector.
+36. Speed, wavelength, fiber type, reach, encoding, and vendor support may differ.
+37. Air-handling/plenum spaces, subject to local fire and building rules.
+38. Multimode has a larger core and shorter typical reach; single-mode has a smaller core and longer reach.
+39. **B, F-type.** BNC is also coaxial but less common for consumer cable modems.
+40. Never look into a fiber; disconnect and inspect with approved tools.
+41. **B, spine-leaf.** Each leaf receives paths through every spine.
+42. **B, east-west.** North-south enters or leaves the data center.
+43. Advantage: redundancy and many paths. Disadvantage: link, port, cost, and management growth.
+44. Distribution and core.
+45. **A, hub-and-spoke.** The hub needs redundancy and capacity.
+46. One endpoint cable affects one endpoint; central-device failure can affect the entire star.
+47. Point-to-point directly joins two endpoints; mesh creates several paths among several nodes.
+48. Access, distribution, and core.
+49. **A, `172.20.5.4`.** The private block is `172.16.0.0/12`.
+50. **B, DHCP.** APIPA commonly appears when normal address configuration fails.
 
-26. **ب، Server 67 و Client 68.** Relay می‌تواند مسیر Broadcast را میان Subnetها برقرار کند.
-27. پاسخ بزرگ، DNSSEC، Retry با Truncation و Zone transfer می‌توانند TCP را لازم کنند.
-28. **ب، SSH/SFTP.** Telnet/FTP/TFTP رمزنگاری امن پیش‌فرض ندارند.
-29. **الف، 161/162.** Agent روی 161 Poll می‌شود و Trap معمولاً به Manager روی 162 می‌رود.
-30. **ج، Anycast.** Routing یک نمونه مناسب را انتخاب می‌کند؛ بسته به همه اعضا تکثیر نمی‌شود.
-31. **ب، محرمانگی.** GRE فقط Encapsulation است؛ ESP می‌تواند Encryption و Integrity بدهد.
-32. Ephemeral port اتصال‌ها/Processهای هم‌زمان Client را متمایز و Five-tuple یکتا می‌سازد.
-33. **ب، Single-mode fiber.** برای فاصله زیاد و مصونیت EMI مناسب است؛ Optic/استاندارد باید مطابق باشد.
-34. **الف، LC.** Connector کوچک رایج روی SFPهاست.
-35. **الف.** MPO/MTP چند رشته را یکجا متصل و تراکم را بالا می‌برد.
-36. Speed، wavelength، SMF/MMF، reach، encoding و پشتیبانی Vendor ممکن است متفاوت باشند.
-37. فضای Plenum/مسیر گردش هوا؛ روکش آن دود و مواد سمی کمتری در آتش تولید می‌کند.
-38. Multimode هسته بزرگ‌تر و چند Mode/فاصله کوتاه‌تر؛ Single-mode هسته کوچک و فاصله بلندتر دارد.
-39. **ب، F-type.** BNC نیز Coax است ولی برای Cable modem خانگی معمولاً F-type است.
-40. هرگز به انتهای فیبر نگاه نکنید؛ ابتدا منبع را قطع و با ابزار مناسب بررسی/تمیز کنید.
-41. **ب، Spine-leaf.** هر Leaf چند مسیر هم‌هزینه از Spineها می‌گیرد.
-42. **ب، East-west.** North-south میان محیط و بیرون است.
-43. مزیت افزونگی/مسیر متعدد؛ عیب تعداد لینک، Port، هزینه و پیچیدگی زیاد.
-44. **Distribution و Core.** Access جدا می‌ماند.
-45. **الف، Hub-and-spoke.** Hub باید از نظر ظرفیت و افزونگی طراحی شود.
-46. قطع کابل Client فقط همان Client؛ خرابی مرکز می‌تواند همه اعضای Star را قطع کند.
-47. Point-to-point فقط دو Endpoint مستقیم دارد؛ Mesh میان چند Node مسیرهای متعدد می‌سازد.
-48. **Access، Distribution، Core.** هر کدام نقش اتصال، Policy/aggregation و Backbone دارند.
-49. **الف، `172.20.5.4`.** RFC1918 از `172.16.0.0` تا `172.31.255.255` است.
-50. **ب، DHCP.** APIPA معمولاً پس از نرسیدن Offer و نبود Config دستی مناسب ایجاد می‌شود.
+## Answers 51–75
 
-## پاسخ ۵۱ تا ۷۵
+51. **`192.0.2.64/27`.** A `/27` block size is 32; 77 lies in 64–95.
+52. **`198.51.100.127`.** The `/26` block runs from 64 through 127.
+53. **B, 6.** Eight total addresses minus network and broadcast.
+54. It permits differently sized subnets to reduce address waste.
+55. Internal threats, malware, VPNs, and routing can still reach private addresses; policy is required.
+56. `/32` is one host route; `/31` is commonly a two-endpoint point-to-point link.
+57. **A, SD-WAN.** It applies central policy across several transports.
+58. **A, UDP over Layer 3.** A VTEP encapsulates and decapsulates.
+59. It provides roughly 16 million segment identifiers, far more than 12-bit VLAN IDs.
+60. **B.** Decisions use identity, posture, context, and least privilege.
+61. WAN/SD-WAN capabilities and cloud-delivered security/SSE.
+62. Review/audit and rollback/repeatability are benefits; committed secrets or harmful automation are risks.
+63. Both stacks require routing, firewalling, monitoring, and troubleshooting skills.
+64. An IPv6-only client reaching an IPv4-only destination.
+65. `/24` wins because it is the longest, most specific matching prefix.
+66. **B, administrative distance.** It compares route-source preference locally.
+67. Configure a backup static route with an AD higher than the primary source.
+68. It translates and tracks unique source ports with the public address.
+69. It provides a virtual default gateway and router failover.
+70. OSPF is a link-state IGP using SPF calculation over the LSDB.
+71. Each protocol defines a different metric scale; AD selects the source first.
+72. Each subinterface represents a VLAN, and 802.1Q identifies that VLAN on the trunk.
+73. **B.** It is flooded to forwarding ports in the same VLAN except the incoming port.
+74. Several VLANs, normally identified by 802.1Q tags.
+75. Untagged traffic may enter the wrong VLAN, creating connectivity or security problems.
 
-51. **`192.0.2.64/27`.** Block size برابر ۳۲ و ۷۷ در بازه ۶۴–۹۵ است.
-52. **`198.51.100.127`.** `/26` بلوک ۶۴ آدرسی از ۶۴ تا ۱۲۷ دارد.
-53. **ب، ۶.** هشت آدرس کل منهای Network و Broadcast؛ استثناهای `/31` و `/32` جدا هستند.
-54. Subnetهای با اندازه متفاوت می‌سازد تا هر بخش Prefix متناسب بگیرد و آدرس هدر نرود.
-55. Private فقط Global route نمی‌شود؛ Malware، عضو داخلی یا Route/VPN هنوز دسترسی دارد، پس ACL/Firewall لازم است.
-56. `/32` Host route/یک Endpoint؛ `/31` پیوند Point-to-point بدون Network/Broadcast سنتی.
-57. **الف، SD-WAN.** Policy مرکزی می‌تواند MPLS/Internet/Cellular را بر اساس SLA انتخاب کند.
-58. **الف، UDP روی Layer 3.** VTEP فریم را Encapsulate/Decapsulate می‌کند.
-59. فضای Segment بسیار بیشتر از VLAN 12-bit فراهم می‌کند؛ VNI حدود ۱۶ میلیون مقدار دارد.
-60. **ب.** تصمیم باید با Identity، Device posture، Context و Least privilege پیوسته ارزیابی شود.
-61. قابلیت‌های WAN/SD-WAN و خدمات امنیتی Cloud یا SSE.
-62. Review/Audit و Rollback/تکرارپذیری مزیت‌اند؛ Secret یا تغییر مخرب در Repository خطر است.
-63. تیم باید Routing، Security، Monitoring و عیب‌یابی هر دو Stack را انجام دهد.
-64. Client فقط IPv6 به سرویس فقط IPv4؛ DNS64 پاسخ مصنوعی و NAT64 ترجمه می‌کند.
-65. `/24`، چون Longest prefix match خاص‌ترین مسیر سازگار با مقصد را پیش از AD/metric برمی‌گزیند.
-66. **ب، AD.** AD اعتماد محلی به منبع Route است.
-67. Static route مشابه مسیر اصلی با AD بزرگ‌تر می‌سازیم تا فقط هنگام نبود مسیر بهتر نصب شود.
-68. Source portها را ترجمه و نگاشت Private IP:port به Public IP:port نگه می‌دارد.
-69. Default gateway مجازی و Failover میان چند Router ایجاد می‌کند.
-70. Link-state و محاسبه SPF روی LSDB؛ درون یک Autonomous system به‌عنوان IGP.
-71. هر پروتکل Metric خود را با مقیاس/معنی متفاوت می‌سازد؛ ابتدا AD منبع را انتخاب می‌کند.
-72. هر Subinterface نماینده VLAN و Tag 802.1Q است؛ Router میان آنها Route می‌کند.
-73. **ب.** به همه Portهای Forwarding همان VLAN به‌جز ورودی Flood می‌شود.
-74. چند VLAN را با Tag 802.1Q؛ Native VLAN معمولاً Untagged است.
-75. فریم Untagged ممکن است در VLAN متفاوت طبقه‌بندی و Leak/اختلال بسازد؛ CDP/STP نیز هشدار می‌دهند.
+## Answers 76–100
 
-## پاسخ ۷۶ تا ۱۰۰
+76. To break Layer 2 loops and prevent storms, duplicate frames, and MAC instability.
+77. The best port from a non-root switch toward the root bridge.
+78. LACP forms a logical bundle; one flow is normally hashed to one member.
+79. Large packets may be dropped or fragmented, producing PMTUD black holes.
+80. On endpoint edge ports; PortFast speeds forwarding and BPDU Guard blocks unexpected switches.
+81. **A, 1/6/11** where local regulation permits. The regulatory domain always matters.
+82. More potential capacity but more spectrum use, overlap, and contention.
+83. SSID is the WLAN name; BSSID identifies one radio/cell.
+84. **A, SAE.** It improves resistance to offline shared-secret guessing.
+85. WPA2/3-Enterprise, 802.1X/EAP, RADIUS, and correct certificate validation.
+86. It does not add authentication or encryption and the name can still be discovered.
+87. No. It reshapes the radiation pattern, increasing energy in some directions at the expense of others.
+88. A lightweight AP receives policy from a controller; an autonomous AP is configured independently.
+89. MDF is the central distribution/backbone point; IDF serves a nearer floor or area.
+90. It lowers the center of gravity and reduces fall/rail-loading risk.
+91. It reduces mixing of hot exhaust and cool intake air.
+92. A PDU distributes/measures power; a UPS supplies temporary protected power.
+93. PSE supplies PoE, such as a switch; PD consumes it, such as an AP.
+94. **B, PoE class/budget.** Insufficient power can disable features.
+95. Very low humidity increases ESD; very high humidity causes condensation and corrosion.
+96. It speeds safe troubleshooting and prevents disconnecting the wrong circuit.
+97. Physical shows location/media/ports; logical shows VLANs/subnets/routes/zones.
+98. Prefixes/subnets, address assignments, reservations, DNS names, and owners are valid examples.
+99. EOL is the vendor life/sales stage; EOS is the end of support/security updates.
+100. Scope/impact, procedure, approval/window, backup/rollback, and success criteria; any four.
 
-76. برای شکستن Loop لایه ۲ و جلوگیری از Broadcast storm/MAC instability.
-77. بهترین Port هر Switch غیرRoot به Root bridge بر اساس Path cost و Tie-breakها.
-78. چند لینک را Bundle می‌کند؛ Hash هر Flow را معمولاً روی یک عضو نگه می‌دارد، نه اینکه یک Flow را جمع کند.
-79. Packet بزرگ در بخش کوچک‌تر Drop/Fragment و PMTUD black hole می‌شود؛ تمام مسیر باید MTU سازگار داشته باشد.
-80. روی Edge/Endpoint؛ PortFast سریع Forward و BPDU Guard اتصال Switch غیرمنتظره را Err-disable می‌کند.
-81. **الف، 1/6/11** در Domainهایی که مجازند؛ مقررات محلی تعیین‌کننده است.
-82. ظرفیت بالقوه بیشتر، ولی مصرف طیف و هم‌پوشانی/Contention بیشتر و Channelهای مستقل کمتر.
-83. SSID نام WLAN/ESS است؛ BSSID شناسه یک Radio/Cell، معمولاً MAC.
-84. **الف، SAE.** در برابر حدس آفلاین بهتر از PSK handshake قدیمی مقاومت می‌کند.
-85. WPA2/3-Enterprise + 802.1X/EAP + RADIUS و Validation درست Certificate.
-86. نام در Management frameها/رفتار Client قابل کشف است و Authentication/Encryption اضافه نمی‌کند.
-87. خیر؛ Pattern تابش را متمرکز و در جهت‌هایی Gain و در جهت‌هایی کاهش ایجاد می‌کند.
-88. Lightweight از Controller Policy/RF می‌گیرد؛ Autonomous مستقل پیکربندی می‌شود.
-89. MDF توزیع اصلی/Backbone و IDF توزیع نزدیک طبقه/ناحیه است.
-90. پایداری مرکز ثقل و کاهش خطر سقوط/فشار روی Rail؛ همچنین مدیریت نصب ایمن‌تر.
-91. مخلوط‌شدن هوای گرم خروجی و سرد ورودی را کم و Cooling را مؤثرتر می‌کند.
-92. PDU برق را توزیع/اندازه می‌گیرد؛ UPS در قطع/افت برق انرژی موقت و Conditioning می‌دهد.
-93. PSE: PoE switch/injector؛ PD: AP، تلفن یا دوربین دریافت‌کننده.
-94. **ب، PoE class/budget.** دستگاه ممکن است با توان محدود Featureها را خاموش کند.
-95. کم: ESD؛ زیاد: Condensation و خوردگی. Threshold دقیق از Vendor/استاندارد Site.
-96. عیب‌یابی/تغییر سریع و جلوگیری از قطع کابل اشتباه؛ باید با Cable map هماهنگ باشد.
-97. Physical محل/کابل/Port را نشان می‌دهد؛ Logical VLAN/Subnet/Route/Zone و جریان را.
-98. Prefix/Subnet، IP allocation، Reservation، DNS، Owner و تاریخ نمونه‌های مناسب‌اند.
-99. EOL پایان چرخه/فروش طبق Vendor؛ EOS پایان پشتیبانی/Update است و تاریخ دقیق ممکن است جدا باشد.
-100. Scope/Impact، Pre-check و Steps، Approval/window، Backup/Rollback و Success criteria؛ هر چهار ترکیب معتبر پذیرفته است.
+## Answers 101–125
 
-## پاسخ ۱۰۱ تا ۱۲۵
+101. Golden configuration is an approved reference; running configuration is current live state and may drift.
+102. The backup may be incomplete, unreadable, dependency-missing, or too slow to meet RTO.
+103. Different bands, clients, times, and loads produce different coverage and capacity results.
+104. Remove from DNS/IPAM/monitoring, revoke accounts/certificates, erase data, update records, and dispose securely; any four.
+105. It defines the structure and meaning of SNMP object identifiers and their data.
+106. SNMPv3 supports authentication and privacy; v2c relies on a weak community string.
+107. The manager initiates polls; the agent sends traps on events. Traps can be lost and failed devices cannot report total failure.
+108. **A, flow data.** It summarizes conversations without full packet payload.
+109. Mirrored packets may be dropped, making the capture incomplete.
+110. 0 is Emergency/most severe; 7 is Debug/least severe.
+111. Normal business-hour, backup-window, and seasonal behavior differ.
+112. Collection, normalization, and correlation/alerting; it does not replace analysts or response procedures.
+113. Backup/replication intervals and recovery must limit data loss to ten minutes.
+114. The service must be restored within two hours of the incident.
+115. MTTR is average repair time and lower is better; MTBF is time between failures and higher is better.
+116. **C, cold.** It requires the most preparation.
+117. State consistency, replication, split brain, and session ownership.
+118. A tabletop cannot prove real backup integrity, dependencies, or restoration timing.
+119. The same malware or stolen credentials can encrypt/delete the connected backup.
+120. No. Daily backup violates the RPO, and a cold site is unlikely to meet the RTO.
+121. Discover, Offer, Request, Acknowledgment.
+122. DHCP client broadcasts do not cross routers; the relay forwards them with source-subnet information.
+123. A reservation gives a specific client a fixed lease; an exclusion prevents dynamic assignment.
+124. Root, `.ir` TLD, and authoritative `realsam.ir` servers.
+125. A=IPv4, AAAA=IPv6, MX=mail target plus preference, CNAME=alias target.
 
-101. Golden وضعیت مرجع تأییدشده است؛ Running وضعیت زنده و ممکن است Drift یا تغییر موقت داشته باشد.
-102. معلوم نیست Backup کامل، قابل‌خواندن، وابستگی‌دار و در RTO قابل‌بازیابی باشد؛ Restore test لازم است.
-103. نتیجه برای فرکانس/بار دیگری قابل تعمیم نیست؛ Heatmap باید معیار، باند، زمان و Client را مشخص کند.
-104. حذف از DNS/IPAM/Monitoring، Revocation حساب/Certificate، Wipe امن، Update CMDB/Diagram و Disposal ثبت‌شده.
-105. ساختار/معنی Object identifierها و نوع داده قابل Poll را تعریف می‌کند.
-106. Authentication و Privacy/Encryption دارد؛ v2c فقط Community string ضعیف دارد.
-107. Poll را Manager دوره‌ای می‌پرسد، Trap را Agent بر رویداد می‌فرستد؛ Trap ممکن است گم شود و Device خاموش نتواند ارسال کند.
-108. **الف، Flow data.** Conversation metadata را با حجم کمتر و بدون Payload کامل می‌دهد.
-109. مقصد Mirror ظرفیت کافی ندارد و Packetهای کپی Drop می‌شوند، پس Capture نمای کامل نیست.
-110. صفر Emergency و شدیدترین؛ هفت Debug و پرجزئیات‌ترین/کم‌Severity.
-111. رفتار عادی ساعت کاری، Backup شبانه و فصل فروش متفاوت است؛ Baseline بی‌زمان Alert غلط می‌سازد.
-112. جمع‌آوری، Normalization و Correlation/alert؛ جای Analyst، Retention policy و پاسخ Incident را نمی‌گیرد.
-113. Replication/Backup باید فاصله‌ای داشته باشد که حداکثر ده دقیقه داده از دست برود و Recovery آن آزموده شود.
-114. از رخداد تا بازگشت سرویس پذیرفتنی حداکثر دو ساعت؛ شامل تشخیص و Recovery است.
-115. MTTR میانگین زمان تعمیر و کمتر بهتر؛ MTBF میانگین فاصله خرابی و بیشتر بهتر.
-116. **ج، Cold.** آمادگی کمتر و زمان Provision/Restore بیشتر دارد.
-117. Consistency، Split-brain، Session/state و همگام‌سازی داده میان Siteها.
-118. Tabletop فرض‌ها و نقش‌ها را می‌سنجد؛ سرعت واقعی Restore، خرابی Backup و Dependency پنهان را ثابت نمی‌کند.
-119. Malware/Ransomware می‌تواند Backup متصل و Credential آن را هم رمز/حذف کند؛ نسخه Offline/immutable لازم است.
-120. خیر؛ RPO/RTO بسیار سخت‌تر از Backup روزانه و راه‌اندازی Cold site است.
-121. **Discover، Offer، Request، Acknowledgment.** Renewal ممکن است از Unicast آغاز شود.
-122. Broadcast DHCP از Router عبور نمی‌کند؛ Relay آن را با اطلاعات Subnet به Server دور می‌برد.
-123. Reservation IP را به Client مشخص می‌دهد؛ Exclusion IP را از واگذاری Dynamic خارج می‌کند.
-124. Root، سپس Name serverهای `.ir`، سپس Authoritativeهای `realsam.ir`؛ بعد رکورد Host.
-125. A=IPv4، AAAA=IPv6، MX=نام Mail server+priority، CNAME=Alias به نام Canonical.
+## Answers 126–150
 
-## پاسخ ۱۲۶ تا ۱۵۰
+126. `80.2.0.192.in-addr.arpa`; mail reputation and troubleshooting are common uses.
+127. It authenticates origin and integrity of DNS data; it does not encrypt the query.
+128. NTP=general time, PTP=high-precision local time, NTS=security for NTP.
+129. Site-to-site joins networks through gateways; client-to-site joins one endpoint.
+130. Benefit: less central bandwidth. Risk: reduced visibility/control and dual-path exposure.
+131. When production routing or the management data network is unavailable.
+132. It concentrates administrative access, so harden, patch, MFA-protect, restrict, record, and monitor it.
+133. Otherwise an attacker can present a false key and become an accepted on-path endpoint.
+134. Scoped least privilege, short lifetime/rotation, protected storage, and auditability; any three.
+135. Browser-based access to a limited application without a full network client.
+136. Physical access can expose configuration and secrets; console requires control, AAA, and logs.
+137. Threat=attacker/worm, vulnerability=old firmware flaw, exploit=method or request using it.
+138. Confidentiality, integrity, and availability.
+139. The key can be stolen with the data or lost; rotation, access, recovery, and revocation are unmanaged.
+140. Chain/signature, validity dates, SAN/hostname, key usage, and revocation; any four.
+141. No. Both are the same knowledge factor.
+142. Authentication proves identity, authorization grants permissions, accounting records actions.
+143. RBAC manages permissions through roles; the roles must be designed for least privilege.
+144. Compliance covers minimum requirements and defined scope, not every threat or misconfiguration.
+145. DoS uses one or limited sources; DDoS uses many distributed sources.
+146. Static access mode/DTP disabled, unused native VLAN, restricted allowed list, and patching; any three.
+147. The CAM/MAC table; port security or 802.1X is a defense.
+148. A false ARP mapping sends gateway-bound frames to the attacker's MAC.
+149. A malicious default gateway and DNS server.
+150. It is an AP imitating a trusted SSID; enterprise authentication plus correct server-certificate validation prevents trusting a false authentication server.
 
-126. `80.2.0.192.in-addr.arpa`; برای rDNS و Reputation/تشخیص Mail. مالک Netblock معمولاً کنترل Zone را دارد.
-127. Origin authentication و Integrity داده را با Signature می‌دهد؛ Query/Response را محرمانه نمی‌کند.
-128. NTP زمان عمومی شبکه؛ PTP دقت زیاد در محیط محلی؛ NTS لایه امنیتی احراز/محافظت NTP.
-129. Site-to-site دو شبکه/Gateway را تونل می‌کند؛ Client-to-site یک Endpoint را به شبکه وصل می‌کند.
-130. مزیت: Internet محلی و بار VPN کمتر؛ Risk: دید/Policy کمتر و امکان مسیر دوگانه روی Endpoint.
-131. وقتی Production/Data network یا Routing مدیریت قطع است، Console server/LTE جدا امکان Recovery می‌دهد.
-132. مسیر Admin را روی یک Host متمرکز می‌کند و بنابراین باید Harden، Patch، MFA، Record و محدود شود.
-133. تا Public host key مهاجم پذیرفته نشود؛ پذیرش کور می‌تواند On-path را معتبر جلوه دهد.
-134. کم‌دسترسی، کوتاه‌عمر/قابل Rotation، رمز نگهداری، Audit و Scope محدود؛ هر سه مورد درست پذیرفته است.
-135. دسترسی مرورگری به برنامه محدود بدون نصب Client کامل؛ نه لزوماً دسترسی عمومی لایه ۳.
-136. مهاجم با دسترسی فیزیکی می‌تواند Config/Secret را بگیرد؛ Console باید AAA/قفل/Log و Recovery امن داشته باشد.
-137. Threat=مهاجم/کرم؛ Vulnerability=Firmware آسیب‌پذیر؛ Exploit=درخواست/کدی که ضعف را فعال می‌کند.
-138. **Confidentiality، Integrity، Availability.** کنترل خوب اثرش بر هر سه را می‌سنجد.
-139. Key ممکن است همراه Data دزدیده یا از دست برود؛ Rotation، access، backup و revocation نامشخص می‌ماند.
-140. Chain/signature، زمان اعتبار، SAN/نام، Key usage و Revocation؛ چهار مورد کافی است.
-141. خیر؛ هر دو عامل «دانستن» هستند. MFA به عامل‌های مستقل نیاز دارد.
-142. Authentication اثبات هویت، Authorization مجوز و Accounting ثبت فعالیت/مصرف است.
-143. RBAC مجوز را با نقش مدیریت می‌کند؛ نقش‌ها باید طبق Least privilege فقط نیاز کاری را بدهند.
-144. Compliance حداقل Scope/الزام است؛ Threat تازه، Misconfiguration و Risk خارج Scope باقی می‌ماند.
-145. DoS از یک/منابع محدود و DDoS از منابع توزیع‌شده زیاد؛ هر دو Availability را هدف می‌گیرند.
-146. Access mode ثابت/خاموش DTP، Native بلااستفاده، Allowed VLAN محدود و Patch؛ سه مورد کافی است.
-147. CAM/MAC table؛ Port security، 802.1X یا محدودیت/Monitoring MAC دفاع‌اند.
-148. ARP جعلی IP Gateway را به MAC مهاجم می‌بندد و Client Frameها را به او می‌فرستد.
-149. Default gateway و DNS جعلی؛ Route/Proxy/WPAD نیز بسته به Client خطر دارد.
-150. AP با SSID شبیه معتبر؛ Enterprise با 802.1X و Validation Certificate مانع اعتماد به RADIUS جعلی می‌شود.
+## Answers 151–175
 
-## پاسخ ۱۵۱ تا ۱۷۵
+151. DoH encrypts only client-to-resolver transport; DNSSEC or resolver trust validates authoritative data.
+152. Phishing: resistant MFA/filtering; tailgating: badge/mantrap; dumpster diving: shredding.
+153. Inventory/owner, supported firmware, replace defaults, disable unused services, then secure AAA/management.
+154. Supplicant, authenticator, and authentication server.
+155. It builds trusted IP-MAC-VLAN-port bindings that DAI uses to validate ARP.
+156. Only real server replies should arrive through the trusted path; trusting users permits rogue replies.
+157. First match wins, and an implicit deny exists at the end.
+158. Large responses, DNSSEC, retry after truncation, and transfers can require TCP.
+159. It isolates public-facing services from internal LAN/backend systems.
+160. URL filtering controls destinations/categories; content filtering analyzes transferred content.
+161. Identify the problem; ask what fails, who is affected, when it began, what still works, and what changed.
+162. When the responsible layer is unclear; a middle test divides the search space.
+163. Clearing/restarting destroys state, trends, and root-cause evidence.
+164. It is specific, evidence-based, testable, and can be rejected by a low-risk test.
+165. **B.** Build the next theory from the result or escalate with evidence.
+166. Success criteria define proof; rollback restores safe state if the change fails.
+167. Ping tests limited ICMP behavior, not DNS, ports, TLS, authentication, or the application.
+168. Scope/impact, timeline, evidence/root cause, action, verification, and prevention; any five.
+169. Physical/duplex: damaged cable/connector, EMI/crosstalk, or duplex mismatch.
+170. Duplex mismatch or invalid old collision-domain conditions.
+171. Continuity does not measure crosstalk, insertion loss, return loss, and frequency performance.
+172. Speed, wavelength, fiber type, reach/platform support, and polarity; any four.
+173. Administratively down is configured off; down/down is enabled but has no physical link.
+174. The protective cause remains, the port will fail again, and evidence may be lost.
+175. Partial boot, radio/USB disabled, restart loops, or insufficient-power logs.
 
-151. DoH فقط مسیر Client تا Resolver را رمز می‌کند؛ صحت داده Zone به DNSSEC/اعتماد Resolver وابسته است.
-152. Phishing: MFA مقاوم/آموزش و Filter؛ Tailgating: Badge/mantrap؛ Dumpster: Shred/Disposal امن.
-153. Inventory/Owner، Update firmware معتبر، تغییر Default credential، خاموش Service/Port بلااستفاده؛ سپس AAA/SSH/Log.
-154. Supplicant، Authenticator و Authentication server/RADIUS.
-155. Binding معتبر IP-MAC-VLAN-Port می‌سازد و DAI پاسخ ARP را با آن مقایسه می‌کند.
-156. پاسخ Server فقط از مسیر واقعی پذیرفته شود؛ Trust کردن Edge به Rogue DHCP اجازه عبور می‌دهد.
-157. نخستین Match اجرا می‌شود و در پایان Implicit deny است؛ ترتیب و Direction حیاتی‌اند.
-158. Query معمولاً UDP است ولی پاسخ بزرگ، DNSSEC و Retry/transfer ممکن است TCP بخواهد.
-159. Public service را از LAN/Backend جدا می‌کند تا نفوذ مستقیم Failure domain داخلی را در بر نگیرد.
-160. URL filtering مقصد/Category را کنترل می‌کند؛ Content filtering Payload/نوع محتوا را تحلیل می‌کند و TLS inspection ممکن است لازم شود.
-161. Identify problem؛ چه چیزی/چه کسانی، از چه زمان، آخرین تغییر و چه چیز هنوز کار می‌کند—سه مورد کافی است.
-162. وقتی Layer دقیق معلوم نیست؛ آزمون در میانه مثل Ping gateway محدوده بالا/پایین را نصف می‌کند.
-163. Clear/Restart حالت و علت را پاک می‌کند و Root cause یا روند Counter از دست می‌رود.
-164. مشخص، مبتنی بر Evidence، قابل‌آزمون و ترجیحاً کم‌خطر/قابل رد است.
-165. **ب.** Theory جدید بر اساس نتیجه بسازید یا با Evidence و Scope درست Escalate کنید.
-166. Success criteria می‌گوید حل‌شدن چگونه اثبات شود؛ Rollback وضعیت امن را در شکست برمی‌گرداند.
-167. Ping فقط ICMP/بخشی از مسیر را می‌سنجد؛ DNS، Port، TLS، Auth، برنامه، Redundancy و دید کاربر باقی‌اند.
-168. Scope/impact، Timeline، Evidence/root cause، اقدام/تغییر، Verify و پیشگیری؛ پنج مورد کافی است.
-169. Physical/duplex؛ کابل/Connector بد، EMI/crosstalk و duplex mismatch سه علت‌اند.
-170. Duplex mismatch یا collision-domain/طول نامعتبر در Ethernet Half-duplex قدیمی.
-171. Continuity فقط اتصال Wire را می‌سنجد، نه NEXT، attenuation، return loss و عملکرد فرکانسی Category.
-172. Speed، wavelength، SMF/MMF، reach/optic support و polarity/connector؛ چهار مورد کافی است.
-173. Admin down با Config خاموش است؛ down/down یعنی فعال اداری ولی Physical link وجود ندارد.
-174. حفاظت دوباره آن را می‌بندد و Evidence/خطر Loop باقی است؛ ابتدا reason/log و علت را رفع کنید.
-175. AP Boot ناقص، خاموشی Radio/USB، Restart یا درخواست توان ردشده و Log insufficient power.
+## Answers 176–200
 
-## پاسخ ۱۷۶ تا ۲۰۰
+176. Record value/time, clear only when authorized, reproduce traffic, and measure new increase rate.
+177. High broadcasts/CPU, MAC flapping, duplicate frames, and broad instability; any three.
+178. No. Discarding is normal loop prevention unless the topology or necessary path is wrong.
+179. VLAN existence, allowed list on both ends, native match, STP state/guard, and LAG consistency.
+180. Wrong interface/direction, an earlier rule matched, or traffic did not use that path.
+181. The return route, plus return ACL/state/NAT.
+182. DNS resolver, records, or UDP/TCP 53 path.
+183. Existing leases continue while new clients fail and the scope shows full; total server failure affects renewals and all new requests.
+184. Changing ARP-to-MAC mappings, duplicate warnings, and intermittent sessions.
+185. Bandwidth is capacity, throughput is actual transfer, and goodput is useful application payload.
+186. **A, real-time voice/video.** Changing delay disrupts playout buffers.
+187. Less than 100 Mb/s of useful goodput because of the bottleneck and overhead.
+188. Retransmission suggests loss/reordering; zero window means the receiver buffer is full.
+189. Server, time, Wi-Fi/LAN, CPU, route, and protocol all influence one test.
+190. Channel contention, retries/interference, client capability, AP load, backhaul, or roaming; any three.
+191. It can increase co-channel/adjacent interference and contention; excess power also harms roaming.
+192. The largest timing component points toward resolution, path/handshake, cryptography, or backend processing.
+193. `ip address show` and `ip route show`.
+194. It proves a sample ICMP exchange; it does not prove DNS, TCP/UDP ports, TLS, application, or complete MTU behavior.
+195. `dig` tests name-resolution data; `traceroute` observes responding IP hops.
+196. `ss -lntup`; `netstat` is an older alternative.
+197. Open=accepted, closed=actively rejected, filtered=no conclusive reply due to filtering/loss.
+198. Cable tester checks wire map/performance, TDR locates copper faults, OTDR locates fiber events.
+199. Neighbor name, port, capabilities, VLAN, and management address; this can expose internal details.
+200. Use `openssl s_client -connect IP:443 -servername name` or browser tools and inspect SAN/hostname validation.
 
-176. مقدار/زمان را ثبت، در صورت مجاز Clear و Traffic را بازتولید؛ نرخ افزایش جدید را بسنجید.
-177. Broadcast/CPU بالا، MAC flapping و قطع/کندی گسترده؛ Duplicate frame نیز ممکن است.
-178. خیر؛ حالت طبیعی STP برای شکستن Loop است. فقط اگر مسیر موردنیاز بدون جایگزین یا Topology غیرمنتظره باشد مشکل است.
-179. VLAN موجود، Allowed list دو سمت، Native match و STP state/guard؛ همچنین LAG consistency.
-180. ACL روی Interface/Direction غلط یا Rule بالاتر Traffic را Match می‌کند؛ Traffic اصلاً از آن مسیر نرفته نیز ممکن است.
-181. Return route. State/ACL/NAT سمت برگشت نیز باید درست باشد.
-182. DNS: Resolver، Route/Firewall پورت 53، رکورد یا Cache. با `dig/nslookup` جدا کنید.
-183. در Exhaustion Client قدیمی Lease/سرویس دارد و Scope پر است؛ خرابی کامل Server پاسخ/renewal همه را مختل می‌کند.
-184. MAC نگاشت‌شده برای یک IP تغییر می‌کند، اتصال مقطعی/ARP conflict و پیام Duplicate دیده می‌شود.
-185. Bandwidth ظرفیت اسمی، Throughput نرخ واقعی منتقل‌شده و Goodput Payload مفید بدون overhead/retransmit است.
-186. **الف، Voice/video real-time.** تغییر زمان رسیدن Buffer را خالی/پر و صدا/تصویر را خراب می‌کند.
-187. زیر 100Mbps Goodput؛ Bottleneck ظرفیت End-to-end را محدود و overhead کمی کم می‌کند.
-188. Retransmission معمولاً Loss/reordering؛ Zero-window یعنی Receiver buffer پر و مصرف‌کننده کند است.
-189. Server، ساعت، Wi-Fi/LAN، CPU، Flow واحد، Route و پروتکل نتیجه را تغییر می‌دهند؛ چند آزمون کنترل‌شده لازم است.
-190. Channel utilization/Contention، retry/interference، Client capability، uplink/AP CPU و roaming؛ سه مورد کافی است.
-191. Co-channel/adjacent interference و Contention زیاد می‌شود؛ Power بیش‌ازحد نیز Cellها را بد می‌کند.
-192. بخش بزرگ هر زمان ناحیه را نشان می‌دهد: Resolve، handshake مسیر، Crypto/certificate، یا Backend تا First byte.
-193. `ip address show` و `ip route show`.
-194. رسیدن/برگشت ICMP و RTT/loss نمونه؛ سلامت TCP port، برنامه، DNS، MTU همه‌جانبه یا نبود مشکل را ثابت نمی‌کند.
-195. `dig` Resolution/record/server/TTL را می‌پرسد؛ `traceroute` Hopهای پاسخ‌دهنده مسیر IP را.
-196. `ss -lntup`؛ `netstat` قدیمی‌تر است.
-197. Open=اتصال پذیرفته، Closed=پاسخ رد از Host، Filtered=Filter/عدم پاسخ نتیجه را نامشخص کرده.
-198. Cable tester wiremap/qualification؛ TDR فاصله عیب مس؛ OTDR رخداد و افت فیبر را با بازتاب نور می‌سنجد.
-199. نام/Port/Capability/VLAN/IP همسایه؛ روی Edge می‌تواند اطلاعات داخلی را افشا یا Surface پردازش را زیاد کند.
-200. `openssl s_client -connect IP:443 -servername name` یا Browser؛ SAN/Subject، Chain و Hostname validation را بررسی کنید.
+## Score guide
 
-## راهنمای امتیاز
+- 170–200: strong foundation; focus on labs and time management.
+- 140–169: good progress; revisit missed objectives with hands-on evidence.
+- 100–139: reread weak chapters and perform matching labs.
+- Below 100: restart with Chapter 0 and OSI in smaller study units.
 
-- ۱۷۰ تا ۲۰۰: پایه بسیار خوب؛ روی Lab و مدیریت زمان تمرکز کنید.
-- ۱۴۰ تا ۱۶۹: مناسب، ولی Objectiveهای غلط را با Evidence عملی مرور کنید.
-- ۱۰۰ تا ۱۳۹: فصل‌های ضعیف را دوباره بخوانید و Lab متناظر را اجرا کنید.
-- کمتر از ۱۰۰: از فصل صفر و OSI شروع و مطالعه را به واحدهای کوچک تقسیم کنید.
-
-امتیاز این مجموعه پیش‌بینی رسمی نتیجه آزمون نیست؛ Performance-based questionها مهارت عملی می‌خواهند.
-
-</div>
+This score does not officially predict exam results. Performance-based questions require practical skill.

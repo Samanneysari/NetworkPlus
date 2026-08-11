@@ -1,285 +1,281 @@
-<div dir="rtl" align="right">
+# 200 Original Network+ N10-009 Practice Questions
 
-# ۲۰۰ سؤال تألیفی Network+ N10-009
+These questions are independently written and are not exam dumps. Complete them before opening the answer key. When a question asks for the first action, choose the safest evidence-gathering step.
 
-این سؤال‌ها مستقل و تألیفی‌اند و «دامپ آزمون» نیستند. ابتدا بدون پاسخ‌نامه حل کنید. سؤال‌های چندپاسخی تعداد انتخاب را مشخص می‌کنند. در سناریوها، کم‌خطرترین و دقیق‌ترین پاسخ را انتخاب کنید.
+## 1.1 — OSI, TCP/IP, TCP/UDP, and TLS
 
-## ۱.۱ — OSI، TCP/IP، TCP/UDP و TLS
+1. A network cable is disconnected. At which OSI layer does the problem begin? A) Physical B) Network C) Session D) Application
+2. Which value does a Layer 2 switch use to forward a known unicast frame? A) TCP port B) Destination MAC C) URL D) Username
+3. What is the Layer 3 protocol data unit? A) Frame B) Packet C) Bit D) Session
+4. Write the three TCP opening messages in order.
+5. Which statement best describes UDP? A) Built-in acknowledgments B) Connectionless with less overhead C) Guaranteed ordering D) TLS is mandatory
+6. What does a TLS client primarily establish by validating a certificate? A) Router speed B) The identity-to-public-key trust chain C) Server MAC D) Private IP ownership
+7. HTTPS timing shows DNS=5 ms, TCP=20 ms, TLS=25 ms, and first byte=4 seconds. Which area is most likely slow? A) Client cable B) Application/backend C) DNS D) TCP handshake
+8. Put application data, segment/datagram, packet, frame, and bits in encapsulation order.
 
-1. کابل شبکه قطع شده است. مشکل در کدام لایه OSI آغاز می‌شود؟ الف) Physical ب) Network ج) Session د) Application
-2. Switch لایه ۲ برای Forward فریم ابتدا کدام مقدار را جست‌وجو می‌کند؟ الف) Port TCP ب) Destination MAC ج) URL د) Username
-3. کدام PDU در لایه Network به‌کار می‌رود؟ الف) Frame ب) Packet ج) Bit د) Segment فقط
-4. سه مرحله آغاز TCP را به ترتیب بنویسید.
-5. کدام ویژگی UDP را بهتر توصیف می‌کند؟ الف) ACK و Retransmission ذاتی ب) Connectionless و سربار کمتر ج) تضمین ترتیب د) TLS اجباری
-6. در TLS 1.3، Client با بررسی Certificate در اصل چه چیزی را می‌سنجد؟ الف) سرعت Router ب) اتصال Identity به Public key و زنجیره اعتماد ج) MAC سرور د) Private IP
-7. یک HTTPS کند است. DNS=5ms، TCP=20ms، TLS=25ms و First byte=4s است. محتمل‌ترین ناحیه مشکل کدام است؟ الف) کابل Client ب) پردازش برنامه/Backend ج) DNS د) TCP handshake
-8. Encapsulation را از Application تا Wire با چهار نام اصلی مرتب کنید.
+## 1.2 — Appliances and functions
 
-## ۱.۲ — تجهیزات و Functionها
+9. Which technology best provides block storage to a hypervisor? A) NAS B) SAN C) Proxy D) AP
+10. Which component distributes web requests among healthy backends? A) Load balancer B) Patch panel C) Passive IDS D) Modem
+11. State the primary operational difference between IDS and IPS.
+12. Which component enforces outbound web policy on behalf of clients? A) Forward proxy B) Reverse proxy C) SAN D) PDU
+13. Which device routes between IP broadcast domains? A) Hub B) Router C) Patch panel D) Repeater
+14. Give two QoS functions and one limitation.
+15. What happens to TTL at each router, and why?
+16. Name two important effects of a CDN.
 
-9. برای Block storage یک Hypervisor کدام گزینه مناسب‌تر است؟ الف) NAS ب) SAN ج) Forward proxy د) AP
-10. چه دستگاهی درخواست ورودی وب را میان چند Backend سالم توزیع می‌کند؟ الف) Load balancer ب) Patch panel ج) IDS passive د) Modem
-11. تفاوت اصلی IDS و IPS چیست؟
-12. برای اعمال Policy وب کاربران به اینترنت از طرف Client کدام مناسب‌تر است؟ الف) Forward proxy ب) Reverse proxy ج) SAN د) PDU
-13. کدام دستگاه Broadcast domainهای IP را به هم Route می‌کند؟ الف) Hub ب) Router ج) Patch panel د) Repeater
-14. دو کاربرد QoS و یک محدودیت آن را بنویسید.
-15. TTL بسته در هر Router چه تغییری می‌کند و چرا؟
-16. CDN چه دو اثر مهمی روی سرویس وب دارد؟
+## 1.3 — Cloud
 
-## ۱.۳ — Cloud
+17. In IaaS, who normally patches the guest operating system? A) Customer B) Registrar C) End user's ISP D) Nobody
+18. Automatically adding instances under load and removing them afterward is: A) Multitenancy B) Elasticity C) Encapsulation D) Attenuation
+19. How does a stateful security group differ from a stateless network ACL?
+20. Which option provides dedicated on-premises-to-cloud connectivity? A) Direct connection B) Public DNS C) APIPA D) Captive portal
+21. Which deployment combines private/on-premises and public cloud? A) Hybrid B) SaaS C) Full mesh D) Community string
+22. Define NFV and give one example.
+23. In SaaS, which items usually remain customer responsibilities? A) Disks and cabling B) Data and user access C) Hypervisor and firmware D) Data-center power
+24. Explain horizontal versus vertical scalability.
 
-17. در IaaS، Patch سیستم‌عامل VM معمولاً مسئول چه کسی است؟ الف) مشتری ب) ISP کاربر ج) Registrar د) هیچ‌کس
-18. افزایش خودکار تعداد Instanceها در بار زیاد و کاهش آن در بار کم چیست؟ الف) Multitenancy ب) Elasticity ج) Encapsulation د) Attenuation
-19. Security group Stateful چه تفاوتی با Network ACL Stateless دارد؟
-20. برای اتصال اختصاصی و قابل‌پیش‌بینی On-premises به Cloud کدام گزینه مناسب‌تر است؟ الف) Direct connection ب) Public DNS ج) APIPA د) Captive portal
-21. مدل ترکیب Private/On-premises و Public cloud چیست؟ الف) Community string ب) Hybrid cloud ج) Full mesh د) SaaS
-22. NFV را در یک جمله و با یک مثال توضیح دهید.
-23. مشتری SaaS معمولاً مسئول کدام دو مورد می‌ماند؟ الف) تعویض Disk و کابل ب) داده و دسترسی کاربران ج) Hypervisor و Firmware د) برق Data center
-24. تفاوت Scalability افقی و عمودی چیست؟
+## 1.4 — Ports, protocols, and traffic
 
-## ۱.۴ — پورت، پروتکل و ترافیک
+25. What is the default SSH/SFTP port? A) 21 B) 22 C) 23 D) 25
+26. Which ports are used by DHCPv4 server and client respectively? A) 53/53 B) 67/68 C) 68/67 D) 161/162
+27. Why does DNS need TCP 53 as well as UDP 53?
+28. Which pair is the safer default choice? A) Telnet/FTP B) SSH/SFTP C) HTTP/TFTP D) LDAP/Telnet
+29. What are the normal SNMP poll and trap ports? A) 161/162 B) 162/161 C) 389/636 D) 514/587
+30. Sending to one selected instance among servers sharing an address is: A) Broadcast B) Multicast C) Anycast D) Local unicast
+31. What can IPsec ESP provide that GRE alone cannot? A) Encapsulation B) Confidentiality C) IP addressing D) A tunnel
+32. What is an ephemeral client port, and why is it needed?
 
-25. پورت پیش‌فرض SSH/SFTP کدام است؟ الف) 21 ب) 22 ج) 23 د) 25
-26. DHCPv4 Server و Client به‌ترتیب از چه پورت‌هایی استفاده می‌کنند؟ الف) 53/53 ب) 67/68 ج) 68/67 د) 161/162
-27. چرا DNS علاوه بر UDP/53 به TCP/53 هم نیاز دارد؟
-28. کدام جفت امن‌تر است؟ الف) Telnet/FTP ب) SSH/SFTP ج) HTTP/TFTP د) LDAP/Telnet
-29. SNMP Poll و Trap به‌ترتیب معمولاً کدام پورت‌اند؟ الف) 161/162 ب) 162/161 ج) 389/636 د) 514/587
-30. ارسال به نزدیک‌ترین عضو از چند سرور دارای IP مشترک چه نوع ترافیکی است؟ الف) Broadcast ب) Multicast ج) Anycast د) Unicast محلی
-31. GRE چه چیزی ندارد که IPsec ESP می‌تواند فراهم کند؟ الف) Encapsulation ب) محرمانگی ج) IP header د) Tunnel
-32. پورت Client موقت در اتصال HTTPS چه نام دارد و چرا لازم است؟
+## 1.5 — Media and connectors
 
-## ۱.۵ — Media و Connector
+33. Which medium is best for a long EMI-resistant backbone? A) UTP B) Single-mode fiber C) Short coax D) RJ11
+34. Which compact connector is common on fiber transceivers? A) LC B) F-type C) RJ11 D) BNC
+35. What is the main benefit of MPO/MTP? A) Multiple fibers in one connector B) PoE C) DNS conversion D) Encryption
+36. Why do identically shaped SFPs not guarantee compatibility? Give two factors.
+37. Where is plenum-rated cable intended to be used?
+38. Compare multimode and single-mode fiber by core and distance.
+39. Which connector is common on cable modems? A) ST B) F-type C) LC D) RJ45
+40. State the most important fiber-safety rule.
 
-33. برای Backbone طولانی و مقاوم به EMI کدام رسانه مناسب‌تر است؟ الف) UTP ب) Single-mode fiber ج) Coax کوتاه د) RJ11
-34. کدام Connector معمولاً روی Transceiver فیبر با تراکم بالا دیده می‌شود؟ الف) LC ب) F-type ج) RJ11 د) BNC
-35. MPO چه مزیت اصلی دارد؟ الف) چند رشته فیبر در یک Connector ب) برق PoE ج) تبدیل DNS د) رمزنگاری
-36. چرا شکل یکسان دو SFP سازگاری را تضمین نمی‌کند؟ دو عامل بنویسید.
-37. کابل Plenum برای چه محیطی طراحی شده است؟
-38. تفاوت Multimode و Single-mode را از نظر هسته و فاصله توضیح دهید.
-39. کدام Connector برای Cable modem روی Coax رایج است؟ الف) ST ب) F-type ج) LC د) RJ45
-40. مهم‌ترین قانون ایمنی هنگام کار با فیبر چیست؟
+## 1.6 — Topology
 
-## ۱.۶ — Topology
+41. In which architecture does every leaf connect to every spine? A) Three-tier B) Spine-leaf C) Bus D) Ring
+42. Traffic between workloads inside a data center is: A) North-south B) East-west C) Broadcast D) Out-of-band
+43. Give one advantage and one disadvantage of full mesh.
+44. Which layers are combined in a collapsed core?
+45. Branches connected through a common central site form: A) Hub-and-spoke B) Full mesh C) Ad hoc D) SAN
+46. Compare the effect of one endpoint-cable failure and the central-device failure in a star.
+47. Explain point-to-point versus mesh.
+48. Name the three layers of three-tier architecture.
 
-41. معماری‌ای که هر Leaf به همه Spineها وصل است چیست؟ الف) Three-tier ب) Spine-leaf ج) Bus د) Ring
-42. ترافیک میان دو Workload داخل Data center چه نام دارد؟ الف) North-south ب) East-west ج) Broadcast د) Out-of-band
-43. یک مزیت و یک عیب Full mesh بنویسید.
-44. در Collapsed core کدام دو لایه ترکیب می‌شوند؟
-45. معماری شعب متصل به مرکز مشترک چیست؟ الف) Hub-and-spoke ب) Full mesh ج) Ad hoc د) SAN
-46. در Star، خرابی کابل یک Client چه اثری دارد؟ خرابی دستگاه مرکزی چطور؟
-47. تفاوت Point-to-point و Mesh را توضیح دهید.
-48. سه لایه معماری Three-tier را نام ببرید.
+## 1.7 — IPv4
 
-## ۱.۷ — IPv4 و Subnetting
+49. Which address is RFC 1918 private? A) `172.20.5.4` B) `172.32.1.1` C) `192.0.2.5` D) `8.8.8.8`
+50. A client has `169.254.22.8`. Which service should be investigated first? A) NTP B) DHCP C) SMTP D) SNMP
+51. What is the network address of `192.0.2.77/27`?
+52. What is the broadcast of `198.51.100.64/26`?
+53. How many normal usable hosts fit in `/29`? A) 4 B) 6 C) 8 D) 14
+54. What problem does VLSM solve?
+55. Why is a private IP not a complete security control?
+56. What are common uses of `/32` and `/31`?
 
-49. کدام آدرس RFC1918 است؟ الف) `172.20.5.4` ب) `172.32.1.1` ج) `192.0.2.5` د) `8.8.8.8`
-50. Client آدرس `169.254.22.8` گرفته است. نخست کدام سرویس را بررسی می‌کنید؟ الف) NTP ب) DHCP ج) SMTP د) SNMP
-51. شبکه آدرس `192.0.2.77/27` چیست؟
-52. Broadcast شبکه `198.51.100.64/26` چیست؟
-53. `/29` معمولاً چند Host قابل‌استفاده دارد؟ الف) 4 ب) 6 ج) 8 د) 14
-54. VLSM چه مشکلی را حل می‌کند؟
-55. چرا Private IP به‌تنهایی کنترل امنیتی کافی نیست؟
-56. `/32` و `/31` معمولاً در چه سناریوهایی استفاده می‌شوند؟
+## 1.8 — Modern networking
 
-## ۱.۸ — شبکه مدرن
+57. Application-aware WAN path selection is a feature of: A) SD-WAN B) ARP C) SAN D) STP
+58. VXLAN normally carries a Layer 2 frame inside: A) UDP over Layer 3 B) Coax C) SMTP D) USB
+59. What advantage does a 24-bit VNI have over a VLAN ID?
+60. Zero Trust emphasizes: A) Trust every LAN host B) Identity, posture, and least privilege C) No authentication D) Public IP only
+61. Which two broad areas does SASE combine?
+62. Give two source-control benefits for IaC and one risk.
+63. What operational cost does dual stack create?
+64. Which client/destination combination is served by NAT64/DNS64?
 
-57. انتخاب مسیر WAN بر اساس برنامه و SLA ویژگی کدام است؟ الف) SD-WAN ب) ARP ج) SAN د) STP
-58. VXLAN فریم لایه ۲ را معمولاً داخل چه چیزی حمل می‌کند؟ الف) UDP روی Layer 3 ب) Coax ج) SMTP د) USB
-59. VNI بیست‌وچهاربیتی چه مزیتی نسبت به VLAN ID دارد؟
-60. Zero Trust بر چه اصل دسترسی‌ای تأکید دارد؟ الف) اعتماد کامل به LAN ب) هویت/وضعیت و کمترین مجوز ج) حذف Authentication د) فقط IP عمومی
-61. SASE چه دو حوزه کلی را ترکیب می‌کند؟
-62. دو مزیت ذخیره IaC در Source control و یک خطر آن را بنویسید.
-63. Dual stack چه هزینه عملیاتی ایجاد می‌کند؟
-64. NAT64/DNS64 برای چه نوع Client و مقصدی کاربرد دارد؟
+## 2.1 — Routing
 
-## ۲.۱ — Routing
+65. A destination matches both `/16` and `/24`. Which route wins, and why?
+66. Which value selects between route sources advertising the same prefix? A) MTU B) Administrative distance C) TTL D) VLAN ID
+67. How is a floating static route created?
+68. How does PAT distinguish several clients sharing one public IP?
+69. What problem does FHRP solve?
+70. What routing type and algorithm does OSPF use?
+71. Why are metrics from different routing protocols not directly compared?
+72. What roles do subinterfaces and 802.1Q play in router-on-a-stick?
 
-65. Router میان `/16` و `/24` مطابق مقصد، کدام را انتخاب می‌کند و چرا؟
-66. اگر دو Route با Prefix یکسان از OSPF و Static باشند، کدام معیار ابتدا منبع را ترجیح می‌دهد؟ الف) MTU ب) AD ج) TTL د) VLAN ID
-67. Floating static route چگونه ساخته می‌شود؟
-68. PAT چگونه چند Client را با یک Public IP متمایز می‌کند؟
-69. وظیفه FHRP چیست؟
-70. OSPF از چه نوع پروتکل و الگوریتم کلی استفاده می‌کند؟
-71. چرا Metric دو پروتکل Routing متفاوت را مستقیم مقایسه نمی‌کنیم؟
-72. در Router-on-a-stick، Subinterface و 802.1Q چه نقشی دارند؟
+## 2.2 — Switching
 
-## ۲.۲ — Switching
+73. What normally happens to an unknown unicast? A) Always drop B) Flood inside its VLAN C) Route to Internet D) Encrypt
+74. What does a trunk carry on one physical link?
+75. What symptoms or risks can a native-VLAN mismatch create?
+76. Why does STP place some ports in discarding/blocking state?
+77. Define a root port.
+78. What does LACP solve, and how is one flow normally distributed?
+79. Jumbo frames are enabled on only part of a path. What problem is likely?
+80. Where and why are PortFast and BPDU Guard commonly paired?
 
-73. Unknown unicast در یک VLAN معمولاً چه می‌شود؟ الف) Drop همیشگی ب) Flood در همان VLAN ج) Route به اینترنت د) Encrypt
-74. Trunk چه چیزی را روی یک لینک حمل می‌کند؟
-75. Native VLAN mismatch چه خطر/نشانه‌ای دارد؟
-76. STP چرا بعضی Portها را Blocking/Discarding می‌کند؟
-77. Root port را تعریف کنید.
-78. LACP چه مسئله‌ای را حل می‌کند و یک Flow چگونه میان اعضا پخش می‌شود؟
-79. Jumbo frame در بخشی از مسیر فعال شده است. چه مشکلی محتمل است؟
-80. PortFast و BPDU Guard را کجا و چرا با هم به‌کار می‌بریم؟
+## 2.3 — Wireless
 
-## ۲.۳ — Wireless
+81. In many regulatory domains, which 20 MHz 2.4 GHz channels do not overlap? A) 1/6/11 B) 2/7/12 C) 36/40/44 D) The answer is globally identical
+82. What trade-off comes with greater channel width?
+83. Explain SSID versus BSSID.
+84. WPA3-Personal primarily uses: A) SAE B) WEP C) PAP D) GRE
+85. Which technologies provide individual enterprise WLAN identity?
+86. Why is a hidden SSID not strong security?
+87. Does antenna gain create energy? Explain.
+88. How does a lightweight AP differ operationally from an autonomous AP?
 
-81. در بسیاری از نواحی، سه Channel غیرهم‌پوشان 2.4GHz با عرض 20MHz کدام‌اند؟ الف) 1/6/11 ب) 2/7/12 ج) 36/40/44 د) پاسخ همواره جهانی است
-82. افزایش Channel width چه Trade-offی دارد؟
-83. SSID و BSSID چه تفاوتی دارند؟
-84. WPA3-Personal به‌جای PSK handshake قدیمی از چه روش اصلی استفاده می‌کند؟ الف) SAE ب) WEP ج) PAP د) GRE
-85. برای هویت جداگانه کاربر در WLAN سازمانی از چه ترکیبی استفاده می‌شود؟
-86. چرا Hidden SSID کنترل امنیتی قوی نیست؟
-87. Antenna gain انرژی جدید تولید می‌کند؟ توضیح دهید.
-88. AP lightweight چه تفاوت عملیاتی با Autonomous دارد؟
+## 2.4 — Physical installation
 
-## ۲.۴ — نصب فیزیکی
+89. Compare MDF and IDF.
+90. Give two reasons to install heavy devices low in a rack.
+91. What problem does hot-aisle/cold-aisle design reduce?
+92. Compare PDU and UPS roles.
+93. Define PSE and PD with examples.
+94. An AP boots but limits radio features. What should be checked first? A) DNS MX B) PoE class/budget C) SOA serial D) BGP AS path
+95. What risks come from very low and very high humidity?
+96. Why is consistent labeling at both cable ends important?
 
-89. MDF و IDF چه تفاوتی دارند؟
-90. چرا تجهیزات سنگین پایین Rack نصب می‌شوند؟ دو دلیل.
-91. Hot aisle/cold aisle چه مسئله‌ای را کم می‌کند؟
-92. PDU و UPS چه نقش‌های متفاوتی دارند؟
-93. در PoE، PSE و PD را با مثال نام ببرید.
-94. AP روشن می‌شود ولی Radio محدود است. کدام مورد را ابتدا بررسی می‌کنید؟ الف) DNS MX ب) PoE class/budget ج) SOA serial د) BGP AS path
-95. رطوبت خیلی کم و خیلی زیاد هر کدام چه خطر دارند؟
-96. چرا برچسب یکسان دو سر کابل و Port مهم است؟
+## 3.1 — Documentation and change
 
-## ۳.۱ — مستندات و تغییر
+97. Compare physical and logical diagrams.
+98. Name three types of data that IPAM should manage.
+99. Distinguish EOL from EOS.
+100. Name four essential elements of a production change plan.
 
-97. Physical و Logical diagram چه تفاوتی دارند؟
-98. IPAM چه داده‌هایی را بهتر از یک فهرست پراکنده مدیریت می‌کند؟ سه مورد.
-99. EOL و EOS چه تفاوتی دارند؟
-100. پیش از تغییر Production، چهار جزء ضروری Change plan را بنویسید.
+101. What is a golden configuration, and how does it differ from running configuration?
+102. A backup has never been restored. What is the main risk?
+103. Why is a wireless heatmap incomplete without band and time information?
+104. Name four decommissioning tasks besides powering off a router.
 
-101. Golden configuration چیست و چه تفاوتی با Running config دارد؟
-102. Backup گرفته شده ولی هرگز Restore نشده است. مهم‌ترین Risk چیست؟
-103. Wireless heatmap بدون ذکر باند و زمان چه محدودیتی دارد؟
-104. در Decommission یک Router، چهار کار غیر از خاموش‌کردن را نام ببرید.
+## 3.2 — Monitoring
 
-## ۳.۲ — Monitoring
+105. What does an SNMP MIB define?
+106. Why is SNMPv3 preferred to v2c?
+107. Compare polling and traps, and explain why both are useful.
+108. Which data best shows who communicated and how much without full payload? A) Flow data B) Full capture C) Rack diagram D) SOA
+109. What can happen when a port-mirror destination is oversubscribed?
+110. What do Syslog severities 0 and 7 mean?
+111. Why should a baseline include time and season?
+112. Name three SIEM functions and one thing it does not replace.
 
-105. در SNMP، MIB چه چیزی را تعریف می‌کند؟
-106. چرا SNMPv3 بر v2c ترجیح دارد؟
-107. تفاوت Poll و Trap چیست و چرا هر دو لازم‌اند؟
-108. برای فهم «چه کسانی با چه حجمی صحبت کرده‌اند» بدون Payload، کدام داده مناسب‌تر است؟ الف) Flow data ب) Full packet capture ج) Rack diagram د) SOA
-109. Port mirroring در Oversubscription چه مشکلی ایجاد می‌کند؟
-110. Syslog Severity صفر و هفت به‌ترتیب چه معنایی دارند؟
-111. Baseline چرا باید زمان/فصل را در نظر بگیرد؟
-112. SIEM چه سه کاری روی Logها انجام می‌دهد و چه چیزی را جایگزین نمی‌کند؟
+## 3.3 — Disaster recovery
 
-## ۳.۳ — Disaster Recovery
+113. What general data-protection requirement follows from a 10-minute RPO?
+114. What does a two-hour RTO mean?
+115. Compare MTTR and MTBF.
+116. Which recovery site has the lowest readiness and usually longest RTO? A) Hot B) Warm C) Cold D) Active-active
+117. What important data challenge exists in active-active designs?
+118. Why does a tabletop not replace a practical restore test?
+119. What ransomware weakness affects always-connected backups?
+120. Are daily backup and a cold site suitable for RPO=5 minutes and RTO=30 minutes? Explain.
 
-113. RPO ده دقیقه چه الزام کلی برای حفاظت داده ایجاد می‌کند؟
-114. RTO دو ساعت به چه معناست؟
-115. MTTR و MTBF را مقایسه کنید.
-116. کدام Site کمترین آمادگی و معمولاً بیشترین RTO را دارد؟ الف) Hot ب) Warm ج) Cold د) Active-active
-117. Active-active چه پیچیدگی داده‌ای مهمی دارد؟
-118. چرا Tabletop جای Restore test واقعی را نمی‌گیرد؟
-119. یک Backup آنلاین در برابر Ransomware چه ضعفی دارد؟
-120. برای سرویس با RPO=5m و RTO=30m، Backup روزانه و Cold site مناسب است؟ چرا؟
+## 3.4 — DHCP, DNS, and time
 
-## ۳.۴ — DHCP، DNS و زمان
+121. Write the four DORA messages in order.
+122. Why is a DHCP relay needed?
+123. Compare a reservation and an exclusion.
+124. Without cache, which three DNS hierarchy levels are asked for `www.realsam.ir`?
+125. What data do A, AAAA, MX, and CNAME records contain?
+126. In which namespace is the PTR for `192.0.2.80` queried, and name one use.
+127. What does DNSSEC protect, and what does it not encrypt?
+128. Describe NTP, PTP, and NTS in one phrase each.
 
-121. چهار پیام DORA را به ترتیب بنویسید.
-122. DHCP relay چرا لازم است؟
-123. Reservation و Exclusion چه تفاوتی دارند؟
-124. Resolver برای یافتن `www.realsam.ir` بدون Cache، کدام سه سطح را به‌ترتیب می‌پرسد؟
-125. A، AAAA، MX و CNAME هر کدام چه داده‌ای دارند؟
-126. PTR برای `192.0.2.80` در چه فضای نامی Query می‌شود و یک کاربرد آن چیست؟
-127. DNSSEC چه چیزی را محافظت می‌کند و چه چیزی را رمز نمی‌کند؟
-128. NTP، PTP و NTS را هر کدام در یک عبارت توصیف کنید.
+## 3.5 — Access and management
 
-## ۳.۵ — دسترسی و مدیریت
+129. Compare site-to-site and client-to-site VPNs.
+130. Give one benefit and one risk of split tunneling.
+131. During what failure is out-of-band management most valuable?
+132. Why is a jump host a sensitive asset, and how should it be protected?
+133. Why must an SSH host key be verified through a trusted channel?
+134. Name three security characteristics of an API token.
+135. What type of access is a clientless VPN best suited for?
+136. Why do console connections still need physical control and authentication?
 
-129. Site-to-site و Client-to-site VPN چه تفاوتی دارند؟
-130. Split tunnel چه مزیت و چه Riskی دارد؟
-131. Out-of-band management در چه خرابی‌ای ارزش خود را نشان می‌دهد؟
-132. Jump box چه سطح حمله‌ای را متمرکز می‌کند و چگونه باید محافظت شود؟
-133. چرا Host key در اولین SSH باید از کانال معتبر Verify شود؟
-134. API token باید چه سه ویژگی امنیتی داشته باشد؟
-135. Clientless VPN معمولاً برای چه دسترسی‌ای مناسب است؟
-136. Console access چرا همچنان باید Authentication و کنترل فیزیکی داشته باشد؟
+## 4.1 — Security concepts
 
-## ۴.۱ — مفاهیم امنیت
+137. Separate threat, vulnerability, and exploit in an old-firmware scenario.
+138. Name the three members of the CIA triad.
+139. What weakness remains when data-at-rest encryption lacks key management?
+140. Name four TLS certificate checks.
+141. Are two different passwords MFA? Explain.
+142. Compare authentication, authorization, and accounting.
+143. How do least privilege and RBAC relate?
+144. Why does compliance not equal complete security?
 
-137. Threat، Vulnerability و Exploit را در یک سناریوی Firmware قدیمی جدا کنید.
-138. سه عضو CIA triad را نام ببرید.
-139. Encryption at rest بدون Key management مناسب چه ضعفی دارد؟
-140. Client در Certificate TLS چه چهار موردی را بررسی می‌کند؟
-141. دو Password متفاوت MFA محسوب می‌شوند؟ چرا؟
-142. Authentication، Authorization و Accounting را مقایسه کنید.
-143. Least privilege و RBAC چگونه به هم مربوط‌اند؟
-144. چرا Compliance برابر Security کامل نیست؟
+## 4.2 — Attacks
 
-## ۴.۲ — حمله‌ها
+145. Compare DoS and DDoS.
+146. Give three defenses against VLAN hopping.
+147. Which table does MAC flooding target, and name one defense.
+148. How can ARP poisoning create an on-path position?
+149. Name two dangerous options a rogue DHCP server can supply.
+150. What is an evil twin, and how does enterprise Wi-Fi reduce the risk?
+151. Why does DoH alone not prevent poisoned authoritative DNS data?
+152. Give one control each for phishing, tailgating, and dumpster diving.
 
-145. تفاوت DoS و DDoS چیست؟
-146. سه دفاع در برابر VLAN hopping بنویسید.
-147. MAC flooding کدام جدول را هدف می‌گیرد و یک دفاع چیست؟
-148. ARP poisoning چگونه On-path ایجاد می‌کند؟
-149. Rogue DHCP چه دو Option خطرناکی می‌تواند به Client بدهد؟
-150. Evil twin چیست و Enterprise Wi-Fi چگونه Risk آن را کم می‌کند؟
-151. DoH به‌تنهایی چرا مانع DNS poisoning در Authoritative data نیست؟
-152. برای Phishing، Tailgating و Dumpster diving هر کدام یک کنترل بنویسید.
+## 4.3 — Defensive features
 
-## ۴.۳ — دفاع
+153. Name four early hardening actions for a new switch.
+154. Name the three 802.1X roles.
+155. How does DHCP Snooping help DAI?
+156. Why must the DHCP uplink be trusted while user ports remain untrusted?
+157. State two important top-to-bottom ACL processing rules.
+158. Why might an ACL need both UDP/53 and TCP/53 for DNS?
+159. What failure domain does a screened subnet/DMZ isolate?
+160. Compare URL filtering and content filtering.
 
-153. چهار کار نخست Hardening یک Switch تازه را بنویسید.
-154. سه نقش 802.1X را نام ببرید.
-155. DHCP Snooping چگونه به DAI کمک می‌کند؟
-156. چرا Uplink DHCP باید Trusted و Port کاربر Untrusted باشد؟
-157. ACL از بالا به پایین چه دو قاعده مهم دارد؟
-158. در ACL DNS چرا ممکن است هم UDP/53 و هم TCP/53 لازم باشد؟
-159. Screened subnet/DMZ چه Failure domainی را جدا می‌کند؟
-160. URL filtering و Content filtering را مقایسه کنید.
+## 5.1 — Troubleshooting methodology
 
-## ۵.۱ — روش عیب‌یابی
+161. What is the first troubleshooting stage, and name three key questions.
+162. When is divide-and-conquer useful?
+163. Why collect evidence before clearing counters or restarting?
+164. What makes a good troubleshooting theory?
+165. If a theory is rejected, what is the correct next step? A) Make many undocumented changes B) Build the next theory or escalate C) Delete logs D) Claim success
+166. What roles do success criteria and rollback play?
+167. Why is verification incomplete after one successful ping?
+168. Name five items for the final ticket.
 
-161. نخستین مرحله روش استاندارد چیست و سه سؤال مهم آن کدام‌اند؟
-162. Divide-and-conquer چه زمانی مفید است؟
-163. چرا باید پیش از Clear counter یا Restart، Evidence گرفت؟
-164. یک Theory خوب چه ویژگی‌ای دارد؟
-165. اگر Theory رد شد، قدم درست چیست؟ الف) تغییرهای بیشتر بی‌ثبت ب) ساخت Theory بعدی یا Escalation ج) حذف Log د) اعلام حل
-166. Success criteria و Rollback چه نقشی دارند؟
-167. پس از Ping موفق چرا هنوز Verify تمام نشده است؟
-168. Ticket نهایی باید چه پنج داده‌ای داشته باشد؟
+## 5.2 — Cabling and interfaces
 
-## ۵.۲ — کابل و Interface
+169. Increasing CRC errors point to which area? Give three causes.
+170. Late collisions are a classic sign of what?
+171. Why does simple cable continuity not certify network speed?
+172. A fiber link stays down. Name four compatibility checks.
+173. Compare `administratively down` and `down/down`.
+174. Why is bouncing an err-disabled port without finding the cause a poor fix?
+175. What AP symptoms may appear when the PoE budget is exhausted?
+176. How do you distinguish an old counter from a current fault?
 
-169. CRC رو به افزایش معمولاً به کدام ناحیه اشاره دارد؟ سه علت بنویسید.
-170. Late collision نشانه کلاسیک چیست؟
-171. Cable continuity ساده چرا Certification سرعت را تضمین نمی‌کند؟
-172. Link فیبر بالا نمی‌آید. چهار سازگاری را بررسی کنید.
-173. `administratively down` با `down/down` چه تفاوتی دارد؟
-174. Err-disabled را بدون شناخت علت فقط Bounce می‌کنید. چرا راه‌حل بدی است؟
-175. PoE budget تمام شده؛ چه نشانه‌ای روی AP ممکن است ببینید؟
-176. Counter قدیمی را چگونه از خطای جاری تفکیک می‌کنید؟
+## 5.3 — Services, switching, and routing
 
-## ۵.۳ — Service، Switching و Routing
+177. Name three Layer 2 loop symptoms.
+178. Is STP discarding always a fault? Explain.
+179. VLAN 20 fails only beyond the second switch. Name four trunk/STP checks.
+180. An ACL hit counter is zero. Give two likely configuration causes.
+181. A forward route exists but no reply returns. Which route is often forgotten?
+182. A client can ping a remote IP but cannot open names. Which area is most likely?
+183. How can DHCP pool exhaustion be distinguished from complete server failure?
+184. What ARP/connection symptoms can a duplicate IP create?
 
-177. سه نشانه Loop لایه ۲ را بنویسید.
-178. STP Discarding همیشه خطاست؟ توضیح دهید.
-179. VLAN 20 فقط از Switch دوم قابل‌دسترسی نیست. چهار مورد Trunk/STP را بررسی کنید.
-180. ACL hit counter صفر است. دو علت پیکربندی محتمل چیست؟
-181. Route رفت وجود دارد اما پاسخ نمی‌آید. مهم‌ترین مسیر فراموش‌شده چیست؟
-182. Client IP و Gateway درست دارد، IP اینترنت را Ping می‌کند ولی نام باز نمی‌شود. ناحیه محتمل چیست؟
-183. DHCP pool exhaustion را از خرابی کامل Server چگونه تفکیک می‌کنید؟
-184. Duplicate IP چه علامت ARP/اتصال می‌سازد؟
+## 5.4 — Performance
 
-## ۵.۴ — Performance
+185. Distinguish bandwidth, throughput, and goodput.
+186. Which application is most sensitive to jitter? A) Real-time voice/video B) Offline file C) Inventory D) Zone file
+187. What approximate upper limit does a 100 Mb/s bottleneck impose between gigabit LANs?
+188. What do TCP retransmission and zero-window events suggest respectively?
+189. Why is one speed test not proof of an ISP fault?
+190. Wi-Fi RSSI is good but performance is poor. Name three other causes.
+191. Why can adding APs without a channel plan make performance worse?
+192. How do DNS, TCP, TLS, and first-byte timings isolate web slowness?
 
-185. Bandwidth، Throughput و Goodput را از هم جدا کنید.
-186. Jitter بیشترین اثر محسوس را روی چه برنامه‌ای دارد؟ الف) Voice/video real-time ب) فایل آفلاین ج) Inventory د) DNS zone file
-187. Bottleneck 100Mbps میان دو LAN یک‌گیگابیتی چه حداکثر تقریبی ایجاد می‌کند؟
-188. TCP retransmission و Zero-window هر کدام به چه مشکلی اشاره می‌کنند؟
-189. چرا Speed test واحد اثبات قطعی مشکل ISP نیست؟
-190. در Wi-Fi، RSSI خوب ولی Performance بد است. سه علت دیگر بنویسید.
-191. افزودن AP بدون Channel plan چرا ممکن است وضعیت را بدتر کند؟
-192. برای کندی وب، زمان‌های DNS/TCP/TLS/First-byte چگونه محل مشکل را جدا می‌کنند؟
+## 5.5 — Tools
 
-## ۵.۵ — ابزارها
+193. Which two modern Linux commands display addresses and routes?
+194. What does ping prove, and what does it not prove?
+195. What different troubleshooting questions do `dig` and `traceroute` answer?
+196. Which Linux tool displays listening sockets?
+197. Interpret Nmap states `open`, `closed`, and `filtered`.
+198. What are cable tester, TDR, and OTDR used for?
+199. What information do LLDP/CDP reveal, and why can that be sensitive on edge ports?
+200. DNS works and TCP/443 connects, but TLS reports a hostname mismatch. Which tool and certificate field should be checked?
 
-193. برای دیدن IP و Route در Linux مدرن چه دو فرمانی مناسب‌اند؟
-194. `ping` چه چیزی را اثبات می‌کند و چه چیزی را نه؟
-195. تفاوت `dig` و `traceroute` از نظر سؤال عیب‌یابی چیست؟
-196. برای مشاهده Socketهای Listening در Linux از چه ابزاری استفاده می‌کنید؟
-197. Nmap حالت `open`، `closed` و `filtered` را چگونه تفسیر می‌کند؟
-198. Cable tester، TDR و OTDR هر کدام برای چه کاری‌اند؟
-199. LLDP و CDP چه اطلاعاتی می‌دهند و چرا روی Edge حساس‌اند؟
-200. در سناریوی «DNS درست، TCP/443 وصل، TLS خطای نام Certificate»، کدام ابزار و کدام فیلد را بررسی می‌کنید؟
-
-پاسخ‌ها و دلیل هر پاسخ در [پاسخ‌نامه](answers.md) آمده‌اند.
-
-</div>
+Review the [explained answer key](answers.md) only after completing the questions.

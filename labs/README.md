@@ -1,42 +1,36 @@
-<div dir="rtl" align="right">
+# Network+ N10-009 Hands-On Labs
 
-# آزمایشگاه‌های عملی Network+ N10-009
+These 26 labs progress from fundamentals to a capstone incident. Suggested tools: two Linux VMs, an optional Windows VM, Wireshark, and Packet Tracer, GNS3, EVE-NG, or CML.
 
-این ۲۶ Lab از مقدماتی تا سناریوی ترکیبی مرتب شده‌اند. محیط پیشنهادی: دو VM لینوکس، یک Windows اختیاری، Wireshark و Packet Tracer/GNS3/EVE-NG. همه اسکن‌ها و Captureها فقط در شبکه آزمایشگاهی یا با مجوز صریح انجام شوند.
+Only scan, capture, or disrupt systems you own or have explicit permission to test.
 
-## قواعد مشترک
+## Report template for every lab
 
-برای هر Lab یک گزارش با این بخش‌ها بسازید:
+1. Objective and official code.
+2. Topology, IP plan, and tool versions.
+3. Prediction and baseline.
+4. Commands and important output.
+5. Expected versus actual result.
+6. One controlled fault, diagnosis, and correction.
+7. Rollback and lessons learned.
 
-1. هدف و کد Objective؛
-2. Topology، IP plan و نسخه ابزار؛
-3. وضعیت قبل و فرضیه؛
-4. دستورها و خروجی مهم؛
-5. نتیجه مورد انتظار در برابر واقعی؛
-6. یک خرابی عمدی، تشخیص و اصلاح؛
-7. Rollback و چیزی که آموختید.
+Use only RFC 1918, `2001:db8::/32`, and the IPv4 documentation ranges for public examples.
 
-آدرس عمومی مثال فقط از `192.0.2.0/24`، `198.51.100.0/24`، `203.0.113.0/24` و IPv6 `2001:db8::/32` باشد.
+## Lab 01 — Encapsulation and OSI
 
-## Lab 01 — مشاهده Encapsulation و OSI
+**Objectives:** 1.1 and 1.2.
 
-**هدف:** ۱.۱، ۱.۴. یک درخواست DNS و HTTPS را به Frame/Packet/Segment/Application مرتبط کنید.
+1. Start Wireshark on the lab interface.
+2. Open an authorized HTTPS site or local `www.realsam.ir` lab service.
+3. Filter `dns`, `tcp.flags.syn == 1`, and `tls` separately.
+4. Record MAC addresses, IP addresses, ports, and protocols for five packets.
+5. Explain which addresses change at a router and which remain end to end.
 
-1. Wireshark را روی Interface آزمایشگاهی شروع کنید.
-2. Cache DNS را در صورت مجاز خالی و `https://www.realsam.ir` را باز کنید.
-3. با فیلترهای `dns`، `tcp.flags.syn == 1` و `tls` بسته‌ها را جدا کنید.
-4. MAC، IP، Port و نام پروتکل هر لایه را یادداشت کنید.
-5. توضیح دهید در عبور از Router کدام آدرس عوض و کدام مقصد End-to-end می‌ماند.
+**Fault:** Point the VM at a nonexistent DNS resolver and distinguish DNS failure from TLS failure.
 
-**مدرک:** Screenshot/فایل Capture پاک‌سازی‌شده و جدول پنج بسته. **خرابی:** DNS را به Resolver ناموجود بدهید، فقط در VM، و تفاوت با TLS failure را ثبت کنید.
+## Lab 02 — TCP, UDP, and TLS
 
-## Lab 02 — TCP، UDP و TLS handshake
-
-**هدف:** ۱.۱، ۱.۴. Handshakeها را از Capture بخوانید.
-
-</div>
-
-<div dir="ltr" align="left">
+**Objectives:** 1.1 and 1.4.
 
 ```bash
 sudo tcpdump -ni any -w nplus-tls.pcap 'host 192.0.2.80 and (port 53 or port 443)'
@@ -44,36 +38,30 @@ curl -v --resolve www.realsam.ir:443:192.0.2.80 https://www.realsam.ir/
 openssl s_client -connect 192.0.2.80:443 -servername www.realsam.ir -brief
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| ۱ | Capture را روی همه Interfaceها در فایل می‌نویسد؛ مقصد مستنداتی فقط وقتی Lab server شماست |
-| ۲ | برای همین اجرای Curl، DNS را Override می‌کند؛ `-v` مراحل TCP/TLS/HTTP را نشان می‌دهد |
-| ۳ | TLS با SNI را بررسی و خلاصه Version/Cipher/Certificate می‌دهد |
+| 1 | Writes only DNS/HTTPS traffic for the lab host to a capture file |
+| 2 | Overrides DNS only for this curl request and displays TCP/TLS/HTTP progress |
+| 3 | Performs TLS with the correct SNI and summarizes version, cipher, and certificate |
 
-**خرابی:** SNI را حذف و تفاوت Certificate/Virtual host را بررسی کنید. Private key یا Cookie را تحویل ندهید.
+**Fault:** Remove SNI in the isolated lab and compare the certificate or virtual-host response. Never submit private keys, credentials, or session cookies.
 
-## Lab 03 — IPv4 و Subnetting
+## Lab 03 — IPv4 and subnetting
 
-**هدف:** ۱.۷. شبکه `10.20.0.0/16` را برای ۴۰۰، ۱۲۰، ۵۰ و ۲ Host با VLSM تقسیم کنید.
+**Objective:** 1.7.
 
-1. نیازها را از بزرگ به کوچک مرتب کنید.
-2. Prefix، mask، network، broadcast و range هر بخش را بنویسید.
-3. Overlap و فضای باقی‌مانده را کنترل کنید.
-4. دو Interface VM را در یکی از Subnetها تنظیم و Local routing را ببینید.
+Divide `10.20.0.0/16` using VLSM for 400, 120, 50, and 2 hosts.
 
-**خرابی:** به یک Host Mask اشتباه بدهید و توضیح دهید چرا فقط بعضی مقصدها قطع‌اند.
+1. Sort requirements largest to smallest.
+2. Record prefix, mask, network, broadcast, and host range.
+3. Check for overlap and document unused space.
+4. Configure two VM interfaces in one subnet and inspect local routes.
 
-## Lab 04 — IPv6، SLAAC و Neighbor Discovery
+**Fault:** Give one host an incorrect mask and explain why only some destinations fail.
 
-**هدف:** ۱.۸، ۳.۴. Link-local، Global، RA و ND را ببینید.
+## Lab 04 — IPv6, SLAAC, and Neighbor Discovery
 
-</div>
-
-<div dir="ltr" align="left">
+**Objectives:** 1.8 and 3.4.
 
 ```bash
 ip -6 address show
@@ -82,26 +70,18 @@ ip -6 neighbor show
 ping -6 -c 4 fe80::1%eth0
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| ۱ | Scope و Lifetime آدرس‌های IPv6 |
-| ۲ | Prefix و Default route آموخته‌شده |
-| ۳ | جدول Neighbor Discovery |
-| ۴ | Ping به Link-local همراه Zone/interface؛ نام Interface را مطابق VM عوض کنید |
+| 1 | Displays IPv6 addresses, scope, and lifetimes |
+| 2 | Displays IPv6 prefixes and default route |
+| 3 | Displays Neighbor Discovery state |
+| 4 | Tests a link-local destination with an interface zone; change `eth0` as needed |
 
-**خرابی:** RA را در شبکه ایزوله متوقف و اثرش بر Default route را بررسی کنید.
+**Fault:** Stop Router Advertisements in the isolated network and observe the effect on addressing and default route.
 
-## Lab 05 — پورت‌ها و جریان‌ها
+## Lab 05 — Ports and socket flows
 
-**هدف:** ۱.۴، ۵.۵. Client/server port و TCP state را بشناسید.
-
-</div>
-
-<div dir="ltr" align="left">
+**Objectives:** 1.4 and 5.5.
 
 ```bash
 ss -lntup
@@ -110,158 +90,156 @@ curl -I https://www.realsam.ir
 ss -tnp '( dport = :443 or sport = :443 )'
 ```
 
-</div>
+The commands show listening services, established TCP connections, HTTP headers, and port 443 sockets. Process information may require privileges.
 
-<div dir="rtl" align="right">
+**Fault:** Stop an authorized lab service and compare `connection refused` with a firewall timeout.
 
-خط‌ها به‌ترتیب Listeningها، اتصال‌های Established، Header وب و Socketهای 443 را نشان می‌دهند. PID ممکن است نیازمند دسترسی باشد. **خرابی:** Service آزمایشگاهی را Stop و تفاوت `refused` و timeout فایروال را مقایسه کنید.
+## Lab 06 — Cable, speed, duplex, and MTU
 
-## Lab 06 — کابل، Speed، Duplex و MTU
+**Objectives:** 1.5, 2.2, and 5.2.
 
-**هدف:** ۱.۵، ۲.۲، ۵.۲. Cable tester و Interface counter را به‌کار ببرید.
+1. Record cable map and category.
+2. Capture speed, duplex, and error-counter baseline on both ends.
+3. Run controlled traffic and calculate counter deltas.
+4. Create a duplex mismatch in a simulator.
+5. Use a don't-fragment test where supported to estimate path MTU.
 
-1. Cable map و Category هر Patch را ثبت کنید.
-2. Speed/duplex دو سمت و Error baseline را بگیرید.
-3. انتقال کنترل‌شده انجام و Counter delta را حساب کنید.
-4. در شبیه‌ساز Duplex mismatch بسازید.
-5. با Ping دارای DF، Path MTU را مرحله‌ای بیازمایید.
+**Safety:** Never look into fiber. Record before/after counters and the reason for each change.
 
-**ایمنی:** فیبر روشن را نگاه نکنید. **مدرک:** before/after counter و علت نتیجه.
+## Lab 07 — VLANs, access ports, and trunks
 
-## Lab 07 — VLAN، Access و Trunk
+**Objectives:** 2.2 and 5.3.
 
-**هدف:** ۲.۲، ۵.۳. VLANهای 10/20/99 سناریوی مرجع را بسازید.
+1. Create VLANs 10, 20, and 99.
+2. Configure static access ports.
+3. Build a trunk with unused native VLAN 999 and a restricted allowed list.
+4. Verify with `show vlan brief` and `show interfaces trunk`.
+5. Prove same-VLAN connectivity and inter-VLAN separation.
 
-1. VLAN و نام‌ها را بسازید.
-2. Access portها را ثابت تنظیم کنید.
-3. Trunk با Native 999 و Allowed محدود بسازید.
-4. با `show vlan brief` و `show interfaces trunk` Verify کنید.
-5. Ping داخل VLAN و جداسازی بین VLAN را آزمایش کنید.
+**Fault:** Remove VLAN 20 from one end's allowed list and collect evidence before correcting it.
 
-**خرابی:** VLAN 20 را از Allowed list یک سمت حذف و Evidence بگیرید.
+## Lab 08 — Inter-VLAN routing and ACLs
 
-## Lab 08 — Inter-VLAN routing و ACL
+**Objectives:** 2.1 and 4.3.
 
-**هدف:** ۲.۱، ۴.۳، ۵.۳. SVIها را Gateway کنید و Users-to-Servers را محدود کنید.
+1. Build SVIs using [Chapter 3](../docs/03-network-implementation.md).
+2. Record reachability before the ACL.
+3. Apply the HTTPS/DNS policy from [Chapter 5](../docs/05-network-security.md).
+4. Verify rule counters and TCP/443.
+5. Record one permitted and one denied connection.
 
-1. `ip routing` و SVIها را طبق [فصل پیاده‌سازی](../docs/03-network-implementation.md) بسازید.
-2. قبل از ACL، Reachability baseline بگیرید.
-3. ACL HTTPS/DNS فصل امنیت را اعمال کنید.
-4. Counter Ruleها و TCP/443 را Verify کنید.
-5. یک اتصال مجاز و یک اتصال ردشده ثبت کنید.
+**Fault:** Apply the ACL in the wrong direction and use zero or unexpected counters to identify the mistake.
 
-**خرابی:** ACL را در Direction اشتباه بگذارید و با Counter صفر علت را پیدا کنید.
+## Lab 09 — STP and root bridge
 
-## Lab 09 — STP و Root bridge
+**Objective:** 2.2.
 
-**هدف:** ۲.۲، ۵.۳. سه Switch مثلثی بسازید.
+1. Build a triangle of three switches.
+2. Record root, port roles/states, and path costs.
+3. Set intentional primary and secondary roots.
+4. Disconnect one link and measure convergence.
+5. Test PortFast plus BPDU Guard only on an edge port.
 
-1. Root فعلی، Port role/state و Cost را ثبت کنید.
-2. Root primary/secondary را آگاهانه تعیین کنید.
-3. یک لینک را قطع و Convergence را اندازه بگیرید.
-4. PortFast+BPDU Guard را فقط روی Edge آزمایش کنید.
-
-**خرابی:** Switch آزمایشگاهی را به Edge protected وصل و Err-disable/Log را تحلیل کنید؛ سپس علت را رفع و Recovery مجاز انجام دهید.
+**Fault:** Connect a lab switch to the protected edge, examine err-disable evidence, remove the cause, then recover safely.
 
 ## Lab 10 — LACP
 
-**هدف:** ۲.۲. دو لینک را Port-channel کنید.
+**Objective:** 2.2.
 
-1. Config اعضا را یکسان کنید.
-2. LACP active در دو سمت و Trunk روی Port-channel بسازید.
-3. Summary و load distribution را ببینید.
-4. یک عضو را قطع و Traffic را Verify کنید.
+1. Make two member links consistent.
+2. Configure LACP active mode and an 802.1Q trunk on the port-channel.
+3. Verify protocol, members, and logical state.
+4. Remove one member and confirm traffic continues.
 
-**خرابی:** Allowed VLAN یا speed یک عضو را ناسازگار و Suspended state را ثبت کنید.
+**Fault:** Make one member's VLAN or speed configuration inconsistent and explain the suspended state.
 
-## Lab 11 — Static، Default و Floating route
+## Lab 11 — Static, default, and floating routes
 
-**هدف:** ۲.۱، ۵.۳. سه Router و دو مسیر بسازید.
+**Objectives:** 2.1 and 5.3.
 
-1. Connected routeها را ثبت کنید.
-2. Network route و Default route بسازید.
-3. Floating route با AD بالاتر اضافه کنید.
-4. Lookup یک مقصد و traceroute را ثبت کنید.
-5. لینک اصلی را قطع و Failover/Failback را بسنجید.
+1. Build three routers with two possible paths.
+2. Record connected routes.
+3. Add a network route, default route, and higher-AD floating route.
+4. Record destination lookup and traceroute.
+5. Fail the primary link and measure failover/failback.
 
-**خرابی:** Next hop درست ولی Return route را حذف کنید؛ یک‌طرفه‌بودن را ثابت کنید.
+**Fault:** Remove the return route and prove that forward reachability alone is insufficient.
 
-## Lab 12 — OSPF و انتخاب Route
+## Lab 12 — OSPF and route selection
 
-**هدف:** ۲.۱. OSPF کوچک Single-area بسازید؛ اگر شبیه‌ساز ندارید خروجی آماده را تحلیل کنید.
+**Objective:** 2.1.
 
-1. Router IDها و Networkها را مستند کنید.
-2. Neighbor state و LSDB/route را Verify کنید.
-3. Cost یک Link را تغییر و مسیر را مقایسه کنید.
-4. Longest prefix و AD را با Static route کنترل‌شده آزمایش کنید.
+1. Build a small single-area OSPF topology.
+2. Document router IDs and advertised networks.
+3. Verify neighbors, LSDB, and installed routes.
+4. Change one link cost and compare the selected path.
+5. Add a controlled static route to demonstrate AD and longest prefix.
 
-**خرابی:** Area یا Timer را یک سمت ناسازگار و علت عدم Adjacency را از Log/neighbor پیدا کنید.
+**Fault:** Mismatch area or timers on one link and diagnose the missing adjacency.
 
 ## Lab 13 — NAT/PAT
 
-**هدف:** ۲.۱. LAN خصوصی را با PAT به Outside آزمایشگاهی وصل کنید.
+**Objective:** 2.1.
 
-1. Inside/Outside و ACL match را تنظیم کنید.
-2. از دو Client اتصال بیرونی بسازید.
-3. Translation table را با Source portها مقایسه کنید.
-4. Timeout و Clear کنترل‌شده را مشاهده کنید.
+1. Connect a private LAN to an isolated outside network.
+2. Configure inside/outside roles and the translation ACL.
+3. Generate connections from two clients.
+4. Compare private source ports to translated public mappings.
+5. Observe translation timeout and authorized clearing.
 
-**خرابی:** جهت Inside/Outside را جابه‌جا و با آمار NAT مشکل را تشخیص دهید.
+**Fault:** Reverse inside and outside roles and diagnose from NAT statistics.
 
-## Lab 14 — Wi-Fi survey و طراحی
+## Lab 14 — Wireless survey and design
 
-**هدف:** ۲.۳، ۳.۱، ۵.۴. در سه محل RSSI/SNR/channel utilization را ثبت کنید.
+**Objectives:** 2.3 and 5.4.
 
-1. نقشه، دیوار، AP و ساعت اندازه‌گیری را بنویسید.
-2. 2.4/5/6 GHz و Channel width را ثبت کنید.
-3. Speed test محلی به Server سیمی و Latency را بسنجید.
-4. Coverage gap و overlap را روی Heatmap علامت بزنید.
-5. پیشنهاد Channel/Power/AP placement را با دلیل بنویسید.
+1. Record floor plan, wall types, AP positions, band, and time.
+2. Measure RSSI, noise/SNR, channel, width, and utilization in three locations.
+3. Test to a local wired server to avoid confusing Internet performance.
+4. Mark coverage gaps and overlap.
+5. Recommend channel, power, or placement changes with evidence.
 
-**حریم خصوصی:** MAC/SSID همسایه را در گزارش عمومی ناشناس کنید.
+Anonymize neighboring SSIDs and MAC addresses in public reports.
 
-## Lab 15 — WPA2/WPA3 و Guest
+## Lab 15 — WPA2/WPA3 and guest access
 
-**هدف:** ۲.۳، ۴.۳. دو SSID آزمایشگاهی سازمانی و Guest بسازید.
+**Objectives:** 2.3 and 4.3.
 
-1. Guest را VLAN جدا، Internet-only و Client isolation کنید.
-2. WPA2/WPA3 مناسب و Passphrase آزمایشی قوی تعریف کنید.
-3. دسترسی Guest به Management/Server را رد کنید.
-4. Roaming و Captive portal را، اگر موجود، جدا از Encryption بسنجید.
+1. Create corporate and guest SSIDs in a lab.
+2. Map guest to a separate VLAN with Internet-only policy and client isolation.
+3. Use WPA2/WPA3 appropriate to the lab and a strong test secret.
+4. Prove guests cannot reach management or servers.
+5. Test roaming and captive-portal behavior separately from encryption.
 
-**خرابی:** VLAN mapping اشتباه را بسازید و با IP/route/ACL تشخیص دهید.
+**Fault:** Map the guest SSID to the wrong VLAN and diagnose through IP, route, and ACL evidence.
 
-## Lab 16 — DHCP DORA و Relay
+## Lab 16 — DHCP DORA and relay
 
-**هدف:** ۳.۴، ۵.۳. Server در VLAN 20 و Client در VLAN 10.
+**Objective:** 3.4.
 
-1. Scope، exclusion، gateway، DNS و lease را بسازید.
-2. Relay را روی Gateway Client تنظیم کنید.
-3. DORA را Capture و Portهای 67/68 را مشخص کنید.
-4. Reservation بسازید و Renewal را Verify کنید.
-5. Utilization و Lease table را ثبت کنید.
+1. Place the server in VLAN 20 and client in VLAN 10.
+2. Create a scope, exclusions, gateway, DNS options, and lease.
+3. Configure a relay on the client gateway.
+4. Capture DORA and identify UDP 67/68.
+5. Add a reservation and verify renewal.
 
-**خرابی:** Helper را حذف یا Pool را پر کنید و تفاوت نشانه‌ها را بنویسید.
+**Fault:** Remove the helper or exhaust the pool and compare symptoms.
 
-## Lab 17 — DNS Forward، Recursive و Reverse
+## Lab 17 — Forward, recursive, and reverse DNS
 
-**هدف:** ۳.۴، ۵.۵. با BIND/Unbound در شبکه ایزوله یا سرویس آماده.
+**Objective:** 3.4.
 
-1. Zone آموزشی `lab.realsam.ir` و A/AAAA/CNAME/MX/TXT/NS/SOA بسازید.
-2. Serial را افزایش و Zone syntax را Validate کنید.
-3. Forward lookup را از Client انجام دهید.
-4. Reverse zone/PTR آدرس Lab و FCrDNS را بسازید.
-5. Authoritative پاسخ را با Recursive cache مقایسه کنید.
+1. In an isolated lab, create `lab.realsam.ir` with A, AAAA, CNAME, MX, TXT, NS, and SOA records.
+2. Increment the serial and validate zone syntax.
+3. Query the authoritative server directly and through a recursive resolver.
+4. Create a reverse zone and PTR.
+5. Verify forward-confirmed reverse DNS.
 
-**خرابی:** نقطه انتهای FQDN یا Serial را غلط و اثر را تحلیل کنید. Zone عمومی واقعی را بدون اختیار تغییر ندهید.
+**Fault:** Remove a final FQDN dot or fail to increment the serial and explain the result. Do not modify public DNS without authority.
 
-## Lab 18 — DNSSEC، DoH و DoT مشاهده‌ای
+## Lab 18 — DNSSEC, DoH, and DoT observation
 
-**هدف:** ۳.۴. هدف راه‌اندازی Public DNS نیست؛ مشاهده و Validation است.
-
-</div>
-
-<div dir="ltr" align="left">
+**Objective:** 3.4.
 
 ```bash
 dig org DNSKEY +dnssec
@@ -269,125 +247,115 @@ dig org SOA +dnssec
 dig +tcp A www.realsam.ir
 ```
 
-</div>
+The first two commands request DNSSEC-related data; the third forces TCP DNS. An AD flag matters only when the resolver actually validates. Observe approved DoH/DoT in a lab capture and explain what metadata remains visible.
 
-<div dir="rtl" align="right">
+## Lab 19 — NTP, logs, and timelines
 
-خط اول Key/Signature، دوم SOA امضاشده و سوم DNS روی TCP را می‌بیند. AD flag فقط وقتی Resolver واقعاً Validate می‌کند معنی دارد. با Browser/Resolver Lab، DoH/DoT را Capture و تفاوت Visibility را شرح دهید.
+**Objectives:** 3.2 and 3.4.
 
-## Lab 19 — NTP، Log و Timeline
+1. Point two hosts to an approved lab time source.
+2. Record source, offset, delay, and synchronization state.
+3. Generate an SSH or firewall event.
+4. Correlate both hosts' logs with explicit UTC/time-zone notation.
+5. In an isolated VM, change time slightly and observe TLS/log effects, then roll back.
 
-**هدف:** ۳.۲، ۳.۴. دو Host را به منبع زمان Lab وصل کنید.
+## Lab 20 — SNMPv3, syslog, and baseline
 
-1. Source، offset، delay و sync state را ثبت کنید.
-2. یک رویداد SSH/Firewall ایجاد کنید.
-3. Log دو Host را با Timestamp مرتبط کنید.
-4. در VM ایزوله زمان را کمی نادرست و اثر TLS/Log را مشاهده کنید؛ سپس Rollback.
+**Objective:** 3.2.
 
-**مدرک:** Timeline با UTC و Timezone مشخص.
+1. Create a least-privilege SNMPv3 account with authentication and privacy.
+2. Poll interface counters.
+3. Generate a link event and observe trap and syslog.
+4. Define five baseline metrics and initial thresholds.
+5. Write an owner and runbook for each alert.
 
-## Lab 20 — SNMPv3، Syslog و Baseline
+Do not place communities or credentials in the report.
 
-**هدف:** ۳.۲. Device/VM را فقط در Management network پایش کنید.
+## Lab 21 — Backup, change, and restore
 
-1. SNMPv3 auth+privacy و Account کم‌دسترسی بسازید.
-2. Interface counters را Poll کنید.
-3. یک Link event بسازید و Trap/Syslog را ببینید.
-4. پنج Metric و Threshold اولیه تعریف کنید.
-5. False positive و Runbook هر Alert را ثبت کنید.
+**Objectives:** 3.1 and 3.3.
 
-Community یا Credential را در گزارش نگذارید.
+1. Back up running configuration with time and hash.
+2. Write a change for adding VLAN 40, including impact and approval.
+3. Execute prechecks, change, and postchecks.
+4. Perform the rollback in the lab.
+5. Explain running, backup, and golden configuration.
 
-## Lab 21 — Backup، Change و Restore
+Success means service and security behavior are restored, not merely that syntax loads.
 
-**هدف:** ۳.۱، ۳.۳. تغییر VLAN 40 را مانند Production مدیریت کنید.
+## Lab 22 — SSH keys and jump host
 
-1. Running config و Hash/زمان Backup بگیرید.
-2. Change request، Impact و Approval فرضی بنویسید.
-3. Pre-check، تغییر و Post-check اجرا کنید.
-4. Rollback را واقعاً در Lab اجرا کنید.
-5. تفاوت Production/backup/golden config را نشان دهید.
+**Objectives:** 3.5 and 4.1.
 
-**موفقیت:** Restore باید سرویس و امنیت را، نه فقط Syntax، برگرداند.
+1. Build client → jump host → server.
+2. Create an Ed25519 key protected by a passphrase.
+3. Verify host-key fingerprints through the lab's trusted channel.
+4. After proving key access and recovery, disable direct password access to the server.
+5. Permit the server only from the jump host and centralize login logs.
 
-## Lab 22 — SSH، Key و Jump host
+**Fault:** Create a controlled host-key mismatch. Verify the cause instead of deleting the warning blindly.
 
-**هدف:** ۳.۵، ۴.۱. Client → Jump → Server را بسازید.
+## Lab 23 — ACLs, segmentation, and NAC design
 
-1. کلید Ed25519 با Passphrase بسازید.
-2. Host key را از کانال Lab Verify کنید.
-3. Password login مستقیم Server را پس از اثبات Key و داشتن Recovery غیرفعال کنید.
-4. فقط Jump host را در ACL Server مجاز کنید.
-5. Log ورود و Failure را مرکزی بفرستید.
+**Objectives:** 4.1 and 4.3.
 
-**خرابی:** Known-host mismatch کنترل‌شده بسازید؛ هشدار را حذف کور نکنید، علت را Verify کنید.
+1. Create user, server, guest, and IoT zones.
+2. Write a source-destination-service matrix.
+3. Apply default deny and explicit required permits.
+4. Give guest only DHCP, DNS, and Internet; give IoT only controller and time access.
+5. Record one permit and one deny counter/log.
+6. Design a quarantine VLAN for a noncompliant endpoint.
 
-## Lab 23 — ACL، Segmentation و NAC مفهومی
+**Fault:** Omit TCP DNS or a return rule and identify the problem in a capture.
 
-**هدف:** ۴.۱، ۴.۳. User/Server/Guest/IoT zone بسازید.
+## Lab 24 — DHCP Snooping, DAI, and port security
 
-1. ماتریس Source-Destination-Service بنویسید.
-2. Default deny میان Zoneها و Permitهای لازم را اعمال کنید.
-3. Guest فقط DNS/DHCP/Internet و IoT فقط Controller/NTP لازم داشته باشد.
-4. Rule counter و Log یک Allow/deny را ثبت کنید.
-5. Quarantine VLAN برای Endpoint ناسازگار طراحی کنید.
+**Objectives:** 4.2 and 4.3.
 
-**خرابی:** Return rule یا DNS TCP را جا بیندازید و با Capture پیدا کنید.
+1. Build a valid DHCP binding baseline.
+2. Trust only the legitimate server/relay uplink.
+3. Enable DAI and appropriate rate limits.
+4. Connect a simulated rogue DHCP server to an edge port and record the drop/log.
+5. Test port security with a known MAC and suitable violation mode.
 
-## Lab 24 — DHCP Snooping، DAI و Port security
+Prepare console access and a rollback before applying the controls.
 
-**هدف:** ۴.۲، ۴.۳. فقط در Switch Lab.
+## Lab 25 — Packet capture and web timing
 
-1. Binding baseline بسازید.
-2. Uplink درست را Trusted و Edgeها را Untrusted بگذارید.
-3. DAI و rate limit را فعال کنید.
-4. Rogue DHCP شبیه‌سازی‌شده را از Edge وصل و Drop/Log را ثبت کنید.
-5. Port security را با MAC مجاز و Violation مناسب آزمایش کنید.
-
-**Rollback:** Recovery Port و Console پیش از تغییر آماده باشد.
-
-## Lab 25 — Packet capture و عیب‌یابی وب
-
-**هدف:** ۵.۱، ۵.۴، ۵.۵. مسیر DNS → TCP/QUIC → TLS → HTTP را زمان‌بندی کنید.
-
-</div>
-
-<div dir="ltr" align="left">
+**Objectives:** 5.1, 5.4, and 5.5.
 
 ```bash
 curl -sS -o /dev/null -w 'dns=%{time_namelookup} tcp=%{time_connect} tls=%{time_appconnect} first_byte=%{time_starttransfer} total=%{time_total}\n' https://www.realsam.ir/
 ```
 
-</div>
+`-sS` hides normal progress but retains errors, `-o /dev/null` discards the body, and `-w` prints DNS, TCP, TLS, first-byte, and total timing.
 
-<div dir="rtl" align="right">
+**Fault:** In lab services, create a slow resolver, blocked port, and invalid certificate separately. Record the signature of each failure.
 
-`-sS` خروجی عادی را ساکت ولی خطا را نگه می‌دارد؛ `-o /dev/null` Body را دور می‌ریزد؛ `-w` زمان‌های DNS، TCP، TLS، نخستین Byte و کل را چاپ می‌کند. **خرابی:** Resolver کند، Port بسته و Certificate نامعتبر را فقط در سرویس Lab جدا بسازید و Signature هر خطا را ثبت کنید.
+## Lab 26 — Final performance-based scenario
 
-## Lab 26 — سناریوی نهایی Performance-Based
+**Objectives:** All domains.
 
-**هدف:** همه دامنه‌ها. یک شعبه نمی‌تواند به `app.realsam.ir` وصل شود؛ Guest گاهی Server را می‌بیند و تماس Wi-Fi قطع می‌شود.
+A branch cannot reach `app.realsam.ir`; guests occasionally reach servers; Wi-Fi calls disconnect.
 
-**Topology:** دو Switch، یک Router/Firewall، DHCP/DNS/NTP، دو AP، User/Voice/Guest/Server VLAN و یک WAN شبیه‌سازی‌شده.
+**Topology:** two switches, router/firewall, DHCP/DNS/NTP, two APs, user/voice/guest/server VLANs, and an emulated WAN.
 
-خرابی‌های پنهان را یکی‌یکی از این فهرست انتخاب کنید: Native mismatch، VLAN حذف‌شده از Trunk، Default route غلط، DHCP pool پر، PTR ناسازگار، NTP ناهماهنگ، ACL با ترتیب غلط، PoE budget ناکافی، Channel overlap، Duplex mismatch.
+Choose hidden faults from: native-VLAN mismatch, missing allowed VLAN, wrong default route, exhausted DHCP pool, inconsistent PTR, bad time, misordered ACL, insufficient PoE budget, overlapping channels, and duplex mismatch.
 
-1. Ticket و Scope را بدون دیدن پاسخ ثبت کنید.
-2. با روش استاندارد فقط Evidence لازم بگیرید.
-3. نظریه و آزمون کم‌خطر بنویسید.
-4. Change/rollback، اصلاح و Verify End-to-end انجام دهید.
-5. Executive summary یک‌پاراگرافی و Technical timeline تحویل دهید.
+1. Record ticket and scope without reading the answer.
+2. Gather only evidence relevant to a theory.
+3. Propose and run a low-risk test.
+4. Write change, rollback, correction, and end-to-end validation.
+5. Deliver a one-paragraph executive summary and a technical timeline.
 
-## معیار ارزیابی Labها
+## Lab grading rubric
 
-| معیار | امتیاز |
+| Criterion | Points |
 |---|---:|
-| طراحی و IP plan صحیح | ۲۰ |
-| Evidence و تفسیر، نه فقط Screenshot | ۲۰ |
-| توضیح فرمان/Packet/Counter | ۲۰ |
-| خرابی عمدی و روش علمی اصلاح | ۲۰ |
-| امنیت، Rollback و مستندسازی | ۲۰ |
+| Correct design and IP plan | 20 |
+| Evidence and interpretation | 20 |
+| Explanation of commands, packets, and counters | 20 |
+| Controlled failure and scientific diagnosis | 20 |
+| Security, rollback, and documentation | 20 |
 
-پاسخ یکتا برای Topologyها وجود ندارد؛ پاسخ خوب فرض‌ها و Trade-off را روشن می‌کند.
-
-</div>
+A good answer states assumptions and trade-offs. Many design scenarios have more than one valid solution.

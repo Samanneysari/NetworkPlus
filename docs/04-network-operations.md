@@ -1,130 +1,120 @@
-<div dir="rtl" align="right">
+# Chapter 4 — Network Operations
 
-# فصل ۴ — عملیات شبکه
+Building a network is only the beginning. It must be documented, monitored, changed safely, backed up, and recoverable. This chapter covers Domain 3 and teaches DHCP, DNS, reverse DNS, and network time from the beginning.
 
-ساخت شبکه پایان کار نیست. شبکه باید مستند، پایش، Backup، تغییر و در بحران بازیابی شود. این فصل دامنه ۳ N10-009 را پوشش می‌دهد و DNS، DHCP و زمان را از ابتدا توضیح می‌دهد.
+## 3.1 — Documentation and life-cycle management
 
-## ۳.۱ — مستندسازی و مدیریت چرخه عمر
+### Physical and logical documents
 
-### مستند فیزیکی و منطقی
-
-| سند | پاسخ به چه سؤالی؟ | محتوای نمونه |
+| Document | Question it answers | Example contents |
 |---|---|---|
-| Physical diagram | چه چیزی کجا و با چه کابلی وصل است؟ | Rack، Port، کابل، اتاق، Patch panel |
-| Logical diagram | ترافیک منطقی چگونه حرکت می‌کند؟ | VLAN، Subnet، Route، Zone، VPN |
-| Rack diagram | هر تجهیز در کدام U است؟ | ارتفاع، Power feed، وزن و Airflow |
-| Cable map | دو سر کابل کجاست؟ | شناسه، Port، نوع، طول، تست |
-| Layer 1 diagram | Media و اتصال چیست؟ | فیبر/مس، Speed، IDF/MDF |
-| Layer 2 diagram | Broadcast domain کدام است؟ | VLAN، Trunk، STP، LAG |
-| Layer 3 diagram | Prefix و Next hop چیست؟ | IP، SVI، Router، WAN |
+| Physical diagram | What is connected where and with what? | Rooms, racks, ports, cables, and panels |
+| Logical diagram | How does traffic move logically? | VLANs, subnets, routes, zones, and VPNs |
+| Rack diagram | Where is each device mounted? | Rack units, power feeds, weight, and airflow |
+| Cable map | Where are both ends of a cable? | ID, port, media, length, and test result |
+| Layer 1 diagram | What media and physical links exist? | Copper, fiber, speed, MDF, and IDF |
+| Layer 2 diagram | Where are broadcast domains and loops controlled? | VLANs, trunks, STP, and LAGs |
+| Layer 3 diagram | How are prefixes routed? | IPs, SVIs, routers, WANs, and next hops |
 
-یک دیاگرام زیبا بدون تاریخ، Owner و منبع حقیقت به‌سرعت قدیمی می‌شود. هر سند باید Version، آخرین بازبینی و محدوده داشته باشد.
+A diagram without date, owner, version, and source of truth becomes unreliable quickly.
 
-### Inventory و IPAM
+### Inventory, IPAM, SLA, and wireless surveys
 
-Inventory حداقل Asset ID، نوع، Serial، مدل، محل، Owner، IP/MAC، نسخه OS/Firmware، License، قرارداد و Warranty/EOL را نگه می‌دارد. **IPAM** Prefix، Subnet، آدرس، Reservation، DNS و Owner را مدیریت می‌کند و از Spreadsheet پراکنده قابل‌اعتمادتر است.
+Inventory should include asset ID, model, serial, location, owner, IP/MAC, OS/firmware, license, contract, warranty, and end-of-support dates. IP Address Management tracks prefixes, subnets, assignments, reservations, DNS names, and owners.
 
-**SLA** سطح خدمت قابل‌اندازه‌گیری مانند Availability، زمان پاسخ و جبران را تعریف می‌کند. SLA با SLO داخلی و KPI تفاوت دارد. **Wireless survey** نقشه پوشش، SNR، Channel، Noise و ظرفیت می‌سازد؛ Heatmap باید همراه زمان، باند و معیار خوانده شود.
+An SLA defines measurable service commitments such as availability and response time. It is not identical to an internal SLO or KPI. A wireless survey records signal, noise, SNR, channel use, capacity, and coverage; a heatmap must state the band, time, client, and metric.
 
-### EOL، EOS و Decommission
+### EOL, EOS, software management, and decommissioning
 
-- **EOL:** پایان چرخه فروش/عمر محصول طبق تعریف Vendor.
-- **EOS:** پایان پشتیبانی یا Security update؛ تاریخ دقیق Vendor را بررسی کنید.
-- **Software management:** Compatibility، License، Release note، Hash/signature، آزمایش، Rollback و Patch window.
-- **Decommissioning:** حذف از Monitoring/DNS/IPAM، لغو Certificate/Account، پاک‌سازی امن داده و Update سند؛ فقط خاموش‌کردن دستگاه کافی نیست.
+- **EOL:** vendor-defined end of a product's sales/life cycle.
+- **EOS:** end of support or security updates; exact vendor dates matter.
+- **Software management:** compatibility, licensing, release notes, signature/hash validation, testing, maintenance window, and rollback.
+- **Decommissioning:** remove the asset from monitoring, DNS, IPAM, AAA, and diagrams; revoke credentials/certificates; erase data securely; and record disposal.
 
-### Change management مرحله‌به‌مرحله
+### Change management
 
-1. هدف، Business reason و Owner تغییر را ثبت کنید.
-2. دستگاه، Interface، کاربر و سرویس تحت‌تأثیر را مشخص کنید.
-3. Risk و وابستگی را تحلیل کنید.
-4. دستورها، ترتیب، Pre-check و Success criteria را بنویسید.
-5. Backup و Rollback عملی و زمان تصمیم برگشت را تعریف کنید.
-6. Peer review، Approval و Maintenance window بگیرید.
-7. به ذی‌نفعان اطلاع دهید.
-8. Pre-check، تغییر کنترل‌شده و ثبت زمان را انجام دهید.
-9. Post-check فنی و آزمون کاربر را اجرا کنید.
-10. سند، Ticket و CMDB را Update و در شکست Postmortem بدون سرزنش بنویسید.
+1. Record purpose, business reason, scope, and owner.
+2. Identify affected devices, interfaces, users, and services.
+3. Assess risk and dependencies.
+4. Write commands, order, prechecks, and success criteria.
+5. Create and test backup and rollback procedures.
+6. Obtain peer review, approval, and a maintenance window.
+7. Notify stakeholders.
+8. Run prechecks, make small controlled changes, and record time.
+9. Run technical postchecks and user-facing validation.
+10. Update the ticket, configuration source, CMDB, and diagrams.
 
-**Production config** تنظیم زنده، **backup config** نسخه قابل‌بازیابی و **baseline/golden config** وضعیت تأییدشده مرجع است. Backup بدون آزمون Restore اطمینان کافی نمی‌دهد. Secretها باید رمز و دسترسی‌شان محدود باشد.
+Production configuration is live state. Backup configuration is a restorable copy. A baseline or golden configuration is the approved reference state. A backup that has never been restored is not proven.
 
-## ۳.۲ — پایش شبکه
+## 3.2 — Monitoring
 
 ### SNMP
 
-Manager از Agent مقدار Objectها را می‌خواند. **MIB** ساختار و معنی OIDها را تعریف می‌کند. Polling از Manager آغاز می‌شود؛ Trap/Inform رویداد را Agent می‌فرستد.
+An SNMP manager polls agents. A Management Information Base defines object identifiers and their meaning. Polling starts at the manager; a trap or inform starts at the agent.
 
-| نسخه | امنیت |
+| Version | Security |
 |---|---|
-| SNMPv2c | Community string؛ رمزنگاری/احراز قوی ندارد |
-| SNMPv3 | Authentication و Privacy قابل‌پیکربندی؛ انتخاب ترجیحی |
+| SNMPv2c | Community string; no strong built-in confidentiality |
+| SNMPv3 | Authentication and optional privacy/encryption; preferred |
 
-SNMP management را در VLAN/VRF مدیریت محدود، ACL و ترجیحاً v3 قرار دهید. Trap به‌تنهایی کافی نیست؛ گم می‌شود یا رخداد خاموشی دستگاه را نمی‌تواند از خود دستگاه اعلام کند، پس Polling هم لازم است.
+Limit SNMP to the management network/VRF and permitted managers. Traps can be lost, and a failed device cannot report its own total outage, so use polling and traps together.
 
-### Flow، Packet capture، Log و SIEM
+### Flow, packet capture, logs, and SIEM
 
-- **Flow data:** خلاصه مکالمه‌ها مانند Source/Destination، Port، bytes و زمان؛ سبک‌تر از Packet capture.
-- **Packet capture:** جزئیات Header و در ترافیک بدون رمز Payload؛ دقیق ولی حجیم و حساس.
-- **Baseline:** رفتار عادی در ساعت/روز/فصل مشخص؛ بدون آن «زیاد» معنی دقیقی ندارد.
-- **Anomaly alert:** فاصله از Baseline؛ نیازمند Tuning برای کاهش False positive.
-- **Syslog:** رویدادها را مرکزی می‌فرستد. Severity از 0 Emergency تا 7 Debug است؛ عدد کمتر شدیدتر است.
-- **SIEM:** Logها را جمع، Normalize، Correlate و Alert می‌کند؛ جای Analyst و Retention policy نیست.
-- **API integration:** داده و عمل خودکار؛ Token کم‌دسترسی، TLS، Rate limit و Audit لازم است.
-- **Port mirroring/SPAN:** کپی ترافیک Port/VLAN برای Sensor؛ Oversubscription می‌تواند Packet از دست بدهد.
+- **Flow data:** conversation summary including endpoints, ports, bytes, and time.
+- **Packet capture:** detailed headers and sometimes payload; powerful, sensitive, and storage-intensive.
+- **Baseline:** normal behavior for a defined time, day, season, and workload.
+- **Anomaly alert:** behavior outside the baseline; requires tuning.
+- **Syslog:** standardized event severity from 0 Emergency to 7 Debug.
+- **SIEM:** central collection, normalization, correlation, search, and alerting; it does not replace analysts or response procedures.
+- **API integration:** automated data/action using TLS, scoped tokens, rate limits, and audit logging.
+- **Port mirroring/SPAN:** copies traffic to a sensor; an oversubscribed mirror destination can drop packets.
 
-انواع پایش شامل Traffic، Performance، Availability و Configuration است. Discovery خودکار باید با مجوز انجام شود؛ اسکن بدون هماهنگی ممکن است Alert یا اختلال بسازد.
+Monitor traffic, performance, availability, and configuration. Useful interface metrics include status, utilization, errors, discards, latency, loss, and jitter. Device metrics include CPU, memory, temperature, power, and uptime. Service metrics include DNS response, DHCP pool use, TLS expiry, HTTP status, and response time.
 
-### Baseline پیشنهادی
+Every alert needs an owner, severity, runbook, and escalation path.
 
-برای Interface: status، speed/duplex، utilization، errors/discards، latency، loss و jitter. برای Device: CPU، memory، temperature، power و uptime. برای Service: DNS response، DHCP pool، TLS expiry، HTTP status و زمان پاسخ. Alert باید Owner، Severity، Runbook و مسیر Escalation داشته باشد.
+## 3.3 — Disaster recovery
 
-## ۳.۳ — Disaster Recovery
-
-| معیار | سؤال |
+| Metric | Question |
 |---|---|
-| RPO | حداکثر چه مقدار داده زمانی می‌توان از دست داد؟ |
-| RTO | سرویس حداکثر چه مدت می‌تواند Down باشد؟ |
-| MTTR | میانگین زمان تعمیر/بازیابی چقدر است؟ |
-| MTBF | میانگین فاصله میان خرابی‌های یک جزء چقدر است؟ |
+| RPO | How much recent data can be lost? |
+| RTO | How long can the service remain unavailable? |
+| MTTR | How long does repair or recovery take on average? |
+| MTBF | How much time passes between failures on average? |
 
-RPO پنج دقیقه یعنی Backup روزانه کافی نیست. RTO یک ساعت یعنی Runbook، دسترسی و ظرفیت جایگزین باید واقعاً در یک ساعت آماده شوند.
+An RPO of five minutes is not satisfied by a daily backup. An RTO of one hour requires that runbooks, access, replacement capacity, and restoration all work inside the hour.
 
-| Site | آمادگی | هزینه/زمان معمول نسبی |
+| Site type | Readiness | Relative cost and recovery time |
 |---|---|---|
-| Cold | فضا و امکانات پایه، تجهیزات/داده نیازمند آماده‌سازی | هزینه کمتر، RTO بیشتر |
-| Warm | بخشی از تجهیزات و داده آماده | میانه |
-| Hot | نزدیک به Production و همگام | هزینه بیشتر، RTO کمتر |
+| Cold | Facility/basic utilities; systems and data need preparation | Lower cost, longer RTO |
+| Warm | Some systems and data ready | Medium |
+| Hot | Close to production and continuously maintained | Higher cost, shorter RTO |
 
-**Active-active** چند Site هم‌زمان سرویس می‌دهند و پیچیدگی Consistency دارد. **Active-passive** Site دوم آماده Failover است و باید ظرفیت/سلامت آن آزموده شود. Tabletop فقط گفتگو روی سناریو است؛ Validation عملی Restore/Failover را ثابت می‌کند. آزمون نباید بدون کنترل، Production را به خطر اندازد.
+Active-active sites serve traffic simultaneously but create state and consistency complexity. Active-passive keeps a standby site for failover. A tabletop exercise tests reasoning and roles; a practical restore/failover test validates technology and timing.
 
-## ۳.۴ — DHCP، SLAAC، DNS و زمان
+## 3.4 — DHCP, SLAAC, DNS, and time
 
-### DHCPv4 چرا لازم است؟
+### DHCPv4
 
-DHCP آدرس، Mask، Gateway، DNS و Optionهای دیگر را با Lease می‌دهد. فرایند رایج DORA:
+DHCP provides addresses, masks, gateways, DNS servers, and other options under a lease. The common DORA sequence is:
 
-1. **Discover:** Client بدون IP مناسب، درخواست Broadcast می‌فرستد.
-2. **Offer:** Server آدرس و Option پیشنهادی می‌دهد.
-3. **Request:** Client پیشنهاد انتخابی را درخواست می‌کند.
-4. **Acknowledgment:** Server Lease را تأیید می‌کند.
+1. **Discover:** a client broadcasts to find servers.
+2. **Offer:** a server proposes an address and options.
+3. **Request:** the client requests the selected offer.
+4. **Acknowledgment:** the server confirms the lease.
 
-چون Broadcast از Router عبور نمی‌کند، **DHCP relay** درخواست را به Server شبکه دیگر Unicast می‌کند و اطلاعات Subnet مبدأ را می‌افزاید.
+Broadcasts do not cross routers. A DHCP relay receives the client broadcast and sends it to a remote server, including information that identifies the source subnet.
 
-| اصطلاح | معنی |
+| Term | Meaning |
 |---|---|
-| Scope/Pool | محدوده آدرس و Optionهای یک Subnet |
-| Exclusion | آدرس‌هایی که Dynamic داده نمی‌شوند |
-| Reservation | اتصال MAC/Client ID مشخص به IP ثابت |
-| Lease | مدت مالکیت موقت آدرس |
-| Option | Gateway، DNS، domain، NTP و اطلاعات دیگر |
+| Scope/pool | Address range and options for a subnet |
+| Exclusion | Addresses never assigned dynamically |
+| Reservation | A known MAC/client ID receives a fixed address |
+| Lease | Time-limited address ownership |
+| Option | Gateway, DNS, domain, NTP, and other configuration |
 
-Pool exhaustion، Rogue DHCP، Relay اشتباه و Scope با Mask/Gateway غلط از خطاهای رایج‌اند. DHCP Snooping روی Switch می‌تواند Server غیرمجاز را محدود کند.
-
-نمونه Relay در Cisco:
-
-</div>
-
-<div dir="ltr" align="left">
+Common failures include pool exhaustion, rogue DHCP, a wrong relay, and incorrect mask/gateway options. DHCP Snooping can restrict unauthorized server replies.
 
 ```cisco
 interface Vlan10
@@ -134,73 +124,65 @@ interface Vlan10
 show ip interface Vlan10
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `interface Vlan10` | Gateway کاربران را انتخاب می‌کند |
-| `ip address` | IP/Mask Interface را تعیین می‌کند |
-| `ip helper-address` | Broadcastهای منتخب UDP، از جمله DHCP، را به Server می‌فرستد؛ رفتار دقیق Platform را بررسی کنید |
-| `no shutdown` | Interface را اداری فعال می‌کند |
-| `show` | IP و Helper را راستی‌آزمایی می‌کند |
+| `interface Vlan10` | Selects the client VLAN gateway |
+| `ip address` | Configures its IP and mask |
+| `ip helper-address` | Relays selected UDP broadcasts, including DHCP, to the server; platform behavior should be verified |
+| `no shutdown` | Administratively enables the interface |
+| Show command | Verifies IP and helper configuration |
 
-### SLAAC در IPv6
+### SLAAC
 
-Router با Router Advertisement، Prefix و Flagها را اعلام می‌کند. Client می‌تواند با SLAAC آدرس بسازد و Duplicate Address Detection انجام دهد. Default gateway از RA می‌آید. DHCPv6 ممکن است Stateful آدرس بدهد یا Stateless اطلاعات اضافی بدهد. SLAAC و DHCPv6 رقیب مطلق نیستند و Flagها/سیستم‌عامل رفتار را تعیین می‌کنند.
+IPv6 routers send Router Advertisements containing prefixes and flags. A client can create an address with Stateless Address Autoconfiguration and perform Duplicate Address Detection. The default gateway comes from RA. DHCPv6 may assign addresses statefully or provide additional information statelessly. SLAAC and DHCPv6 can coexist.
 
-### DNS از صفر: ساختار سلسله‌مراتبی
+## DNS structure from zero
 
-DNS پایگاه توزیع‌شده نام‌هاست. نام `www.realsam.ir.` از راست خوانده می‌شود:
+DNS is a distributed hierarchy. Read the fully qualified name `www.realsam.ir.` from right to left:
 
-- `.` ریشه DNS؛ نقطه پایانی معمولاً در نوشتار حذف می‌شود.
-- `ir` دامنه سطح بالا یا TLD.
-- `realsam.ir` دامنه ثبت‌شده/Zone احتمالی.
-- `www` Label یا Host/Subdomain داخل آن.
+- `.` is the DNS root; the final dot is often omitted in normal writing.
+- `ir` is the top-level domain.
+- `realsam.ir` is the registered domain and a likely zone.
+- `www` is a label/host within it.
 
-**Registrar** ثبت دامنه را مدیریت می‌کند؛ **Registry** TLD را اداره می‌کند؛ **DNS hosting/authoritative server** رکوردها را پاسخ می‌دهد. این نقش‌ها می‌توانند شرکت‌های متفاوت باشند.
+A **registrar** manages registration, a **registry** operates a TLD, and an **authoritative DNS provider** serves zone data. These roles can belong to different organizations.
 
-### وقتی کاربر نام را وارد می‌کند چه رخ می‌دهد؟
+## What happens during name resolution?
 
-1. برنامه URL را تجزیه و نام `www.realsam.ir` را می‌خواهد.
-2. Stub resolver سیستم ابتدا Cache و hosts file را بررسی می‌کند.
-3. اگر نبود، سؤال را به Recursive resolver سازمان/ISP می‌دهد.
-4. Resolver اگر Cache معتبر ندارد، از Root محل Name serverهای `.ir` را می‌پرسد.
-5. از Serverهای `.ir`، NSهای `realsam.ir` و Glue لازم را می‌گیرد.
-6. از Authoritative server رکورد `A`/`AAAA` نام را می‌خواهد.
-7. پاسخ همراه TTL Cache می‌شود و به Client می‌رسد.
-8. Client IP را انتخاب و TCP/QUIC، TLS و HTTP را آغاز می‌کند.
+1. The application requests `www.realsam.ir`.
+2. The operating-system stub resolver checks cache and the hosts file.
+3. It asks the configured recursive resolver.
+4. If the resolver has no valid cache, it asks a root server where `.ir` is served.
+5. It asks a `.ir` server for the name servers of `realsam.ir`.
+6. It asks an authoritative server for the A and/or AAAA record.
+7. The resolver caches the answer according to TTL and returns it.
+8. The client starts TCP/QUIC, TLS, and the application request.
 
-Recursive resolver کار دنبال‌کردن زنجیره را برای Client انجام می‌دهد. Authoritative server داده Zone خود را پاسخ می‌دهد و معمولاً برای عموم Recursion باز نباید باشد. **Primary** منبع قابل‌ویرایش Zone و **Secondary** کپی منتقل‌شده است؛ هر دو می‌توانند Authoritative باشند.
+A recursive resolver performs the search for clients. An authoritative server answers for its own zones and should not normally offer unrestricted public recursion. A primary server is the editable source; a secondary obtains a transferred copy. Both can answer authoritatively.
 
-### رکوردهای مهم DNS
+## DNS resource records
 
-| رکورد | کار | مثال مفهومی |
+| Record | Purpose | Example |
 |---|---|---|
-| A | نام به IPv4 | `www.realsam.ir. A 192.0.2.80` |
-| AAAA | نام به IPv6 | `www.realsam.ir. AAAA 2001:db8::80` |
-| CNAME | Alias یک نام به نام Canonical | `blog.realsam.ir. CNAME www.realsam.ir.` |
-| MX | Mail exchanger دامنه با Priority | `realsam.ir. MX 10 mail.realsam.ir.` |
-| TXT | متن برای Verification و Policyهایی مانند SPF | مقدار وابسته به کاربرد |
-| NS | Name serverهای Authoritative Zone/Delegation | `realsam.ir. NS ns1.realsam.ir.` |
-| SOA | مشخصات Zone، Primary، Contact، Serial و Timerها | یک رکورد در رأس Zone |
-| PTR | IP به نام در Reverse DNS | `192.0.2.80 → mail.realsam.ir` |
+| A | Name to IPv4 | `www.realsam.ir. A 192.0.2.80` |
+| AAAA | Name to IPv6 | `www.realsam.ir. AAAA 2001:db8::80` |
+| CNAME | Alias to canonical name | `blog.realsam.ir. CNAME www.realsam.ir.` |
+| MX | Mail exchanger with priority | `realsam.ir. MX 10 mail.realsam.ir.` |
+| TXT | Text for verification/policy such as SPF | Application-specific text |
+| NS | Authoritative name servers/delegation | `realsam.ir. NS ns1.realsam.ir.` |
+| SOA | Zone authority, primary, contact, serial, and timers | One at the zone apex |
+| PTR | Reverse mapping from address to name | `192.0.2.80 → mail.realsam.ir` |
 
-نکته‌ها:
+Important rules:
 
-- CNAME را معمولاً همراه رکوردهای دیگر روی همان Owner name نمی‌گذارند؛ Apex Zone نیز محدودیت دارد.
-- عدد کمتر MX اولویت بیشتر دارد. MX باید به نامی برسد که A/AAAA دارد، نه مستقیم به IP.
-- TXT فقط SPF نیست و وجود آن به‌تنهایی صحت متن را ثابت نمی‌کند.
-- NS در Parent عمل Delegation را می‌سازد؛ Glue وقتی نام NS زیر همان Child است، حلقه حل نام را می‌شکند.
-- SOA Serial باید با تغییر Zone افزایش یابد تا Secondary تغییر را تشخیص دهد.
-- TTL مدت Cache است، نه تضمین زمان دقیق انتشار جهانی.
+- A CNAME owner normally cannot have other record types; using CNAME at a zone apex is therefore problematic.
+- Lower MX preference numbers are tried first. MX targets names, not raw IP addresses.
+- TXT has many uses; a TXT value is not automatically trustworthy.
+- Parent NS records create delegation. Glue records prevent circular lookup when the child name server is inside the delegated child.
+- Increment the SOA serial when zone data changes so secondaries detect it.
+- TTL controls caching, not a guaranteed global propagation time.
 
-نمونه Zone آموزشی:
-
-</div>
-
-<div dir="ltr" align="left">
+## Example forward zone
 
 ```dns
 $ORIGIN realsam.ir.
@@ -223,69 +205,58 @@ mail  IN A     192.0.2.25
 @     IN TXT   "v=spf1 mx -all"
 ```
 
-</div>
+### Line-by-line explanation
 
-<div dir="rtl" align="right">
-
-#### توضیح خط‌به‌خط Zone
-
-| خط | معنی |
+| Line | Meaning |
 |---|---|
-| `$ORIGIN` | پسوند نام‌های نسبی بعدی |
-| `$TTL` | TTL پیش‌فرض رکوردها |
-| `@ IN SOA` | `@` یعنی Origin؛ شروع Authority |
-| `ns1...` در SOA | Primary/master اعلام‌شده |
-| `hostmaster...` | ایمیل مسئول با نقطه به‌جای `@` |
-| Serial | نسخه Zone؛ قالب تاریخ قراردادی است نه الزام Protocol |
-| Refresh/Retry/Expire | زمان‌بندی Secondary برای Sync/Retry/انقضا |
-| Negative TTL | Cache پاسخ نبود نام |
-| دو NS | افزونگی Authoritative name server |
-| Aهای ns | آدرس Name serverها |
-| Aهای وب | Apex و `www` را به IPv4 مستنداتی می‌برند |
-| MX | Mail با Priority 10 |
-| TXT | نمونه SPF سخت‌گیر؛ پیش از استفاده واقعی باید همه Senderها شناخته شوند |
+| `$ORIGIN` | Suffix applied to following relative names |
+| `$TTL` | Default time-to-live |
+| `@ IN SOA` | `@` means the current origin; SOA begins zone metadata |
+| First SOA name | Declared primary/master name server |
+| Second SOA name | Responsible mailbox with the first `@` represented by a dot |
+| Serial | Zone version; the date-like format is a convention |
+| Refresh/retry/expire | Secondary synchronization timers |
+| Negative TTL | Cache time for nonexistence responses |
+| NS lines | Authoritative servers for the zone |
+| A lines | Documentation IPv4 addresses for the hosts |
+| MX | Mail destination with preference 10 |
+| TXT | Strict SPF example; real senders must be fully inventoried before use |
 
-### Reverse DNS و PTR کامل
+## Reverse DNS and PTR
 
-Forward DNS نام را به IP می‌برد؛ Reverse DNS یا rDNS، IP را به نام می‌برد. IPv4 از Zone زیر `in-addr.arpa` و IPv6 از `ip6.arpa` با Nibbleهای معکوس استفاده می‌کند.
+Forward DNS maps name to address. Reverse DNS maps address to name. IPv4 reverse zones use `in-addr.arpa`; IPv6 uses `ip6.arpa` with reversed hexadecimal nibbles.
 
-برای `192.0.2.80`، نام Query برابر `80.2.0.192.in-addr.arpa.` است. کنترل Reverse Zone معمولاً دست مالک Netblock/ISP است، نه لزوماً مالک دامنه؛ پس باید از Provider بخواهید PTR را بسازد یا Zone را Delegate کند.
+For `192.0.2.80`, the query name is:
 
-نمونه رکورد:
+```text
+80.2.0.192.in-addr.arpa.
+```
 
-</div>
-
-<div dir="ltr" align="left">
+The PTR record is:
 
 ```dns
 80.2.0.192.in-addr.arpa. 3600 IN PTR mail.realsam.ir.
 ```
 
-</div>
+### Field-by-field explanation
 
-<div dir="rtl" align="right">
+- `80.2.0.192.in-addr.arpa.` is the reversed address name.
+- `3600` is a one-hour TTL.
+- `IN` is the Internet class.
+- `PTR` is the record type.
+- `mail.realsam.ir.` is the fully qualified target; the final dot matters in a zone file.
 
-هر بخش:
+Control of a reverse zone normally belongs to the IP-block owner or provider, not automatically to the domain owner. Ask the provider to create the PTR or delegate the appropriate reverse zone.
 
-- `80.2.0.192...` آدرس معکوس‌شده است.
-- `3600` TTL یک ساعت است.
-- `IN` کلاس Internet.
-- `PTR` نوع رکورد.
-- `mail.realsam.ir.` نام کامل مقصد؛ نقطه پایانی مهم است.
+For mail, forward-confirmed reverse DNS is desirable: the IP's PTR points to `mail.realsam.ir`, and that name's A/AAAA record points back to the same address. PTR is not proof of security or ownership, but missing or inconsistent reverse DNS can damage mail reputation and delivery.
 
-برای Mail معمولاً **forward-confirmed reverse DNS** مطلوب است: PTR آدرس به `mail.realsam.ir` برسد و A/AAAA همان نام دوباره همان IP را برگرداند. PTR به‌تنهایی مالکیت یا امنیت را ثابت نمی‌کند، اما نبود/ناسازگاری آن می‌تواند Reputation و پذیرش Mail را خراب کند. یک IP از نظر Protocol می‌تواند چند PTR داشته باشد، ولی برای Mail معمولاً یک نام پایدار و هم‌خوان بهتر است.
+## DNSSEC, DoH, and DoT
 
-### DNSSEC، DoH و DoT
+DNSSEC signs DNS data to provide origin authentication and integrity. It does not encrypt queries. A DS record in the parent links to the child's DNSKEY. Incorrect signatures, delegation, or time can make otherwise correct data fail validation.
 
-DNSSEC با امضای زنجیره‌ای Origin و Integrity داده DNS را اعتبارسنجی می‌کند؛ Query را محرمانه نمی‌کند. DS در Parent به DNSKEY Child متصل است. خرابی زمان/امضا می‌تواند پاسخ معتبر را Fail کند.
+DNS over TLS protects client-to-resolver traffic with TLS. DNS over HTTPS carries it inside HTTPS. The resolver still sees the queries, and neither technology replaces DNSSEC validation of authoritative data.
 
-DoT، DNS میان Client و Resolver را داخل TLS می‌برد؛ DoH آن را داخل HTTPS می‌برد. این دو مسیر محلی را رمز می‌کنند، ولی Resolver منتخب هنوز Query را می‌بیند و صحت Zone بدون DNSSEC تضمین نمی‌شود. Policy سازمانی برای Resolver و Logging لازم است.
-
-### ابزارهای بررسی DNS
-
-</div>
-
-<div dir="ltr" align="left">
+## DNS troubleshooting commands
 
 ```bash
 dig A www.realsam.ir
@@ -296,51 +267,41 @@ dig -x 192.0.2.80
 dig DNSKEY realsam.ir +dnssec
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| فرمان | کار |
+| Line | Purpose |
 |---|---|
-| خط ۱ | IPv4 وب را می‌پرسد |
-| خط ۲ | IPv6 وب را می‌پرسد |
-| خط ۳ | Mail exchangerها را می‌بیند |
-| خط ۴ | Delegation را از Root مرحله‌ای دنبال می‌کند؛ Resolver محلی را دور می‌زند |
-| خط ۵ | PTR آدرس را Query می‌کند |
-| خط ۶ | داده DNSSEC را درخواست می‌کند؛ وجود امضا به‌تنهایی Validation محلی را ثابت نمی‌کند |
+| 1 | Queries the web IPv4 address |
+| 2 | Queries the web IPv6 address |
+| 3 | Lists mail exchangers |
+| 4 | Follows delegation from the root instead of relying only on local recursion |
+| 5 | Queries reverse DNS/PTR |
+| 6 | Requests DNSSEC key/signature data; presence does not by itself prove local validation |
 
-در عیب‌یابی، بخش `status`، `ANSWER`، `AUTHORITY`، `SERVER`، TTL و زمان پاسخ را بخوانید. `NXDOMAIN` یعنی نام وجود ندارد؛ `SERVFAIL` معمولاً شکست Resolver/Authoritative/DNSSEC است؛ Timeout یعنی پاسخ به‌موقع نرسیده است.
+Read `status`, `ANSWER`, `AUTHORITY`, `SERVER`, TTL, and query time. `NXDOMAIN` means the name does not exist. `SERVFAIL` often indicates resolver, authoritative, or DNSSEC failure. A timeout means no timely response, not necessarily that the name is absent.
 
-### NTP، PTP و NTS
+## NTP, PTP, and NTS
 
-- **NTP:** همگام‌سازی عمومی زمان با سلسله‌مراتب Stratum؛ UDP 123.
-- **PTP:** دقت بالاتر در LANهای کنترل‌شده، به‌ویژه با Hardware timestamp؛ جایگزین همیشگی NTP نیست.
-- **NTS:** امنیت برای NTP با ایجاد Cookie/کلید از TLS و سپس تبادل زمان محافظت‌شده.
+- **NTP:** general network time synchronization, commonly UDP 123 and a stratum hierarchy.
+- **PTP:** higher precision on controlled local networks, especially with hardware timestamps.
+- **NTS:** protects NTP using a TLS-based key/cookie establishment process.
 
-زمان غلط Certificate، Kerberos، Log correlation و DNSSEC را خراب می‌کند. چند منبع مستقل، محدودکردن Peer، Monitoring offset و عدم استفاده کور از Server ناشناس لازم است.
+Incorrect time breaks certificate validation, Kerberos, log correlation, and DNSSEC. Use multiple approved sources, monitor offset, and restrict peers.
 
-## ۳.۵ — دسترسی و مدیریت
+## 3.5 — Network access and management
 
-| روش | کاربرد | نکته امنیتی |
+| Method | Purpose | Security concern |
 |---|---|---|
-| Site-to-site VPN | اتصال دو شبکه | Route، رمز، Rekey و Redundancy |
-| Client-to-site VPN | اتصال Endpoint با Client | MFA، وضعیت دستگاه، Split/full tunnel |
-| Clientless VPN | دسترسی مرورگری به برنامه مشخص | سطح محدود، Session و Browser |
-| SSH | CLI امن | Key، الگوریتم مدرن، AAA و ACL |
-| GUI/HTTPS | مدیریت تصویری | TLS معتبر، MFA، Management network |
-| API | Automation | Token کوتاه/کم‌دسترسی، Audit و TLS |
-| Console | دسترسی محلی/Out-of-band | کنترل فیزیکی و Account مستقل بحران |
-| Jump box | نقطه کنترل ورود مدیر | Harden، MFA، Record و Patch |
+| Site-to-site VPN | Connect two networks | Routes, keys, rekey, and redundancy |
+| Client-to-site VPN | Connect one endpoint | MFA, device posture, and tunnel policy |
+| Clientless VPN | Browser access to selected applications | Session control and limited exposure |
+| SSH | Secure CLI | Keys, modern algorithms, AAA, and ACLs |
+| HTTPS GUI | Visual administration | Valid TLS, MFA, and management network |
+| API | Automation | Scoped short-lived tokens, TLS, and audit |
+| Console | Local/out-of-band access | Physical control and emergency accounts |
+| Jump box | Controlled administrative entry | Hardening, MFA, recording, and patching |
 
-**Split tunnel** فقط ترافیک سازمان را از VPN می‌برد و اینترنت محلی را مستقیم؛ پهنای‌باند کمتر ولی Policy/دید سازمان محدودتر. **Full tunnel** همه ترافیک را از سازمان عبور می‌دهد؛ کنترل بیشتر و ظرفیت/Latency بالاتر لازم دارد.
+Split tunnel sends only organizational traffic through the VPN, reducing central bandwidth but reducing control over direct Internet traffic. Full tunnel sends all traffic through the organization, increasing visibility and policy control but requiring more capacity.
 
-**In-band management** از همان شبکه Production می‌گذرد و در خرابی آن ممکن است از دست برود. **Out-of-band** مسیر مدیریت جدا مانند Console server/LTE دارد؛ خود این مسیر هم باید امن و آزموده شود.
-
-نمونه SSH روی Linux:
-
-</div>
-
-<div dir="ltr" align="left">
+In-band management uses the production network and may fail with it. Out-of-band management uses a separate path such as console servers and dedicated cellular access; it also needs strong security and testing.
 
 ```bash
 ssh-keygen -t ed25519 -a 64 -C "netadmin@realsam.ir"
@@ -348,26 +309,20 @@ ssh-copy-id netadmin@router-mgmt.realsam.ir
 ssh -o IdentitiesOnly=yes netadmin@router-mgmt.realsam.ir
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `ssh-keygen` | کلید Ed25519 می‌سازد؛ `-a 64` KDF فایل Private key را سخت‌تر و `-C` برچسب می‌گذارد |
-| `ssh-copy-id` | Public key را پس از احراز هویت روی حساب مجاز نصب می‌کند؛ Host key را بررسی کنید |
-| `ssh ...` | فقط Identityهای صریح Agent/Config را محدود و Login را آغاز می‌کند |
+| `ssh-keygen` | Creates an Ed25519 key; `-a 64` strengthens private-key-file password derivation and `-C` labels it |
+| `ssh-copy-id` | Installs the public key after authentication; verify the host key first |
+| Final SSH line | Connects using explicitly selected identities |
 
-Private key را ارسال یا در Git ذخیره نکنید. نخستین Host key را از کانال مورداعتماد Verify کنید؛ پذیرش کور، حمله On-path را ممکن می‌کند.
+Never send a private key or commit it to Git. Verify the first host-key fingerprint through a trusted channel.
 
-## تمرین پایان فصل
+## End-of-chapter exercises
 
-1. برای سناریوی مرجع یک Logical diagram، IPAM کوچک و Cable map بسازید.
-2. Change request افزودن VLAN 40 را همراه Rollback و Success criteria بنویسید.
-3. RPO/RTO یک فروشگاه آنلاین را با دلیل تعیین کنید.
-4. DORA را Capture و Source/Destination IP/Port هر مرحله را تحلیل کنید.
-5. رکوردهای Forward و Reverse `mail.realsam.ir` را طراحی و FCrDNS را بررسی کنید.
-6. خروجی `dig +trace` را از Root تا Authoritative خط‌به‌خط گزارش کنید.
-7. برای مدیریت در زمان قطع Production یک طرح Out-of-band بنویسید.
-
-</div>
+1. Create a logical diagram, IPAM table, and cable map for the reference network.
+2. Write a change request for VLAN 40 with rollback and success criteria.
+3. Choose justified RPO and RTO values for an online store.
+4. Capture DORA and identify addresses and ports in every message.
+5. Design forward and reverse DNS for `mail.realsam.ir` and verify FCrDNS.
+6. Explain every stage of `dig +trace` from root to authoritative server.
+7. Design out-of-band management that remains available during production-network failure.

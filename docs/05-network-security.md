@@ -1,179 +1,177 @@
-<div dir="rtl" align="right">
+# Chapter 5 — Network Security
 
-# فصل ۵ — امنیت شبکه
+Security is not one product or one command. It is continuous risk reduction through technical, administrative, and physical controls. Use defensive examples only on systems you own or are explicitly authorized to test.
 
-امنیت یک محصول یا یک تنظیم نیست؛ فرایند کاهش Risk با کنترل‌های انسانی، فنی و فیزیکی است. این فصل دامنه ۴ آزمون N10-009 را پوشش می‌دهد. مثال‌های دفاعی را فقط روی سامانه‌ای که مالک آن هستید یا اجازه صریح دارید اجرا کنید.
+## 4.1 — Security concepts
 
-## ۴.۱ — مفاهیم و روش‌های امنیتی
+### Core terms
 
-### واژه‌های پایه
-
-| واژه | تعریف ساده | مثال |
+| Term | Plain-English definition | Example |
 |---|---|---|
-| Asset | چیزی که ارزش دارد | داده مشتری، Router، اعتبار سازمان |
-| Threat | عامل/رویداد بالقوه آسیب | مهاجم، آتش‌سوزی، خطای انسانی |
-| Vulnerability | ضعف قابل‌استفاده | Firmware قدیمی، Password پیش‌فرض |
-| Exploit | روش/کدی که از ضعف استفاده می‌کند | ورودی ساخته‌شده برای اجرای کد |
-| Risk | احتمال و اثر رخداد آسیب‌زا | توقف سرویس پس از سوءاستفاده |
-| Mitigation/control | کاری برای کم‌کردن احتمال/اثر | Patch، MFA، Segmentation، Backup |
+| Asset | Something valuable | Customer data, router, reputation |
+| Threat | A potential harmful actor or event | Attacker, fire, human error |
+| Vulnerability | A weakness that can be used | Old firmware or default password |
+| Exploit | A method/code that uses a vulnerability | Crafted request that executes code |
+| Risk | Likelihood and impact of harm | Service loss after compromise |
+| Control/mitigation | Reduces likelihood or impact | Patch, MFA, segmentation, backup |
 
-فرمول کیفی رایج `Risk ≈ Likelihood × Impact` است. CVE مساوی Risk سازمان شما نیست؛ Exposure، ارزش Asset، Control موجود و قابلیت Exploit را هم بسنجید. Risk ممکن است Mitigate، Transfer، Avoid یا با Approval پذیرفته شود.
+A qualitative model is `risk ≈ likelihood × impact`. A published vulnerability score is not the complete risk to your organization. Exposure, asset value, existing controls, and exploitability matter. Risk may be mitigated, transferred, avoided, or formally accepted.
 
 ### CIA triad
 
-- **Confidentiality:** فقط افراد مجاز داده را ببینند؛ Encryption و Access control.
-- **Integrity:** تغییر غیرمجاز کشف/جلوگیری شود؛ Hash، Signature و Change control.
-- **Availability:** سرویس هنگام نیاز قابل‌استفاده باشد؛ Redundancy، ظرفیت و DR.
+- **Confidentiality:** only authorized identities can read data.
+- **Integrity:** unauthorized changes are prevented or detected.
+- **Availability:** services remain usable when required.
 
-گاهی کنترل‌ها با هم Trade-off دارند. Encryption سنگین بدون طراحی ظرفیت می‌تواند Availability را کم کند؛ Availability بدون Authentication می‌تواند Confidentiality را نابود کند.
+Controls can create trade-offs. Encryption without capacity planning can hurt availability; availability without access control can destroy confidentiality.
 
-### Encryption در مسیر و در حالت سکون
+### Encryption in transit and at rest
 
-Data in transit با TLS، IPsec یا SSH محافظت می‌شود. Data at rest با Disk/Database/Object encryption. Encryption نیازمند **Key management** است: تولید امن، نگهداری، دسترسی، Rotation، Backup، Revocation و نابودی. اگر Key کنار Data و با همان دسترسی باشد، فایده محدود می‌شود.
+TLS, IPsec, and SSH can protect data in transit. Disk, database, and object encryption protect data at rest. Encryption depends on key management: secure generation, storage, access, rotation, backup, revocation, and destruction.
 
-### Certificate و PKI
+If a key is stored next to the data with the same permissions, protection is limited.
 
-Certificate کلید عمومی را به Identity متصل و CA آن را امضا می‌کند. اجزای PKI: Root CA، Intermediate CA، Registration/validation، Repository، CRL/OCSP و Policy.
+### Certificates and PKI
 
-Client در TLS معمولاً بررسی می‌کند:
+A certificate binds identity to a public key. A PKI includes root and intermediate CAs, validation/registration, certificate repositories, revocation methods such as CRL/OCSP, and policy.
 
-1. زنجیره به Root مورداعتماد برسد.
-2. امضای هر Certificate درست باشد.
-3. زمان اعتبار مناسب باشد.
-4. نام مقصد در SAN باشد.
-5. Key usage اجازه کار موردنظر دهد.
-6. وضعیت Revocation طبق Policy بررسی شود.
+During TLS validation, a client normally checks:
 
-Self-signed ذاتاً رمز ضعیف نیست، ولی اعتمادش توزیع‌شده نیست؛ برای Production باید Trust به‌طور امن مدیریت شود. خاموش‌کردن Validation برای رفع خطا، On-path attack را آسان می‌کند.
+1. The chain reaches a trusted root.
+2. Signatures are correct.
+3. The certificate is currently valid.
+4. The destination name appears in SAN.
+5. Key usage permits the operation.
+6. Revocation is handled according to policy.
 
-### IAM، AAA و Federation
+A self-signed certificate is not automatically weak cryptography, but its trust is not distributed by a public or enterprise CA. Disabling validation to hide an error creates an on-path attack opportunity.
 
-**Identification** ادعای هویت، **Authentication** اثبات آن، **Authorization** تعیین مجوز و **Accounting** ثبت فعالیت است.
+### IAM and AAA
 
-| فناوری | نقش رایج |
+Identification claims an identity. Authentication proves it. Authorization determines permissions. Accounting records actions.
+
+| Technology | Common role |
 |---|---|
-| MFA | دو یا چند عامل مستقل: دانستن، داشتن، بودن |
-| SSO | یک ورود برای چند Service؛ Convenience و نقطه حساس مرکزی |
-| RADIUS | AAA برای Network access/VPN/802.1X؛ Authentication/Authorization ترکیبی و Accounting |
-| TACACS+ | مدیریت Device؛ جداسازی AAA و رمزکردن Payload، عمدتاً در اکوسیستم شبکه |
-| LDAP | پروتکل دسترسی Directory؛ خود Directory/SSO نیست |
-| SAML | Federation مبتنی بر Assertion، رایج برای Web SSO |
-| Time-based authentication | OTP محدود به زمان؛ ساعت دقیق لازم است |
+| MFA | Uses two or more independent factor types |
+| SSO | One login for several services; creates a critical central dependency |
+| RADIUS | Network/VPN/802.1X AAA, commonly combines authentication and authorization |
+| TACACS+ | Device administration with separated AAA functions and protected payload |
+| LDAP | Directory-access protocol, not itself the directory or SSO |
+| SAML | Assertion-based federation, commonly for web SSO |
+| Time-based authentication | Short-lived OTP; accurate time is required |
 
-MFA فقط وقتی چند عامل **مستقل** است؛ دو Password دو عامل نیست. Push fatigue، SIM swap و Phishing نشان می‌دهند MFA هم باید مقاوم، Monitor و قابل‌بازیابی باشد.
+Two passwords are not MFA because both are knowledge factors. MFA must also resist push fatigue, phishing, and weak recovery.
 
-**Least privilege** کمترین مجوز لازم و **RBAC** مجوز بر اساس Role. Access review، Joiner/mover/leaver، Account موقت و Break-glass باید تعریف شوند. **Geofencing** موقعیت را سیگنال Risk می‌کند ولی GPS/IP قابل‌خطا یا جعل است و نباید تنها عامل باشد.
+Least privilege grants only what is needed. Role-Based Access Control assigns permissions through job roles. Review access regularly and define joiner, mover, leaver, temporary-account, and break-glass procedures. Geofencing is a contextual signal, not a reliable single authentication factor.
 
-### امنیت فیزیکی و Deception
+### Physical security and deception
 
-Lock، Badge، Mantrap، دوربین، Tamper seal، نگهبان و ثبت Visitor لایه‌های فیزیکی‌اند. دوربین بدون Retention، Time sync، زاویه مناسب و واکنش عملی ارزش محدودی دارد.
+Locks, badges, cameras, mantraps, tamper seals, guards, visitor logs, and secure disposal protect physical assets. Cameras need correct placement, retention, time synchronization, and a response process.
 
-**Honeypot** سامانه طعمه و **honeynet** شبکه‌ای از طعمه‌هاست. هدف کشف/مطالعه است؛ باید ایزوله و Monitor شود تا مهاجم از آن به دیگران حمله نکند. Deception جای Patch و Segmentation نیست.
+A honeypot is a decoy system; a honeynet is a decoy network. Isolate and monitor them so an intruder cannot use them to attack other systems. Deception does not replace patching or segmentation.
 
-### Compliance و Audit
+### Compliance and audit
 
-- **Data locality/residency:** داده در چه حوزه‌ای نگهداری/پردازش می‌شود.
-- **PCI DSS:** استاندارد امنیت داده کارت پرداخت؛ محدوده را با Segmentation کم می‌کنند، ولی Segmentation باید اثبات شود.
-- **GDPR:** چارچوب حقوقی حفاظت داده شخصی در محدوده خود؛ مشاوره حقوقی لازم است.
+- **Data locality/residency:** where data is stored and processed.
+- **PCI DSS:** security standard for payment-card data environments.
+- **GDPR:** legal framework for personal-data protection within its scope.
 
-Compliance حداقل الزام و Security مدیریت Risk است؛ Compliant بودن به معنی نفوذناپذیر نیست. Audit باید Evidence قابل‌تکرار، Owner و Remediation داشته باشد.
+Compliance is a minimum obligation within a defined scope. It is not proof that every security risk is controlled. Audits need repeatable evidence, owners, and remediation.
 
-### Segmentation و انواع محیط
+### Segmentation
 
-| محیط | ویژگی/ریسک | رویکرد |
+| Environment | Typical risk | Approach |
 |---|---|---|
-| IoT | دستگاه متصل عمومی با Patch محدود | Inventory، VLAN، Egress محدود |
-| IIoT | IoT صنعتی | Availability و Safety مهم |
-| ICS/SCADA | کنترل/نظارت فرایند | تغییر بسیار کنترل‌شده، Zone/conduit |
-| OT | فناوری عملیاتی فیزیکی | Safety و Legacy protocol |
-| Guest | دستگاه غیرسازمانی | Internet-only و Client isolation |
-| BYOD | مالکیت شخصی | NAC/MDM، Container و Policy حریم خصوصی |
+| IoT | Limited patching and unmanaged behavior | Inventory, separate VLAN, limited egress |
+| IIoT | Industrial devices with high availability needs | Safety-aware change control and isolation |
+| ICS/SCADA | Controls and monitors processes | Zones/conduits and tightly controlled changes |
+| OT | Physical operational technology | Safety, legacy-protocol, and availability focus |
+| Guest | Untrusted non-corporate devices | Internet-only policy and client isolation |
+| BYOD | Personally owned endpoint | NAC/MDM, privacy policy, and limited access |
 
-Segmentation با VLAN تنها کامل نیست؛ Inter-VLAN ACL/Firewall، Identity، Route و Monitoring مرز واقعی را می‌سازند. Flat network حرکت جانبی را آسان می‌کند.
+A VLAN alone is not complete segmentation. Inter-VLAN ACLs or firewalls, routing, identity, and monitoring enforce the boundary.
 
-## ۴.۲ — حمله‌ها و نشانه‌ها
+## 4.2 — Attacks and indicators
 
-هدف این بخش شناخت و دفاع است، نه دستور حمله.
+This section teaches recognition and defense, not attack execution.
 
-### DoS و DDoS
+### DoS and DDoS
 
-DoS منابع Bandwidth، Connection table، CPU یا برنامه را مصرف می‌کند. DDoS از مبدأهای زیاد می‌آید. نشانه: افزایش ناگهانی Traffic/Session، Timeout و اشباع. دفاع: ظرفیت و Anycast/CDN، Rate limiting، SYN protection، WAF، Autoscaling، همکاری ISP/Scrubbing و Runbook. فقط Block یک IP برای DDoS کافی نیست.
+Denial of service consumes bandwidth, connection state, CPU, memory, or application resources. Distributed DoS uses many sources. Defenses include CDN/Anycast, rate limiting, SYN protection, WAF, capacity, autoscaling, ISP coordination, scrubbing, and a tested runbook.
 
 ### VLAN hopping
 
-مهاجم تلاش می‌کند ترافیک VLAN دیگری را بگیرد؛ سوءاستفاده از Dynamic trunk یا Double tagging نمونه مفهومی است. دفاع: Access mode ثابت، خاموش‌کردن DTP، Native VLAN بلااستفاده، محدودکردن Allowed VLAN، عدم استفاده VLAN 1 برای کاربر و Patch.
+An attacker attempts to reach another VLAN through dynamic trunk negotiation or tagging behavior. Defenses include static access mode, disabling DTP, using an unused native VLAN, restricting allowed VLANs, keeping users off VLAN 1, and patching devices.
 
 ### MAC flooding
 
-پرکردن CAM table می‌تواند Unknown unicast flooding را افزایش دهد. دفاع: Port security، محدودیت MAC، 802.1X، Storm control/Monitoring و Vendor protection. نتیجه دستگاه‌های مدرن یکسان نیست؛ «Switch حتماً Hub می‌شود» تعمیم دقیقی نیست.
+Excess source MAC addresses can pressure the switch MAC table and increase unknown-unicast flooding. Use port security, 802.1X, MAC limits, storm controls, and monitoring. Modern switch behavior varies; saying every switch simply becomes a hub is inaccurate.
 
 ### ARP poisoning/spoofing
 
-ARP در IPv4 احراز هویت ذاتی ندارد؛ پاسخ جعلی می‌تواند IP Gateway را به MAC مهاجم نگاشت کند و On-path/DoS بسازد. دفاع: DHCP Snooping + Dynamic ARP Inspection، Static mapping محدود، Segmentation، TLS/SSH و Alert تغییر MAC.
+ARP has no built-in authentication. A false reply can map the gateway IP to an attacker's MAC, creating on-path interception or denial. Defenses include DHCP Snooping plus Dynamic ARP Inspection, segmentation, TLS/SSH, and alerts for MAC changes.
 
 ### DNS poisoning/spoofing
 
-پاسخ جعلی یا Cache مسموم نام را به IP مهاجم می‌برد. دفاع: Resolver به‌روز، Randomization، DNSSEC validation، محدودکردن Recursion، DoT/DoH طبق Policy و Monitoring تغییر رکورد. DoH به‌تنهایی صحت Authoritative data را تضمین نمی‌کند.
+A false DNS answer or poisoned resolver cache directs a name to the wrong address. Use patched resolvers, transaction randomization, DNSSEC validation, restricted recursion, approved DoH/DoT policy, and monitoring of authoritative changes.
 
-### Rogue service/device و Evil twin
+### Rogue services and evil twins
 
-- **Rogue DHCP:** Gateway/DNS غلط می‌دهد. DHCP Snooping و Port trusted محدود.
-- **Rogue AP:** AP بدون مجوز در LAN؛ Inventory، NAC، Wireless IDS و Port control.
-- **Evil twin:** SSID شبیه شبکه معتبر برای فریب؛ WPA2/3-Enterprise با Validation Certificate، آموزش و WIDS.
+- **Rogue DHCP:** gives a malicious gateway or DNS server; defend with DHCP Snooping.
+- **Rogue AP:** unauthorized access point connected to the network; defend with inventory, NAC, switch controls, and wireless IDS.
+- **Evil twin:** an AP imitating a trusted SSID; enterprise Wi-Fi with correct server-certificate validation greatly reduces the risk.
 
-SSID پنهان یا MAC filtering مانع جدی مهاجم نیست.
+Hidden SSIDs and MAC filtering are not strong defenses.
 
-### On-path attack
+### On-path attacks
 
-مهاجم میان دو طرف Traffic را مشاهده/تغییر می‌دهد. ممکن است از ARP، Rogue AP، DNS یا Route سوءاستفاده کند. TLS معتبر، VPN، Secure protocol، Certificate validation و Network control اثر را کم می‌کنند. اخطار Certificate را نادیده نگیرید.
+An attacker observes or modifies traffic between peers through ARP, wireless, DNS, or routing manipulation. Validated TLS, VPNs, secure protocols, certificate validation, and network controls reduce impact. Never ignore a certificate warning without investigating the cause.
 
 ### Social engineering
 
-- **Phishing:** پیام فریبنده برای Credential/اجرای فایل.
-- **Dumpster diving:** بازیابی اطلاعات از زباله؛ Shred و Disposal امن.
-- **Shoulder surfing:** نگاه به صفحه/رمز؛ Privacy screen و محیط کنترل‌شده.
-- **Tailgating:** ورود پشت فرد مجاز؛ Badge، Mantrap و آموزش عدم رودربایستی.
-
-آموزش باید گزارش آسان، شبیه‌سازی اخلاقی و بازخورد داشته باشد؛ سرزنش کاربر گزارش را کم می‌کند.
+| Attack | Description | Example control |
+|---|---|---|
+| Phishing | Deceptive message seeking credentials or execution | Phishing-resistant MFA, filtering, training, easy reporting |
+| Dumpster diving | Retrieving discarded information | Shredding and controlled disposal |
+| Shoulder surfing | Observing screens or secrets | Privacy screens and controlled workspace |
+| Tailgating | Following an authorized person inside | Badges, mantraps, guards, and training |
 
 ### Malware
 
-Virus به فایل میزبان، Worm خودگستر، Trojan ظاهر مشروع، Ransomware اخاذی و Spyware جمع‌آوری پنهان دارد. دفاع لایه‌ای: Patch، EDR، Allowlisting، Least privilege، Segmentation، Filter، Backup آفلاین/تغییرناپذیر و تمرین Restore. Backup متصل ممکن است همراه Production رمز شود.
+Viruses attach to files, worms self-propagate, Trojans appear legitimate, ransomware extorts, and spyware collects data. Use patching, EDR, application control, least privilege, segmentation, filtering, offline/immutable backups, and tested restores. A continuously connected backup can be encrypted with production data.
 
-## ۴.۳ — دفاع و Hardening
+## 4.3 — Hardening and defensive features
 
-### Baseline سخت‌سازی Device
+### Device-hardening baseline
 
-1. Inventory و Owner مشخص کنید.
-2. Firmware/OS پشتیبانی‌شده و امضای Image را بررسی کنید.
-3. Password، Community و Certificate پیش‌فرض را عوض کنید.
-4. Telnet/HTTP/FTP و Service/Port بلااستفاده را خاموش کنید.
-5. SSH/HTTPS، الگوریتم قوی، MFA/AAA و Management ACL فعال کنید.
-6. Management plane را در VLAN/VRF و ترجیحاً OOB جدا کنید.
-7. SNMPv3، NTP/NTS، Syslog مرکزی و Audit روشن کنید.
-8. Config را رمز و Backup و Restore را آزمایش کنید.
-9. Control plane policing/Rate limit و Banner حقوقی طبق Policy بگذارید.
-10. Vulnerability و Configuration drift را دوره‌ای بررسی کنید.
+1. Record inventory and ownership.
+2. Install a supported OS/firmware image and verify its signature.
+3. Replace default passwords, communities, and certificates.
+4. Disable unused services, protocols, and ports.
+5. Use SSH/HTTPS, modern algorithms, AAA/MFA, and management ACLs.
+6. Separate the management plane with a VLAN/VRF or out-of-band path.
+7. Configure SNMPv3, trusted time, central logs, and audit.
+8. Encrypt configuration backups and test restoration.
+9. Protect the control plane with appropriate rate limits.
+10. Monitor vulnerabilities and configuration drift.
 
-Security through obscurity مانند تغییر پورت SSH می‌تواند Noise را کم کند، ولی کنترل اصلی نیست.
+Changing a management port may reduce automated noise but is not a primary security control.
 
-### NAC، 802.1X، MAC filtering و Port security
+### NAC and 802.1X
 
-NAC قبل/حین اتصال، هویت و وضعیت دستگاه را بررسی و VLAN/ACL/Quarantine می‌دهد. در 802.1X:
+Network Access Control checks identity and sometimes device posture before or during access. It may assign a normal VLAN, restricted ACL, or quarantine network.
 
-- **Supplicant:** Client.
-- **Authenticator:** Switch/AP که Port را کنترل می‌کند.
-- **Authentication server:** معمولاً RADIUS.
+In 802.1X:
 
-MAB/MAC filtering برای دستگاه فاقد Supplicant استفاده می‌شود ولی MAC قابل جعل است. Port security تعداد/نوع MAC را محدود می‌کند و Violation می‌تواند Protect/Restrict/Shutdown باشد؛ رفتار Vendor را بررسی کنید.
+- **Supplicant:** endpoint software requesting access.
+- **Authenticator:** switch or AP controlling the port.
+- **Authentication server:** commonly RADIUS.
 
-### DHCP Snooping و DAI مرحله‌ای
+MAC Authentication Bypass helps devices without supplicants, but MAC addresses can be spoofed. Port security limits learned MAC addresses and defines a violation action.
 
-DHCP Snooping پیام Server را فقط از Port trusted می‌پذیرد و Binding table IP-MAC-VLAN-Port می‌سازد. DAI پاسخ ARP را با همین جدول می‌سنجد. اگر Trunk به DHCP server/relay درست Trusted نشود، DHCP قطع می‌شود؛ اگر Port کاربر Trusted شود، دفاع بی‌اثر می‌شود.
+### DHCP Snooping and DAI
 
-</div>
-
-<div dir="ltr" align="left">
+DHCP Snooping accepts server messages only on trusted paths and builds IP-MAC-VLAN-port bindings. Dynamic ARP Inspection validates ARP against these bindings.
 
 ```cisco
 ip dhcp snooping
@@ -189,32 +187,22 @@ show ip dhcp snooping binding
 show ip arp inspection
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| خط ۱ | قابلیت Snooping را سراسری فعال می‌کند |
-| خط ۲ | VLANهای تحت محافظت را تعیین می‌کند |
-| Interface uplink | مسیر معتبر پاسخ DHCP را انتخاب می‌کند |
-| `trust` | فقط این Uplink را برای پیام Server مورداعتماد می‌کند |
-| Interface range | Portهای کاربر را انتخاب می‌کند |
-| `limit rate` | نرخ DHCP را محدود می‌کند؛ مقدار باید با محیط آزموده شود |
-| `ip arp inspection` | DAI را روی VLANها فعال می‌کند |
-| سه `show` | وضعیت، Binding و آمار/Dropهای ARP را بررسی می‌کند |
+| First line | Enables DHCP Snooping globally |
+| VLAN line | Selects protected VLANs |
+| Uplink interface | Selects the legitimate server/relay path |
+| `trust` | Accepts DHCP server messages on that uplink |
+| Edge range | Selects user-facing untrusted ports |
+| Rate limit | Limits DHCP rate; tune for the real environment |
+| ARP inspection | Enables DAI for selected VLANs |
+| Show commands | Verify state, bindings, and ARP drops |
 
-قبل از Production، Static IPها، Voice، PXE، Relay و Failover را آزمایش کنید.
+Trusting a user port defeats the defense. Failing to trust the true server/relay path breaks DHCP. Test static devices, voice, PXE, relay, and failover before production.
 
-### ACL
+### ACL processing
 
-ACL بالا به پایین بررسی می‌شود، اولین Match برنده است و در پایان Implicit deny وجود دارد. Standard ACL معمولاً Source و Extended ACL Source/Destination/Protocol/Port را می‌سنجد. ACL Stateful نیست مگر Platform قابلیت دیگری اضافه کند.
-
-Policy: کاربران فقط HTTPS و DNS لازم به Serverها داشته باشند:
-
-</div>
-
-<div dir="ltr" align="left">
+An ACL is evaluated top to bottom. The first match wins, and an implicit deny exists at the end. A standard ACL mainly matches source address; an extended ACL can match source, destination, protocol, and ports. Traditional ACLs are stateless unless the platform adds stateful behavior.
 
 ```cisco
 ip access-list extended USERS-TO-SERVERS
@@ -230,63 +218,53 @@ interface Vlan10
 show access-lists USERS-TO-SERVERS
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| نام ACL | ACL خوانا می‌سازد |
-| `remark`ها | دلیل Rule را مستند می‌کنند |
-| Permit HTTPS | فقط TCP/443 به Web server |
-| دو Permit DNS | UDP و TCP/53 به Resolver تأییدشده؛ DNS می‌تواند هر دو را لازم داشته باشد |
-| Deny/log | بقیه دسترسی کاربران به Server subnet را رد و Log می‌کند |
-| Permit any | ترافیک دیگر، مثلاً اینترنت از مسیر Firewall را می‌گذارد؛ Policy واقعی ممکن است محدودتر باشد |
-| `ip access-group ... in` | ACL را ورودی SVI کاربران اعمال می‌کند |
-| `show` | Rule و Counterها را نمایش می‌دهد |
+| ACL name | Creates a readable named extended ACL |
+| Remarks | Document the reason for rules |
+| HTTPS permit | Allows only TCP/443 to the web server |
+| DNS permits | Allows both UDP and TCP DNS to the approved resolver |
+| Deny/log | Blocks other user access to the server subnet and logs it |
+| Final permit | Allows other destinations, such as Internet through a firewall; real policy may be stricter |
+| `ip access-group` | Applies the ACL inbound on the user SVI |
+| Show command | Displays rules and hit counters |
 
-قبل از ACL، مسیر مدیریت و سرویس‌های زیرساخت را فراموش نکنید. Log کردن همه Packetهای پرتعداد می‌تواند CPU/Storage را پر کند.
+Before applying an ACL, preserve management, routing, DNS, DHCP, time, and return traffic. Logging every high-rate packet can overload CPU and storage.
 
-### URL/content filtering و Zoneها
+### Filtering and zones
 
-URL filtering مقصد وب را بر اساس Domain/Category/URL کنترل می‌کند؛ Content filtering محتوای منتقل‌شده را تحلیل می‌کند. TLS visibility مسائل Privacy، Certificate، قانون و ظرفیت دارد. Blocklist کامل نیست و Allowlist نیز نگهداری می‌خواهد.
+URL filtering controls destinations or categories. Content filtering inspects transferred content. TLS inspection introduces privacy, certificate, legal, and capacity concerns.
 
-**Trusted zone** مجوز نامحدود نیست؛ فقط سطح اعتماد نسبی است. **Untrusted** مانند اینترنت کنترل سخت‌تر دارد. **Screened subnet/DMZ** سرویس عمومی را میان مرزها جدا می‌کند تا نفوذ به Web server مسیر مستقیم به LAN نسازد.
+A trusted zone is not unlimited trust. An untrusted zone receives stricter controls. A screened subnet/DMZ isolates public services so compromise does not create a direct path to the internal LAN.
 
-### دفاع در عمق برای `www.realsam.ir`
+### Defense in depth for `www.realsam.ir`
 
-1. DNSSEC و مدیریت امن Registrar/Domain.
-2. CDN/DDoS protection و WAF در Edge.
-3. TLS 1.2/1.3، Certificate درست و HSTS پس از آمادگی.
-4. Reverse proxy در DMZ با فقط Port لازم.
-5. Backend در Zone جدا؛ فقط Reverse proxy به Port برنامه.
-6. Database در Zone جدا؛ فقط Backend و Account کم‌دسترسی.
-7. Secret manager، Patch، EDR و File integrity.
-8. Log مرکزی، Alert، Backup تغییرناپذیر و Restore test.
-9. Admin فقط از VPN/Jump box با MFA و OOB اضطراری.
+1. Protect registrar and DNS accounts; use DNSSEC where appropriate.
+2. Use CDN/DDoS protection and a WAF at the edge.
+3. Use TLS 1.2/1.3 with a valid certificate and safe configuration.
+4. Place the reverse proxy in a DMZ and expose only required ports.
+5. Put backends in a separate zone accessible only from the proxy.
+6. Put databases in another zone accessible only from the application.
+7. Use secret management, patching, EDR, and file-integrity monitoring.
+8. Centralize logs and maintain immutable, tested backups.
+9. Permit administration only through VPN/jump host with MFA and tested emergency access.
 
-هیچ لایه‌ای به‌تنهایی کافی نیست؛ هدف این است که شکست یک کنترل به شکست کامل منجر نشود.
+## Incident-response basics
 
-## پاسخ به Incident در حد Network+
+1. Validate the alert and determine scope.
+2. Preserve time-synchronized evidence; do not power off systems without considering evidence loss.
+3. Contain within authorization: quarantine, temporary rules, or credential revocation.
+4. Eradicate the cause: patch, remove persistence, and correct configuration.
+5. Recover from a trusted source and increase monitoring.
+6. Notify stakeholders and legal/compliance roles according to the plan.
+7. Record timeline, lessons, and corrective actions without blame.
 
-1. Alert را Validate و Scope را تعیین کنید.
-2. Evidence را با زمان هماهنگ حفظ کنید؛ بی‌جهت سیستم را خاموش نکنید.
-3. طبق اختیار، Contain کنید: Quarantine، Rule موقت، Credential revoke.
-4. علت را Eradicate: Patch، حذف Persistence، اصلاح Config.
-5. از منبع سالم Recover و Monitoring را تقویت کنید.
-6. ذی‌نفع/حقوقی را طبق Plan مطلع کنید.
-7. Lessons learned، Timeline و کنترل اصلاحی را ثبت کنید.
+## End-of-chapter exercises
 
-Network technician نباید بدون مجوز Evidence را دستکاری یا به مهاجم پاسخ تهاجمی دهد.
-
-## تمرین پایان فصل
-
-1. برای هر عضو CIA دو کنترل شبکه‌ای بنویسید.
-2. Threat، Vulnerability، Exploit و Risk را در سناریوی Firmware قدیمی جدا کنید.
-3. Trust boundary شبکه Guest، IoT و Server را طراحی کنید.
-4. ACL نمونه را با یک DNS ثانویه و NTP گسترش دهید و ترتیب Rule را توضیح دهید.
-5. Runbook تشخیص Rogue DHCP بنویسید.
-6. Certificate `www.realsam.ir` را با `openssl s_client` فقط در محیط مجاز بررسی و Chain/SAN/Expiry را گزارش کنید.
-7. یک Tabletop برای Ransomware طراحی کنید که Backup و Segmentation را هم بیازماید.
-
-</div>
+1. Give two network controls for each CIA property.
+2. Separate threat, vulnerability, exploit, and risk in an old-firmware scenario.
+3. Design boundaries for guest, IoT, user, and server networks.
+4. Extend the sample ACL for a secondary DNS server and NTP, then explain rule order.
+5. Write a runbook for detecting rogue DHCP.
+6. Inspect the certificate of an authorized test service and report chain, SAN, and expiry.
+7. Design a ransomware tabletop that tests segmentation and backup restoration.
