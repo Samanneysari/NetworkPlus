@@ -1,0 +1,12 @@
+{
+  "name": "networkplus-fa-docs",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Persian RTL Network+ N10-009 course documentation",
+  "scripts": {
+    "check": "node scripts/check-docs.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
