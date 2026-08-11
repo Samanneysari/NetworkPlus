@@ -1,67 +1,47 @@
-<div dir="rtl" align="right">
+# Chapter 3 — Network Implementation
 
-# فصل ۳ — پیاده‌سازی شبکه
+This chapter covers Domain 2: routing, switching, wireless, and physical installation. Cisco IOS commands teach the concept; exact syntax varies by platform and version.
 
-این فصل دامنه ۲ آزمون را پوشش می‌دهد: Routing، Switching، Wireless و نصب فیزیکی. دستورهای Cisco IOS برای یادگیری مفهوم‌اند؛ Syntax دقیق ممکن است با مدل و نسخه سیستم‌عامل فرق کند. آدرس‌های عمومی مثال از محدوده مستندسازی و دامنه از `realsam.ir` هستند.
+## Reference scenario
 
-## سناریوی مرجع
-
-یک شرکت سه VLAN دارد:
-
-| VLAN | نام | Subnet | Gateway | کاربرد |
+| VLAN | Name | Subnet | Gateway | Purpose |
 |---:|---|---|---|---|
-| 10 | USERS | `10.10.10.0/24` | `10.10.10.1` | کاربران |
-| 20 | SERVERS | `10.10.20.0/24` | `10.10.20.1` | سرورها |
-| 30 | VOICE | `10.10.30.0/24` | `10.10.30.1` | تلفن IP |
-| 99 | MGMT | `10.10.99.0/24` | `10.10.99.1` | مدیریت |
+| 10 | USERS | `10.10.10.0/24` | `10.10.10.1` | User endpoints |
+| 20 | SERVERS | `10.10.20.0/24` | `10.10.20.1` | Servers |
+| 30 | VOICE | `10.10.30.0/24` | `10.10.30.1` | IP phones |
+| 99 | MGMT | `10.10.99.0/24` | `10.10.99.1` | Management |
 
-پیوند WAN مستنداتی `198.51.100.0/30` است و نباید در اینترنت واقعی Route شود.
+The documentation-only WAN link uses `198.51.100.0/30`.
 
-## ۲.۱ — Routing
+## 2.1 — Routing
 
-### Router چگونه Route را انتخاب می‌کند؟
+### How a router selects a route
 
-ترتیب فکری درست:
+1. **Longest-prefix match:** the most specific matching prefix wins. A `/24` is more specific than a `/16`.
+2. If equal prefixes come from different sources, the lower **administrative distance** is normally preferred.
+3. For equal prefixes inside one routing protocol, the protocol's better **metric** wins.
+4. Several equal-cost routes may be installed for load sharing.
 
-1. **Longest prefix match:** خاص‌ترین Prefix مقصد انتخاب می‌شود؛ `/24` از `/16` خاص‌تر است.
-2. اگر Prefix یکسان از منابع متفاوت باشد، **Administrative Distance** کمتر ترجیح دارد.
-3. اگر پروتکل و Prefix یکسان باشند، **Metric** بهتر همان پروتکل انتخاب می‌شود.
-4. ممکن است چند مسیر هم‌هزینه برای Load sharing نصب شوند.
+Metrics from different routing protocols are not directly comparable. Administrative distance first selects the route source. AD is local to a device and is not carried in the IP packet.
 
-Metric پروتکل‌های مختلف را مستقیم مقایسه نکنید؛ ابتدا AD منبع تصمیم می‌گیرد. AD یک مفهوم محلی و Vendor-specific است، نه چیزی که در Packet حمل شود.
-
-### اجزای Routing table
-
-نمونه مفهومی:
-
-</div>
-
-<div dir="ltr" align="left">
+### Reading a route
 
 ```text
 O 10.20.0.0/16 [110/20] via 192.0.2.2, 00:01:12, GigabitEthernet0/1
 S* 0.0.0.0/0 [1/0] via 198.51.100.1
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| بخش | معنی |
+| Part | Meaning |
 |---|---|
-| `O` | مسیر آموخته‌شده از OSPF |
-| `10.20.0.0/16` | Prefix مقصد |
-| `[110/20]` | AD برابر ۱۱۰ و Metric برابر ۲۰ |
+| `O` | Learned through OSPF |
+| `10.20.0.0/16` | Destination prefix |
+| `[110/20]` | Administrative distance 110 and metric 20 |
 | `via 192.0.2.2` | Next hop |
-| `GigabitEthernet0/1` | رابط خروجی |
-| `S*` | Static و نامزد Default route |
-| `0.0.0.0/0` | کم‌خاص‌ترین مسیر؛ Gateway of last resort |
+| `GigabitEthernet0/1` | Outgoing interface |
+| `S*` | Static candidate default route |
+| `0.0.0.0/0` | Least-specific route, the gateway of last resort |
 
-### Static routing مرحله‌به‌مرحله
-
-</div>
-
-<div dir="ltr" align="left">
+### Static routes
 
 ```cisco
 enable
@@ -74,49 +54,41 @@ show ip route
 show ip route 10.20.1.25
 ```
 
-</div>
+### Line-by-line explanation
 
-<div dir="rtl" align="right">
-
-#### توضیح خط‌به‌خط
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `enable` | ورود به حالت Privileged EXEC |
-| `configure terminal` | ورود به تنظیم سراسری |
-| Route اول | مسیر شبکه `10.20.0.0/16` از Next hop اصلی |
-| Route دوم | Default route برای مقصدهای ناشناخته |
-| Route سوم | Floating static با AD=200؛ فقط هنگام نبود مسیر بهتر فعال می‌شود |
-| `end` | بازگشت به Privileged EXEC |
-| `show ip route` | دیدن جدول Routing |
-| دستور آخر | دیدن تصمیم دقیق برای یک مقصد |
+| `enable` | Enters privileged EXEC mode |
+| `configure terminal` | Enters global configuration mode |
+| First `ip route` | Reaches `10.20.0.0/16` through the primary next hop |
+| Default route | Sends otherwise unknown destinations to the WAN next hop |
+| Route ending in `200` | Creates a floating static route with a high AD |
+| `end` | Returns to privileged EXEC mode |
+| `show ip route` | Displays the routing table |
+| Final command | Displays the exact route decision for one destination |
 
-Static route ساده و قابل‌پیش‌بینی است، اما در شبکه بزرگ خودکار با تغییر Topology سازگار نمی‌شود.
+Static routing is simple and predictable, but it does not adapt automatically to a large changing topology.
 
 ### Dynamic routing
 
-| پروتکل | نوع/کاربرد | Metric/ویژگی کلیدی |
+| Protocol | Type and use | Key characteristic |
 |---|---|---|
-| OSPF | Link-state و IGP باز | Cost، Area و SPF |
-| EIGRP | Advanced distance-vector، عمدتاً Cisco | Composite metric و DUAL |
-| BGP | Path-vector میان Autonomous Systemها و در شبکه‌های بزرگ | Policy و Path attributes |
+| OSPF | Open link-state IGP | Cost, areas, LSDB, and SPF calculation |
+| EIGRP | Advanced distance-vector, commonly Cisco environments | Composite metric and DUAL |
+| BGP | Path-vector between autonomous systems and large policy domains | Policy and path attributes |
 
-OSPF همسایه می‌سازد، Link-state database را همگام و بهترین مسیر را با SPF محاسبه می‌کند. BGP صرفاً «کوتاه‌ترین مسیر عددی» نیست؛ Policy و Attributeهایی مانند AS path اهمیت دارند. EIGRP را با «فقط Hop count» اشتباه نگیرید.
+OSPF forms neighbors, synchronizes link-state information, and calculates shortest paths. BGP is policy-driven and evaluates attributes such as AS path; it is not merely a hop-count protocol.
 
-### NAT، PAT، FHRP، VIP و Subinterface
+### NAT, PAT, FHRP, VIP, and subinterfaces
 
-- **Static NAT:** نگاشت ثابت یک Private به یک Public؛ مناسب سرویس ورودی، با Rule امنیتی جدا.
-- **Dynamic NAT pool:** Privateها موقتاً از Pool عمومی می‌گیرند.
-- **PAT/NAT overload:** چند Client با یک Public IP و Portهای متفاوت خروج می‌روند.
-- **FHRP:** چند Router یک Virtual gateway می‌سازند. Host یک Virtual IP دارد و خرابی Router فعال را کمتر حس می‌کند. HSRP/VRRP نمونه‌اند.
-- **VIP:** آدرس مجازی که به یک Node فیزیکی محدود نیست؛ در FHRP یا Load balancing دیده می‌شود.
-- **Subinterface:** یک Interface فیزیکی به چند Interface منطقی با 802.1Q تقسیم می‌شود؛ Router-on-a-stick.
+- **Static NAT:** fixed one-to-one mapping, often for an inbound service; a security rule is still required.
+- **Dynamic NAT pool:** inside hosts temporarily use addresses from a public pool.
+- **PAT/overload:** many clients share a public IP through translated ports.
+- **FHRP:** several routers present one virtual default gateway, such as HSRP or VRRP.
+- **VIP:** an address not permanently tied to one physical node, used by FHRP or load balancing.
+- **Subinterface:** a logical interface carrying one 802.1Q VLAN on a physical interface, used by router-on-a-stick.
 
-نمونه PAT:
-
-</div>
-
-<div dir="ltr" align="left">
+### PAT example
 
 ```cisco
 access-list 1 permit 10.10.0.0 0.0.255.255
@@ -129,38 +101,30 @@ show ip nat translations
 show ip nat statistics
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| ACL | شبکه‌های داخلی مجاز برای ترجمه را Match می‌کند؛ ACL امنیت کامل نیست |
-| Interface اول | سمت داخل NAT را مشخص می‌کند |
-| Interface دوم | سمت بیرون NAT را مشخص می‌کند |
-| `overload` | PAT را با IP رابط بیرونی فعال می‌کند |
-| دو `show` | نگاشت‌های زنده و آمار را نمایش می‌دهند |
+| ACL | Selects inside addresses eligible for translation; this is not a complete security policy |
+| Inside interface | Marks the private side of NAT |
+| Outside interface | Marks the public/WAN side |
+| `overload` | Enables PAT using the outside interface address |
+| Show commands | Display active mappings and NAT statistics |
 
-NAT جای Firewall نیست و امنیت End-to-end را تضمین نمی‌کند.
+NAT is not a firewall and does not provide end-to-end security.
 
-## ۲.۲ — Switching و VLAN
+## 2.2 — Switching
 
-### Switch چگونه Frame را جابه‌جا می‌کند؟
+### Frame forwarding
 
-1. Source MAC را روی Port ورودی یاد می‌گیرد.
-2. Destination MAC را در MAC table جست‌وجو می‌کند.
-3. اگر مقصد شناخته‌شده و روی Port دیگری باشد، فقط همان‌جا Forward می‌کند.
-4. Unknown unicast و Broadcast را در همان VLAN Flood می‌کند.
-5. اگر Source و Destination روی همان Port باشند، Frame را Filter می‌کند.
-6. Entryهای Dynamic پس از مدت Aging حذف می‌شوند.
+1. Learn the source MAC on the incoming port and VLAN.
+2. Look up the destination MAC.
+3. Forward to the known destination port.
+4. Flood broadcasts and unknown unicasts only inside the VLAN.
+5. Filter a frame when the known destination is on the same incoming port.
+6. Age out inactive dynamic entries.
 
-هر VLAN یک Broadcast domain جداست. ارتباط میان VLANها به Router یا Layer 3 switch نیاز دارد.
+Each VLAN is a separate broadcast domain. Communication between VLANs requires a router or Layer 3 switch.
 
-### ساخت VLAN و Access port
-
-</div>
-
-<div dir="ltr" align="left">
+### VLAN and access-port configuration
 
 ```cisco
 enable
@@ -183,32 +147,21 @@ show vlan brief
 show interfaces GigabitEthernet1/0/10 switchport
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-#### توضیح خط‌به‌خط
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `vlan 10/20/30` | VLANها را در Database محلی می‌سازد |
-| `name` | نام انسانی؛ forwarding به نام وابسته نیست |
-| `interface ...` | Port مورد نظر را انتخاب می‌کند |
-| `description` | مستندسازی اتصال |
-| `switchport mode access` | Port را Access و نه Dynamic trunk می‌کند |
-| `switchport access vlan 10` | Data بدون Tag را عضو VLAN 10 می‌کند |
-| `switchport voice vlan 30` | Voice VLAN را به تلفن سازگار اعلام می‌کند |
-| `portfast` | برای Endpoint سریع به Forwarding می‌رود؛ روی لینک Switch-to-switch بی‌محابا استفاده نشود |
-| `bpduguard` | دریافت BPDU غیرمنتظره را با Err-disable پاسخ می‌دهد |
-| دو `show` | عضویت VLAN و Operational mode را راستی‌آزمایی می‌کند |
+| `vlan` and `name` | Create VLANs and assign human-readable names |
+| `interface` | Select the access port |
+| `description` | Document the connected devices |
+| `switchport mode access` | Prevent dynamic trunk negotiation on the user port |
+| `switchport access vlan 10` | Place untagged user data in VLAN 10 |
+| `switchport voice vlan 30` | Advertise/use a separate voice VLAN for a compatible phone |
+| `portfast` | Moves an edge port to forwarding quickly; do not use blindly between switches |
+| `bpduguard` | Err-disables an edge port receiving an unexpected BPDU |
+| Show commands | Verify VLAN membership and operational switchport mode |
 
-### Trunk و 802.1Q
+### Trunks and 802.1Q
 
-Trunk چند VLAN را روی یک لینک حمل می‌کند. 802.1Q یک Tag شامل VLAN ID به Frame اضافه می‌کند. Native VLAN معمولاً Untagged است؛ دو سمت باید Native VLAN یکسان و فهرست Allowed هماهنگ داشته باشند.
-
-</div>
-
-<div dir="ltr" align="left">
+An 802.1Q trunk carries several VLANs by adding a VLAN tag to frames. The native VLAN is normally untagged. Both ends need matching native VLAN and allowed-VLAN configuration.
 
 ```cisco
 configure terminal
@@ -224,24 +177,16 @@ end
 show interfaces trunk
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| VLAN 999 | Native VLAN بلااستفاده برای کاهش سوءاستفاده؛ باید در دو سمت مطابق باشد |
-| `mode trunk` | Trunk را ثابت فعال می‌کند |
-| `native vlan 999` | Native را از VLANهای کاری جدا می‌کند |
-| `allowed vlan` | فقط VLANهای لازم را حمل می‌کند |
-| `nonegotiate` | DTP را در دستگاه Cisco خاموش می‌کند؛ سمت مقابل هم دستی Trunk شود |
-| `show interfaces trunk` | Native، Allowed و VLANهای Forwarding را بررسی می‌کند |
+| VLAN 999 | Creates an unused native VLAN for the trunk |
+| `mode trunk` | Statically enables trunking |
+| `native vlan 999` | Separates untagged traffic from production VLANs |
+| `allowed vlan` | Carries only required VLANs |
+| `nonegotiate` | Disables Cisco DTP; configure the other side manually |
+| Show command | Verifies native VLAN, allowed VLANs, and forwarding state |
 
-### SVI و Inter-VLAN routing
-
-</div>
-
-<div dir="ltr" align="left">
+### SVI and inter-VLAN routing
 
 ```cisco
 configure terminal
@@ -259,29 +204,26 @@ show ip interface brief
 show ip route connected
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `ip routing` | Routing را روی Multilayer switch فعال می‌کند |
-| `interface vlan` | SVI لایه ۳ آن VLAN را می‌سازد |
-| `ip address` | Default gateway اعضای VLAN را تنظیم می‌کند |
-| `no shutdown` | Interface اداری را فعال می‌کند؛ برای Up شدن معمولاً VLAN و Port فعال نیز لازم است |
-| `show ...` | وضعیت Interface و Connected routeها را بررسی می‌کند |
+| `ip routing` | Enables Layer 3 routing on a capable switch |
+| `interface vlan` | Creates the switched virtual interface for that VLAN |
+| `ip address` | Defines the VLAN's default gateway |
+| `no shutdown` | Administratively enables the SVI; an active VLAN/port is normally also needed |
+| Show commands | Verify interface state and connected routes |
 
-### STP
+### Spanning Tree Protocol
 
-لینک افزونه بدون STP می‌تواند Broadcast storm، Duplicate frame و MAC flapping بسازد. STP یک Root bridge انتخاب و بعضی مسیرها را Block می‌کند. هزینه مسیر کمتر به Root بهتر است. RSTP همگرایی سریع‌تر از STP کلاسیک دارد.
+Redundant links without STP can create broadcast storms, duplicate frames, and unstable MAC learning. STP chooses a root bridge and blocks selected forwarding paths.
 
-نقش‌های مهم: Root port بهترین مسیر هر Switch غیرRoot به Root؛ Designated port بهترین خروجی هر Segment؛ Alternate مسیر پشتیبان. حالت‌های RSTP شامل Discarding، Learning و Forwarding است.
+Important roles and states:
 
-PortFast فقط برای Edge port است. BPDU Guard Edge آلوده را قطع می‌کند. Root Guard مانع Root شدن همسایه نامناسب و Loop Guard مانع Forwarding اشتباه هنگام گم‌شدن BPDU می‌شود.
+- **Root port:** best path from a non-root switch to the root bridge.
+- **Designated port:** best forwarding port for a segment.
+- **Alternate port:** backup path.
+- RSTP states: discarding, learning, and forwarding.
 
-</div>
-
-<div dir="ltr" align="left">
+PortFast is for edge ports. BPDU Guard protects them from unexpected switches. Root Guard prevents an inappropriate neighbor from becoming root. Loop Guard protects against incorrect forwarding when BPDUs disappear.
 
 ```cisco
 spanning-tree vlan 10,20,30 root primary
@@ -289,19 +231,11 @@ show spanning-tree vlan 10
 show spanning-tree inconsistentports
 ```
 
-</div>
+The first line adjusts priority to make the switch the intended root candidate. The show commands verify root identity, path cost, roles, states, and guard inconsistencies.
 
-<div dir="rtl" align="right">
+### LACP, speed, duplex, and MTU
 
-خط اول Priority را طوری تنظیم می‌کند که دستگاه نامزد Root اصلی باشد؛ دو دستور بعد Root، Cost، Role/State و ناسازگاری Guardها را نشان می‌دهند. Root باید آگاهانه و نزدیک مرکز ترافیک انتخاب شود.
-
-### Link Aggregation، MTU، speed و duplex
-
-LAG چند لینک فیزیکی را یک لینک منطقی می‌کند. پهنای‌باند مجموع برای جریان‌های متعدد بیشتر می‌شود، ولی یک Flow معمولاً روی یک عضو Hash می‌شود. همه اعضا باید Speed، Duplex، VLAN/Trunk و MTU سازگار داشته باشند. LACP استاندارد باز برای مذاکره LAG است.
-
-</div>
-
-<div dir="ltr" align="left">
+Link aggregation creates one logical link from several physical links. It increases aggregate capacity across several flows, but one flow is normally hashed to one member. Member speed, duplex, trunking, VLANs, and MTU must be compatible. LACP is the open negotiation protocol.
 
 ```cisco
 interface range GigabitEthernet1/0/47-48
@@ -312,130 +246,114 @@ interface Port-channel1
 show etherchannel summary
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| خط | کار |
+| Line | Purpose |
 |---|---|
-| `interface range` | دو عضو فیزیکی را انتخاب می‌کند |
-| `channel-group ... active` | LACP فعال را برای Port-channel 1 می‌سازد |
-| `interface Port-channel1` | تنظیم منطقی Bundle |
-| دو `switchport` | Trunk و VLANهای لازم را روی Bundle می‌گذارد |
-| `show` | Protocol، اعضا و حالت Bundled را بررسی می‌کند |
+| `interface range` | Selects two physical members |
+| `channel-group 1 mode active` | Creates LACP Port-channel 1 in active mode |
+| `interface Port-channel1` | Selects the logical bundle |
+| Trunk lines | Carry the required VLANs on the bundle |
+| Show command | Verifies protocol, members, and bundled state |
 
-Auto-negotiation معمولاً بهترین انتخاب Ethernet مدرن است. Duplex mismatch سبب Late collision، CRC و کارایی بد می‌شود. **MTU** بزرگ‌ترین Packet قابل حمل در Interface است؛ Jumbo frame فقط وقتی کار می‌کند که تمام مسیر سازگار باشد. Packet بزرگ‌تر می‌تواند Fragment یا Drop شود و PMTUD به ICMP وابسته است.
+Autonegotiation is normally best for modern Ethernet. A duplex mismatch produces severe performance problems, late collisions, and CRC-related symptoms. MTU is the largest packet/frame size supported in context. Jumbo frames require compatible configuration across the complete path.
 
-## ۲.۳ — Wireless
+## 2.3 — Wireless implementation
 
-### فرکانس، Channel و عرض Channel
+### Bands, channels, and width
 
-| باند | ویژگی کلی | نکته طراحی |
+| Band | General characteristic | Design consideration |
 |---|---|---|
-| 2.4 GHz | نفوذ/برد بهتر، Channel کم و شلوغ | در بسیاری مناطق 1/6/11 برای 20 MHz هم‌پوشانی ندارند؛ مقررات محل تعیین‌کننده است |
-| 5 GHz | Channel بیشتر، برد معمولاً کمتر | بعضی Channelها DFS و وابسته به تشخیص Radar هستند |
-| 6 GHz | طیف تازه و ظرفیت زیاد | Client و AP سازگار و مقررات محلی لازم؛ WPA3 اهمیت دارد |
+| 2.4 GHz | Better penetration, fewer channels, often crowded | In many regions 1/6/11 are non-overlapping at 20 MHz |
+| 5 GHz | More channels, usually shorter reach | Some channels require DFS radar detection |
+| 6 GHz | Newer spectrum and high capacity | Requires compatible APs/clients and current security |
 
-Channel width بزرگ‌تر Throughput بالقوه را بالا می‌برد ولی طیف بیشتری می‌گیرد و در محیط شلوغ تداخل را بیشتر می‌کند. **Band steering** Client دو/سه‌باند را به باند مناسب تشویق می‌کند؛ تصمیم نهایی اغلب با Client است. 802.11h برای Spectrum management در 5 GHz و DFS/TPC مرتبط است.
+Wider channels raise potential throughput but consume more spectrum. Band steering encourages capable clients toward a preferred band, but clients make many roaming decisions. IEEE 802.11h relates to spectrum management, DFS, and transmit-power control in 5 GHz.
 
-### شناسه‌ها و نوع شبکه
+### Wireless identifiers and modes
 
-- **SSID:** نام قابل‌مشاهده WLAN.
-- **BSSID:** شناسه یک Radio/Cell، معمولاً MAC.
-- **ESSID:** مجموعه BSSها با SSID و Policy مشترک برای Roaming.
-- **Infrastructure:** Client از AP استفاده می‌کند.
-- **Ad hoc:** Clientها مستقیم، بدون AP مرکزی.
-- **Point-to-point:** Bridge بی‌سیم دو محل.
-- **Mesh:** AP/Nodeها Backhaul چندمسیری می‌سازند.
+- **SSID:** user-visible WLAN name.
+- **BSSID:** identifier for one radio/cell, normally a MAC address.
+- **ESSID:** an extended service of BSS cells using a shared name and policy.
+- **Infrastructure:** clients use an access point.
+- **Ad hoc:** clients communicate directly without a central AP.
+- **Point-to-point:** wireless bridge between two sites.
+- **Mesh:** nodes use wireless backhaul and multiple paths.
 
-### Authentication و Encryption
+### Security and authentication
 
-WPA2/WPA3-Personal از PSK استفاده می‌کند. Enterprise از 802.1X/EAP و RADIUS برای هویت جداگانه کاربران استفاده می‌کند. WPA3-Personal از SAE استفاده و در برابر حدس آفلاین PSK مقاوم‌تر است. Open guest network بدون Captive portal امن نمی‌شود؛ Portal فقط پذیرش/ورود است و جای Encryption را نمی‌گیرد. برای مهمان جداسازی Client، VLAN جدا و Policy محدود لازم است.
+WPA2/WPA3-Personal uses a shared secret. Enterprise mode uses 802.1X/EAP and RADIUS for per-user or per-device identity. WPA3-Personal uses SAE and improves resistance to offline guessing.
 
-از WEP، WPA قدیمی و TKIP استفاده نکنید. رمز قوی، Firmware به‌روز، خاموش‌کردن WPS و Management frame protection در صورت پشتیبانی مهم‌اند.
+A captive portal is not encryption. A guest network also needs isolation, a separate VLAN, and restricted policy. Avoid WEP, original WPA, and TKIP. Use strong credentials, current firmware, protected management frames where supported, and disable WPS when it is not required.
 
-### آنتن و AP
+### Antennas and AP operation
 
-Omnidirectional انرژی را پیرامون خود پخش می‌کند؛ Directional آن را در جهت خاص متمرکز می‌کند و برای Bridge یا پوشش هدفمند مناسب است. Gain انرژی تولید نمی‌کند؛ Pattern را تغییر می‌دهد. dBm توان مطلق و dBi Gain نسبت به آنتن فرضی Isotropic است.
+An omnidirectional antenna distributes energy around its pattern. A directional antenna concentrates it toward a target, useful for a bridge or focused coverage. Gain does not create energy; it reshapes the radiation pattern.
 
-AP **autonomous** مستقل تنظیم می‌شود. AP **lightweight** Policy را از Controller می‌گیرد. Controller ظرفیت، Channel، توان، Roaming و Policy را مرکزی مدیریت می‌کند؛ Control plane و Data path دقیق به معماری Vendor وابسته است.
+An autonomous AP is configured independently. A lightweight AP receives policy and radio management from a controller. Exact control and data paths vary by vendor architecture.
 
-### روش طراحی WLAN
+### WLAN design process
 
-1. نیاز ظرفیت، پوشش، نوع Client و برنامه را ثبت کنید.
-2. Predictive survey اولیه و سپس بازدید Site انجام دهید.
-3. منابع تداخل، جنس دیوار، ارتفاع و برق/کابل را ثبت کنید.
-4. AP را برای پوشش و ظرفیت، نه صرفاً «آنتن کامل»، جای‌گذاری کنید.
-5. Channel و Power را هماهنگ کنید.
-6. SSID کم، VLAN و امنیت مناسب تعریف کنید.
-7. پس از نصب Active/passive survey و آزمون Roaming/Throughput انجام دهید.
-8. Baseline را ثبت و دوره‌ای بازبینی کنید.
+1. Record coverage, capacity, application, and client requirements.
+2. Perform predictive planning and a physical site survey.
+3. Record wall materials, interference, mounting, power, and cabling.
+4. Place APs for capacity and coverage, not signal bars alone.
+5. Coordinate channels and transmit power.
+6. Keep SSID count reasonable and map each to appropriate VLAN/security policy.
+7. Validate coverage, throughput, authentication, and roaming after installation.
+8. Save a baseline and repeat surveys after meaningful changes.
 
-Hidden SSID امنیت واقعی ایجاد نمی‌کند و افزایش حداکثری توان همه APها معمولاً Roaming و تداخل را بدتر می‌کند.
+Hidden SSIDs do not provide meaningful security. Maximum transmit power on every AP can worsen contention and roaming.
 
-## ۲.۴ — نصب فیزیکی
+## 2.4 — Physical installation
 
-### MDF، IDF و Rack
+### MDF, IDF, racks, and panels
 
-**MDF** نقطه توزیع اصلی و اتصال Backbone/Provider است. **IDF** توزیع طبقه یا ناحیه را نزدیک کاربران انجام می‌دهد. Rack diagram محل Unitها، جهت Airflow، توان و Patch panel را ثبت می‌کند. کابل‌های Horizontal به Patch panel خاتمه و با Patch cord به Switch وصل می‌شوند.
+The Main Distribution Frame is the central distribution and provider/backbone point. An Intermediate Distribution Frame serves a floor or area near endpoints. Rack diagrams show rack units, airflow, power, and equipment location. Permanent horizontal cabling terminates on patch panels, then patch cords connect it to switches.
 
-### چک‌لیست نصب
+### Installation checklist
 
-1. وزن، عمق و Rail تجهیزات و ظرفیت Rack را بررسی کنید.
-2. تجهیزات سنگین را پایین Rack و مسیر هوای سرد/گرم را درست بگذارید.
-3. اتصال زمین و مقررات برق/آتش را رعایت کنید.
-4. A/B power feed را در صورت طراحی افزونه جدا کنید.
-5. توان نامی، مصرف واقعی و ظرفیت Circuit/PDU/UPS را محاسبه کنید.
-6. کابل Power و Data را مرتب، برچسب‌دار و بدون خم شدید نگه دارید.
-7. Port، دو سر کابل و Patch panel را یکسان نام‌گذاری کنید.
-8. دما، رطوبت، دود/حریق و دسترسی فیزیکی را پایش کنید.
+1. Verify equipment weight, depth, rails, and rack capacity.
+2. Install heavy equipment low in the rack.
+3. Maintain correct front-to-back airflow and hot/cold aisle design.
+4. Follow grounding, electrical, and fire rules.
+5. Separate redundant A/B power feeds when the design provides them.
+6. Calculate circuit, PDU, UPS, PoE, and device power budgets with headroom.
+7. Label ports, both cable ends, and patch-panel positions consistently.
+8. Monitor inlet temperature, humidity, smoke/fire systems, and physical access.
 
-### UPS، PDU و PoE
+### UPS, PDU, and PoE
 
-UPS برای زمان محدود برق و فرصت خاموشی/انتقال فراهم می‌کند؛ ژنراتور نقش طولانی‌تر دارد. PDU برق را توزیع و مدل هوشمند مصرف را اندازه می‌گیرد. توان با رابطه تقریبی زیر سنجیده می‌شود:
-
-</div>
-
-<div dir="ltr" align="left">
+A UPS supplies temporary power and time to shut down or transfer. A generator provides longer-duration energy. A PDU distributes power and may measure consumption.
 
 ```text
-Power (W) = Voltage (V) × Current (A) × Power Factor
+Real power (W) ≈ Voltage (V) × Current (A) × Power factor
 ```
 
-</div>
+For AC systems, power factor, startup load, continuous-load limits, redundancy, and local electrical codes matter.
 
-<div dir="rtl" align="right">
+Power over Ethernet sends data and power over Ethernet cabling. The PSE, such as a switch, supplies power; the PD, such as an access point, receives it. Verify standard, class, per-port power, total budget, cable quality, and temperature. A device can boot with insufficient power while disabling radios or other features.
 
-برای AC واقعی Power factor و حاشیه ایمنی مهم است؛ از برق‌کار و مقررات محلی کمک بگیرید.
+### Environment and fire protection
 
-PoE داده و برق را روی Ethernet می‌رساند. **PSE** مانند Switch برق می‌دهد و **PD** مانند AP می‌گیرد. باید استاندارد، Class، توان هر Port و کل Power budget سازگار باشد. کابل معیوب یا طول زیاد می‌تواند Voltage drop/گرما بسازد. دستگاه Passive PoE نامطابق ممکن است آسیب ببیند.
+Hot/cold aisle design separates cool intake air from hot exhaust. Very low humidity increases electrostatic-discharge risk; very high humidity creates condensation and corrosion risk. Measure temperature at equipment inlets. Fire suppression must protect people, comply with law, fit the facility, and be tested.
 
-### محیط و حریق
+## Implementation troubleshooting sequence
 
-Hot aisle/cold aisle هوای ورودی سرد را از خروجی گرم جدا می‌کند. Humidity بسیار پایین خطر ESD و بسیار بالا خطر Condensation/خوردگی دارد. دما را در ورودی تجهیزات بسنجید، نه فقط دیوار اتاق. نوع Fire suppression باید با افراد، تجهیزات و قانون سازگار و دوره‌ای آزمایش شود.
+If a VLAN 10 user cannot reach the gateway:
 
-## سناریوی عیب‌یابی پیاده‌سازی
+1. Check link state and interface errors.
+2. Verify the access VLAN and operational switchport mode.
+3. Verify the VLAN exists.
+4. Locate the user's MAC in the MAC table.
+5. Verify SVI state and IP configuration.
+6. Check the client's IP, prefix, gateway, and ARP/ND entry.
+7. If a trunk is crossed, check allowed/native VLAN and STP state.
+8. Retest and document after one controlled correction.
 
-کاربر VLAN 10 به Gateway دسترسی ندارد:
+## End-of-chapter exercises
 
-1. Link LED و `show interfaces status` را ببینید.
-2. Access VLAN Port را با `show interfaces ... switchport` بررسی کنید.
-3. وجود VLAN را با `show vlan brief` ببینید.
-4. MAC کاربر را با `show mac address-table` پیدا کنید.
-5. وضعیت SVI را با `show ip interface brief` بررسی کنید.
-6. IP/mask/gateway Client را بررسی کنید.
-7. در صورت عبور از Trunk، Allowed/native و STP state را ببینید.
-8. پس از تغییر، Ping و مسیر را دوباره آزمایش و نتیجه را مستند کنید.
-
-## تمرین پایان فصل
-
-1. سناریوی مرجع را در Packet Tracer یا ابزار مشابه بسازید.
-2. یک Route خاص و Default route تعریف کنید و با حذف Route خاص اثر Longest prefix را مشاهده کنید.
-3. Trunk را عمداً با Allowed VLAN ناقص خراب و شواهد عیب را ثبت کنید.
-4. Root bridge را آگاهانه انتخاب و قبل/بعد را در خروجی STP مقایسه کنید.
-5. برای دفتر ۸۰ کاربره یک Channel plan اولیه بنویسید و توضیح دهید چرا Survey لازم است.
-6. Power budget چهار AP و هشت تلفن را با اعداد Datasheet محاسبه کنید.
-
-آزمایشگاه‌های هدایت‌شده در [فهرست Labs](../labs/README.md) آمده‌اند.
-
-</div>
+1. Build the reference topology in Packet Tracer or a similar tool.
+2. Add a specific route and a default route, then prove longest-prefix selection.
+3. Remove one VLAN from a trunk and collect evidence before fixing it.
+4. Choose an intentional root bridge and compare STP output before and after.
+5. Draft a channel plan for an 80-user office and explain why a survey is still required.
+6. Calculate a PoE power budget for four APs and eight phones using their data sheets.

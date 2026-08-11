@@ -1,39 +1,27 @@
-<div dir="rtl" align="right">
+# Contributing
 
-# راهنمای مشارکت
+The goal of this repository is technically accurate, beginner-friendly networking education.
 
-هدف مخزن، آموزش دقیق و قابل‌فهم برای فرد تازه‌کار است. تغییر خوب باید هم از نظر فنی درست و هم قابل آزمایش باشد.
+## Before opening a pull request
 
-## پیش از Pull Request
-
-1. Objective مرتبط را در توضیح PR بنویسید.
-2. برای رفتار Protocol از RFC، استاندارد یا مستند رسمی Vendor استفاده کنید.
-3. متن را با تعریف ساده آغاز و بعد مسیر کار، مثال و خطا را توضیح دهید.
-4. فرمان چندخطی را LTR و معنی هر خط را زیر آن اضافه کنید.
-5. برای IP عمومی مثال از محدوده Documentation و برای دامنه از `realsam.ir` استفاده کنید.
-6. Credential، Public IP واقعی، Packet capture حساس و Exam dump اضافه نکنید.
-7. سؤال جدید باید تألیفی و پاسخ آن تشریحی باشد.
-8. لینک و ساختار را کنترل کنید:
-
-</div>
-
-<div dir="ltr" align="left">
+1. Name the related N10-009 objective in the PR description.
+2. Use RFCs, standards, or primary vendor documentation for protocol behavior.
+3. Start with a plain-English definition, then explain operation, examples, and failure modes.
+4. Place commands in fenced code blocks and explain every important line below them.
+5. Use `realsam.ir`, RFC 1918 addresses, and documentation-only public ranges in examples.
+6. Never commit credentials, real sensitive IP addresses, private captures, or exam dumps.
+7. Practice questions must be original and include an explained answer.
+8. Run the documentation checks:
 
 ```bash
 npm run check
 ```
 
-</div>
+The validator checks required files, internal links, code fences, all 25 objectives, 200 questions, 26 labs, and rejects Persian/Arabic-script characters so the repository remains consistently English.
 
-<div dir="rtl" align="right">
+## Writing style
 
-این فرمان بدون Dependency خارجی، فایل‌های ضروری، لینک‌های داخلی، توازن RTL/LTR و Code fence، تمام ۲۵ Objective، ۲۰۰ سؤال و ۲۶ Lab را بررسی می‌کند.
-
-## سبک نوشتن
-
-- معادل فارسی را همراه اصطلاح انگلیسی بیاورید؛ ترجمه نباید واژه آزمون را پنهان کند.
-- از ادعای مطلق مانند «DNS همیشه UDP است» پرهیز و شرط/استثنا را ذکر کنید.
-- فرمان ناامن را حتی برای سادگی پیشنهاد نکنید؛ اگر رفتار قدیمی آزمون مطرح است، ناامن‌بودنش را روشن کنید.
-- نتیجه Lab باید با Evidence مانند Counter، Table، Log یا Capture اثبات شود.
-
-</div>
+- Prefer plain English and define acronyms at first use.
+- Avoid false absolutes such as "DNS always uses UDP."
+- Identify insecure legacy protocols and provide the safer replacement.
+- Verify lab results with counters, tables, logs, or packet captures.

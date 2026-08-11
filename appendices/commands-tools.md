@@ -1,14 +1,8 @@
-<div dir="rtl" align="right">
+# Commands and Tools Reference
 
-# برگه مرجع فرمان‌ها و ابزارها
-
-این فایل برای مرور است؛ دلیل، مثال و تفسیر کامل در فصل‌ها آمده است. فرمان‌ها را با کمترین دسترسی و فقط روی محیط مجاز اجرا کنید.
+This is a review sheet. Full reasoning and output interpretation are in the chapters. Run commands with the least privilege and only in authorized environments.
 
 ## Linux
-
-</div>
-
-<div dir="ltr" align="left">
 
 ```bash
 ip address show
@@ -26,28 +20,20 @@ openssl s_client -connect www.realsam.ir:443 -servername www.realsam.ir
 tcpdump -ni any 'port 53 or port 443'
 ```
 
-</div>
-
-<div dir="rtl" align="right">
-
-| فرمان | پاسخ اصلی |
+| Command | Main question answered |
 |---|---|
-| `ip address/link` | Interface، state، MAC و IP/Prefix چیست؟ |
-| `ip route/get` | Table چیست و Kernel برای یک مقصد چه تصمیمی دارد؟ |
-| `ip neighbor` | ARP/ND چه نگاشتی دارد؟ |
-| `ss` | چه Socketی Listen/Established است؟ |
-| `ping` | ICMP رفت‌وبرگشت نمونه دارد؟ |
-| `traceroute` | کدام Hopها پاسخ TTL/Hop-limit می‌دهند؟ |
-| `dig` | رکورد، Resolver، TTL و status چیست؟ |
-| `curl -v` | DNS/TCP/TLS/HTTP کجا Fail می‌شود؟ |
-| `openssl s_client` | TLS version، Chain، SAN/SNI و Certificate چیست؟ |
-| `tcpdump` | Packet واقعی چه می‌گوید؟ داده حساس را محافظت کنید |
+| `ip address/link` | What are interface state, MAC, and IP/prefix? |
+| `ip route/get` | What routes exist, and what decision will the kernel make? |
+| `ip neighbor` | What ARP/ND mappings and states exist? |
+| `ss` | Which sockets are listening or established? |
+| `ping` | Does a sample ICMP round trip work? |
+| `traceroute` | Which hops return TTL/Hop-Limit responses? |
+| `dig` | What DNS record, server, status, TTL, and timing appear? |
+| `curl -v` | Where does DNS/TCP/TLS/HTTP fail? |
+| `openssl s_client` | Which TLS version, chain, SNI, and certificate appear? |
+| `tcpdump` | What do the actual packets show? Protect sensitive data |
 
-## Windows / PowerShell
-
-</div>
-
-<div dir="ltr" align="left">
+## Windows and PowerShell
 
 ```powershell
 Get-NetIPConfiguration
@@ -63,17 +49,9 @@ route print
 arp -a
 ```
 
-</div>
+These lines show IP configuration, adapters, routes, neighbors, ICMP, responding hops, DNS, TCP port reachability, socket/PID state, legacy route output, and ARP cache respectively.
 
-<div dir="rtl" align="right">
-
-هر خط به‌ترتیب Config IP، Adapter، Route، Neighbor، ICMP، Hopها، DNS، TCP port، Socket/PID، Route table قدیمی و ARP cache را نشان می‌دهد.
-
-## Cisco IOS مفهومی
-
-</div>
-
-<div dir="ltr" align="left">
+## Cisco IOS concepts
 
 ```cisco
 show running-config
@@ -95,25 +73,19 @@ show cdp neighbors detail
 show logging
 ```
 
-</div>
+Configuration output may contain secrets. Remove password hashes, communities, keys, sensitive public addresses, and internal names before sharing. A show command provides state; interpretation still requires a baseline and understanding of the data path.
 
-<div dir="rtl" align="right">
+## Physical-tool selection
 
-خروجی Config ممکن است Secret داشته باشد. قبل از Share، Password hash، Community، Key، Public IP حساس و نام داخلی را حذف کنید. `show` فقط وضعیت را نشان می‌دهد؛ تفسیر باید با Baseline و مسیر داده باشد.
-
-## انتخاب ابزار فیزیکی
-
-| نیاز | ابزار |
+| Need | Tool |
 |---|---|
-| Wiremap/Pair مس | Cable tester |
-| محل تقریبی شکست مس | TDR |
-| پیدا کردن کابل بی‌برچسب | Toner/probe |
-| Certification Category | Certifier سازگار استاندارد |
-| افت/رخداد فیبر در طول | OTDR |
-| توان نوری دریافت‌شده | Optical power meter |
-| شکست نزدیک فیبر | VFL با محافظت چشم |
-| Copy ترافیک دائم | Network TAP |
-| Capture موقت | SPAN/port mirror + analyzer |
-| Channel/RSSI/SNR | Wi-Fi analyzer/survey tool |
-
-</div>
+| Copper continuity and wire map | Cable tester |
+| Approximate copper fault distance | TDR |
+| Locate an unlabeled copper cable | Toner and probe |
+| Certify cable category | Standards-compatible certifier |
+| Fiber loss/event distance | OTDR |
+| Received optical power | Optical power meter |
+| Visible near fiber break | VFL with eye safety |
+| Permanent controlled traffic copy | Network TAP |
+| Temporary traffic copy | SPAN/port mirror and analyzer |
+| Channel, RSSI, SNR, utilization | Wi-Fi analyzer/survey tool |

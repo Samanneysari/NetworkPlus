@@ -1,143 +1,139 @@
-<div dir="rtl" align="right">
+# Plain-English Networking Glossary
 
-# واژه‌نامه فارسی–انگلیسی شبکه
-
-| واژه | توضیح ساده |
+| Term | Simple explanation |
 |---|---|
-| ACL | فهرست Ruleهای اجازه/رد Traffic |
-| Administrative Distance (AD) | ترجیح محلی منبع Route؛ کمتر معمولاً بهتر |
-| AP | نقطه دسترسی Wi-Fi و پل به LAN |
-| APIPA | IPv4 Link-local خودکار `169.254/16` هنگام نبود Config مناسب |
-| ARP | نگاشت IPv4 محلی به MAC |
-| Asset | دارایی ارزشمند مانند داده یا Device |
-| Authentication | اثبات هویت |
-| Authorization | تعیین مجوز هویت اثبات‌شده |
-| Anycast | یک IP روی چند Node؛ Routing یکی را انتخاب می‌کند |
-| Availability | قابل‌استفاده‌بودن سرویس هنگام نیاز |
-| Baseline | اندازه‌گیری مرجع رفتار عادی |
-| Bandwidth | ظرفیت اسمی انتقال |
-| BGP | پروتکل Path-vector و Policyمحور Routing |
-| BSSID | شناسه یک Cell/Radio بی‌سیم |
-| Broadcast | ارسال به اعضای Broadcast domain در IPv4 |
-| Broadcast domain | محدوده‌ای که Broadcast لایه ۲ در آن پخش می‌شود؛ معمولاً یک VLAN |
-| CA | مرجع امضاکننده Certificate |
-| CAM/MAC table | نگاشت MAC به Port/VLAN در Switch |
-| Captive portal | صفحه پذیرش/ورود Guest؛ Encryption نیست |
-| Certificate | سند امضاشده اتصال Identity به Public key |
-| CIDR | Prefix classless مانند `/24` |
-| CIA triad | Confidentiality، Integrity، Availability |
-| Client | آغازکننده درخواست Service |
-| Cloud | منابع IT قابل‌ارائه/خودکارسازی روی زیرساخت اشتراکی یا اختصاصی |
-| Collision domain | محدوده رقابت/Collision رسانه؛ هر Switch port جداست |
-| Congestion | تقاضا بیشتر از ظرفیت و ایجاد Queue/Drop |
-| Connector | سر فیزیکی کابل مانند LC/RJ45 |
-| Control plane | ساختن جدول/تصمیم شبکه |
-| CRC/FCS | کنترل کشف خطای Frame |
-| Data plane | Forward واقعی Packet طبق جدول |
-| Default gateway | Router محلی برای مقصد Remote |
-| Default route | Route کم‌خاصیت `/0` |
-| DHCP | واگذاری IP و Option با Lease |
-| DHCP relay | رساندن DHCP میان Subnetها |
-| DNS | نگاشت نام‌ها و داده‌های دامنه |
-| DNSSEC | امضای صحت/مبدأ داده DNS |
-| DoH/DoT | DNS روی HTTPS/TLS برای رمز مسیر تا Resolver |
-| Duplex | جهت هم‌زمان انتقال؛ Full یا Half |
-| East-west | Traffic میان Workloadهای داخل Data center |
-| Elasticity | افزایش/کاهش پویا بر حسب تقاضا |
-| Encapsulation | افزودن Header/Trailer لایه‌ها |
-| Endpoint | دستگاه نهایی مانند Laptop، تلفن یا Server |
-| Ethernet | خانواده شبکه لایه ۱/۲ IEEE 802.3 |
-| FHRP | افزونگی Default gateway با Virtual IP |
-| Firewall | اجرای Policy عبور Traffic |
-| Flow | خلاصه یک مکالمه شبکه |
-| Forward proxy | واسطه از طرف Client |
-| Frame | PDU لایه ۲ |
-| Gateway | دستگاه/Service خروج از دامنه محلی |
-| Goodput | Payload مفید برنامه در زمان |
-| Honeypot | سامانه طعمه برای تشخیص/مطالعه |
-| Host | دستگاه دارای Stack شبکه/آدرس |
-| HTTP/HTTPS | پروتکل وب؛ HTTPS یعنی HTTP محافظت‌شده با TLS |
-| IaC | تعریف زیرساخت در فایل قابل نسخه‌بندی |
-| ICMP | پیام خطا/کنترل IP و ابزار Echo |
-| IDF/MDF | توزیع میانی/اصلی کابل و تجهیزات |
-| IDS/IPS | تشخیص / تشخیص و جلوگیری در مسیر |
-| Integrity | کشف/جلوگیری تغییر غیرمجاز |
-| IP | آدرس و Protocol لایه ۳ |
-| IPAM | مدیریت Prefix، Subnet و IP |
-| IPsec | مجموعه حفاظت IP با IKE/AH/ESP |
-| Jitter | تغییر Latency |
-| Jump box | نقطه مدیریت کنترل‌شده به سامانه‌های دیگر |
-| LACP | مذاکره استاندارد Link aggregation |
-| LAN | شبکه محلی |
-| Latency | زمان تأخیر رسیدن |
-| Layer 2 switch | Forward Frame با MAC |
-| Layer 3 switch | Switching همراه IP routing |
-| Lease | مدت واگذاری DHCP |
-| Least privilege | فقط حداقل مجوز لازم |
-| Load balancer | توزیع درخواست بین Backendها |
-| Loopback | آدرس بازگشت به خود Host |
-| MAC | شناسه Link-layer Interface |
-| Metric | هزینه انتخاب Route درون یک Protocol |
-| MFA | احراز با چند عامل مستقل |
-| MTBF/MTTR | فاصله میان خرابی / زمان تعمیر |
-| MTU | بیشترین اندازه Packet/Frame قابل حمل طبق Context |
-| Multicast | ارسال به اعضای یک Group |
-| NAC | کنترل پذیرش/وضعیت Endpoint |
-| NAS | File storage روی شبکه |
-| NAT/PAT | ترجمه IP / ترجمه همراه Port |
-| ND | Neighbor Discovery در IPv6 |
-| NFV | اجرای Function شبکه به‌صورت نرم‌افزار |
-| North-south | Traffic میان Data center و بیرون |
-| NTP/NTS | زمان شبکه / امنیت برای NTP |
-| OSI | مدل مرجع هفت‌لایه |
-| OSPF | IGP از نوع Link-state |
-| Packet | PDU لایه ۳ |
-| Packet loss | Packetی که به مقصد نمی‌رسد |
-| Patch panel | محل خاتمه و نظم کابل ثابت |
-| PBQ | سؤال Performance-based و سناریوی عملی |
-| PDU (power) | واحد توزیع برق؛ با Protocol Data Unit اشتباه نشود |
-| PKI | زیرساخت کلید عمومی، CA و Certificate |
-| PoE | برق روی Ethernet |
-| Port | شناسه منطقی Service در TCP/UDP یا درگاه فیزیکی طبق متن |
-| Prefix | تعداد بیت‌های Network مانند `/24` |
-| Protocol | قواعد ارتباط |
-| Proxy | واسطه ارتباط Client/Server |
-| QoS | طبقه‌بندی/صف‌بندی Traffic برای رفتار در ازدحام |
-| RADIUS/TACACS+ | پروتکل‌های AAA شبکه/مدیریت |
-| Reverse proxy | واسطه ورودی از طرف Serverها |
-| RFC | سند استاندارد/اطلاعات IETF |
-| rDNS/PTR | Resolve IP به نام |
-| RPO/RTO | داده قابل‌ازدست‌رفتن / زمان قابل‌قبول بازیابی |
-| Router | Forward Packet میان شبکه‌ها |
-| Routing table | Prefix، Next hop و Interfaceهای شناخته‌شده |
-| SAN | Block storage network |
-| SASE/SSE | ترکیب WAN+امنیت Cloud / خدمات امنیتی Cloud |
-| Scalability | توان افزایش ظرفیت |
-| Segment | PDU TCP؛ گاهی بخش منطقی شبکه نیز گفته می‌شود |
-| Server | ارائه‌دهنده Service |
-| SLA | تعهد قابل‌اندازه‌گیری سطح خدمت |
-| SLAAC | ساخت خودکار IPv6 با Router Advertisement |
-| SNMP | پایش/مدیریت با OID و MIB |
-| SOA | رکورد مشخصات اصلی DNS Zone |
-| Spine-leaf | معماری Data center با Leafهای متصل به Spineها |
-| SSO | یک ورود برای چند Service |
-| STP/RSTP | جلوگیری Loop لایه ۲ |
-| Subnet | بخش IP با Prefix مشترک |
-| Switch | Forward محلی Frame |
-| Syslog | قالب/انتقال رویداد شبکه |
-| TCP | Transport Connection-oriented قابل‌اعتماد |
-| Throughput | نرخ واقعی انتقال |
-| TLS | حفاظت رمزنگاری Transport برای برنامه‌ها |
-| TTL/Hop limit | محدودکننده تعداد Routerهای مسیر |
-| UDP | Transport Connectionless کم‌سربار |
-| Unicast | یک مبدأ به یک مقصد |
-| VLAN | Broadcast domain منطقی لایه ۲ |
-| VLSM | Prefixهای با اندازه متفاوت در طرح آدرس |
-| VPN | Tunnel محافظت‌شده روی شبکه دیگر |
-| VRF | جدول Routing جدا روی یک Device |
-| VTEP/VXLAN | Endpoint تونل / Overlay لایه ۲ روی لایه ۳ |
-| WAN | شبکه گسترده میان Siteها |
-| WLC | کنترل‌کننده APهای Wi-Fi |
-| Zero Trust | دسترسی مبتنی بر هویت/وضعیت و کمترین اعتماد ضمنی |
-
-</div>
+| ACL | Ordered rules that permit or deny traffic |
+| Administrative distance | Local preference for a route source; lower is usually preferred |
+| AP | Access point that bridges wireless clients into a LAN |
+| APIPA | Automatic IPv4 link-local address in `169.254.0.0/16` |
+| ARP | Maps a local IPv4 address to a MAC address |
+| Asset | Something valuable, such as data or a device |
+| Authentication | Proving an identity |
+| Authorization | Determining what an authenticated identity may do |
+| Anycast | One address announced by several nodes; routing selects one |
+| Availability | A service is usable when required |
+| Baseline | Recorded reference of normal behavior |
+| Bandwidth | Nominal path capacity |
+| BGP | Policy-driven path-vector routing protocol |
+| BSSID | Identifier of one wireless radio/cell |
+| Broadcast | One sender to every member of an IPv4 broadcast domain |
+| Broadcast domain | The Layer 2 scope where broadcasts are flooded, normally one VLAN |
+| CA | Certificate authority that signs certificates |
+| CAM/MAC table | Switch mapping of MAC addresses to VLANs and ports |
+| Captive portal | Guest acceptance/login page; it is not encryption |
+| Certificate | Signed statement binding an identity to a public key |
+| CIDR | Classless prefix notation such as `/24` |
+| CIA triad | Confidentiality, integrity, and availability |
+| Client | A role that starts a service request |
+| Cloud | On-demand, automatable IT resources on shared or dedicated infrastructure |
+| Collision domain | Scope where devices contend/collide; each switch port separates it |
+| Congestion | Demand exceeds capacity and creates queues or drops |
+| Connector | Physical cable end such as LC or RJ45 |
+| Control plane | Builds routing, switching, or policy decisions |
+| CRC/FCS | Frame error-detection value |
+| Data plane | Forwards actual traffic according to tables |
+| Default gateway | Local router used for remote destinations |
+| Default route | Least-specific route, IPv4 `0.0.0.0/0` or IPv6 `::/0` |
+| DHCP | Assigns IP configuration under a lease |
+| DHCP relay | Carries DHCP between subnets |
+| DNS | Distributed naming and resource-record system |
+| DNSSEC | Signs DNS data for origin authentication and integrity |
+| DoH/DoT | DNS over HTTPS/TLS for encrypted client-to-resolver transport |
+| Duplex | Simultaneous direction mode: full or half |
+| East-west | Traffic between internal data-center workloads |
+| Elasticity | Capacity automatically grows and shrinks with demand |
+| Encapsulation | Adding layer-specific headers and trailers |
+| Endpoint | Final device such as laptop, phone, camera, or server |
+| Ethernet | IEEE 802.3 Layer 1/2 networking family |
+| FHRP | Redundant default-gateway protocols using a virtual IP |
+| Firewall | Enforces traffic policy, often with connection state |
+| Flow | Summary of one network conversation |
+| Forward proxy | Intermediary acting for clients |
+| Frame | Layer 2 protocol data unit |
+| Gateway | Device or service used to leave a local domain |
+| Goodput | Useful application payload delivered per unit time |
+| Honeypot | Decoy system used to detect or study activity |
+| Host | Device with a network stack/address |
+| HTTP/HTTPS | Web protocol; HTTPS is HTTP protected by TLS |
+| IaC | Infrastructure state stored as version-controlled code/files |
+| ICMP | IP error/control messaging and echo functions |
+| IDF/MDF | Intermediate/main distribution location for cabling and devices |
+| IDS/IPS | Intrusion detection / inline detection and prevention |
+| Integrity | Unauthorized change is prevented or detectable |
+| IP | Layer 3 logical addressing and delivery protocol |
+| IPAM | Management of prefixes, subnets, addresses, and owners |
+| IPsec | IP protection using IKE, AH, and/or ESP |
+| Jitter | Variation in packet delay |
+| Jump host | Controlled administrative entry point to other systems |
+| LACP | Standard negotiation for link aggregation |
+| LAN | Local-area network |
+| Latency | Delivery delay |
+| Layer 2 switch | Forwards frames using MAC addresses |
+| Layer 3 switch | Performs switching and IP routing |
+| Lease | Time-limited DHCP assignment |
+| Least privilege | Only the minimum required permission |
+| Load balancer | Distributes requests among backend services |
+| Loopback | Address that returns to the local host |
+| MAC | Link-layer interface identifier |
+| Metric | Cost used inside one routing protocol |
+| MFA | Authentication using independent factor types |
+| MTBF/MTTR | Mean time between failures / mean time to repair |
+| MTU | Maximum transmission unit for an interface/path context |
+| Multicast | One sender to subscribed group members |
+| NAC | Controls endpoint admission and posture |
+| NAS | File-level network storage |
+| NAT/PAT | Address translation / address plus port translation |
+| Neighbor Discovery | IPv6 neighbor, router, and address-resolution functions |
+| NFV | Network functions implemented as software |
+| North-south | Traffic entering or leaving a data center |
+| NTP/NTS | Network time / security for NTP |
+| OSI | Seven-layer conceptual networking model |
+| OSPF | Link-state interior routing protocol |
+| Packet | Layer 3 protocol data unit |
+| Packet loss | Packets fail to reach the destination |
+| Patch panel | Organized termination point for permanent cabling |
+| PBQ | Performance-based exam question |
+| PDU (power) | Power distribution unit; distinct from protocol data unit |
+| PKI | Public-key infrastructure of CAs, certificates, and policy |
+| PoE | Power over Ethernet |
+| Port | TCP/UDP service identifier, or a physical interface by context |
+| Prefix | Number of network bits, such as `/24` |
+| Protocol | Agreed rules for communication |
+| Proxy | Intermediary between client and server |
+| QoS | Classifies and controls traffic behavior during congestion |
+| RADIUS/TACACS+ | AAA protocols for access and device management |
+| Reverse proxy | Intermediary acting for inbound servers |
+| RFC | IETF standards or informational document |
+| rDNS/PTR | Reverse mapping from an IP address to a name |
+| RPO/RTO | Acceptable data loss / acceptable recovery time |
+| Router | Forwards IP packets between networks |
+| Routing table | Known prefixes, next hops, and outgoing interfaces |
+| SAN | Block-level network storage |
+| SASE/SSE | WAN plus cloud security / cloud-delivered security services |
+| Scalability | Ability to increase capacity |
+| Segment | TCP PDU; also sometimes a logical network portion |
+| Server | Role that provides a service |
+| SLA | Measurable service-level agreement |
+| SLAAC | IPv6 address autoconfiguration from Router Advertisements |
+| SNMP | Monitoring/management using OIDs and MIBs |
+| SOA | DNS record holding zone authority and timer metadata |
+| Spine-leaf | Data-center topology with every leaf connected to every spine |
+| SSO | One sign-in used across several services |
+| STP/RSTP | Layer 2 loop-prevention protocols |
+| Subnet | Addresses sharing a common prefix |
+| Switch | Forwards local frames |
+| Syslog | Event message format/transport with severity levels |
+| TCP | Connection-oriented reliable ordered byte stream |
+| Throughput | Actual data-transfer rate |
+| TLS | Cryptographic protection for application traffic |
+| TTL/Hop Limit | Limits the number of routed hops |
+| UDP | Connectionless transport datagram service |
+| Unicast | One source to one destination |
+| VLAN | Logical Layer 2 broadcast domain |
+| VLSM | Differently sized prefixes in one address plan |
+| VPN | Protected tunnel across another network |
+| VRF | Separate routing table on one device |
+| VTEP/VXLAN | Tunnel endpoint / Layer 2 overlay across Layer 3 |
+| WAN | Wide-area network connecting sites |
+| WLC | Central controller for wireless APs |
+| Zero Trust | Access based on identity, posture, context, and minimal implicit trust |

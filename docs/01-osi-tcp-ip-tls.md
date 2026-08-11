@@ -1,661 +1,420 @@
-<div dir="rtl" align="right">
+# Chapter 1 — OSI, TCP/IP, TCP, UDP, and TLS
 
-# فصل ویژه — OSI، TCP/IP، TCP، UDP و TLS Handshake
+This chapter explains how networking responsibilities are divided into layers, how TCP and UDP differ, and how TLS protects an application connection.
 
-## چرا مدل لایه‌ای داریم؟
+## Why use layers?
 
-اگر یک فناوری مجبور بود همهٔ کارها را از سیگنال کابل تا نمایش صفحه انجام دهد، تغییر هر بخش کل سیستم را عوض می‌کرد. مدل لایه‌ای مسئله را تقسیم می‌کند. هر لایه خدمتی به لایهٔ بالاتر می‌دهد و از لایهٔ پایین‌تر استفاده می‌کند.
+Without layers, every application would need to understand cables, radio, routing, delivery, encryption, and user data as one system. Layers provide boundaries:
 
-مزیت‌ها:
+- A browser can use TCP without knowing the Ethernet switch model.
+- IP can cross copper, fiber, or wireless links.
+- A switch can forward a frame without understanding the web page.
+- Engineers can troubleshoot one responsibility at a time.
 
-- طراحی و استانداردسازی ساده‌تر؛
-- امکان تغییر Media بدون بازنویسی Application؛
-- همکاری تجهیزات و نرم‌افزارهای شرکت‌های مختلف؛
-- عیب‌یابی مرحله‌ای؛
-- تفکیک آدرس، مسیر، انتقال، رمزنگاری و Application.
+The OSI model is a teaching and design model. Real protocols do not always fit perfectly into one layer, but the model gives a consistent vocabulary.
 
-مدل یک نقشهٔ ذهنی است. در پیاده‌سازی واقعی، مرزها همیشه کاملاً جدا نیستند و بعضی پروتکل‌ها چند نقش دارند.
+## OSI overview
 
-## مدل OSI چیست؟
-
-مدل **Open Systems Interconnection** هفت لایه دارد. شماره‌گذاری از پایین به بالا است:
-
-| شماره | نام انگلیسی | نام فارسی | PDU رایج | شناسه یا مفهوم مهم |
+| Layer | Name | Main responsibilities | PDU/identifier | Common examples |
 |---:|---|---|---|---|
-| ۷ | Application | کاربرد | Data | نام سرویس، URL، Query، Command |
-| ۶ | Presentation | نمایش | Data | Encoding، Compression، Encryption |
-| ۵ | Session | نشست | Data | ایجاد، نگهداری و پایان Dialog/Session |
-| ۴ | Transport | انتقال | Segment/Datagram | TCP/UDP Port، Sequence، Reliability |
-| ۳ | Network | شبکه | Packet | IPv4/IPv6 Address و Route |
-| ۲ | Data Link | پیوند داده | Frame | MAC، VLAN، FCS و تحویل روی Link |
-| ۱ | Physical | فیزیکی | Bits/Signal | کابل، نور، RF، Connector، Pin و توان |
+| 7 | Application | Network services used by applications | Data, names, URLs | HTTP, DNS, DHCP, SMTP, SNMP |
+| 6 | Presentation | Representation, encoding, encryption, compression | Data, formats | JSON, UTF-8, image formats, TLS conceptually |
+| 5 | Session | Start, maintain, and resume conversations | Session state | Checkpoints, session tokens, RPC concepts |
+| 4 | Transport | Ports, reliability, ordering, flow | TCP segment or UDP datagram | TCP, UDP |
+| 3 | Network | Logical addressing and routing | IP packet, IP address | IPv4, IPv6, ICMP, router |
+| 2 | Data Link | Delivery across a local link | Frame, MAC, VLAN | Ethernet, 802.1Q, switch |
+| 1 | Physical | Signals, connectors, media, timing | Bits | Copper, fiber, radio, repeaters |
 
-### روش حفظ‌کردن کافی نیست
+## Layer 1 — Physical
 
-عبارت‌های حفظی برای ترتیب مفیدند، اما آزمون سناریویی می‌پرسد خرابی در کدام لایه است یا کدام دستگاه چه تصمیمی می‌گیرد. بنابراین برای هر لایه این پنج مورد را بفهمید:
+### Purpose
 
-۱. چه مسئله‌ای را حل می‌کند؟  
-۲. چه اطلاعاتی اضافه یا بررسی می‌کند؟  
-۳. خروجی آن چیست؟  
-۴. چه دستگاه/پروتکلی نمونهٔ آن است؟  
-۵. خرابی آن چه نشانه‌ای دارد؟
+Layer 1 turns bits into electrical voltage changes, light pulses, or radio waves and receives those signals at the other end.
 
-## لایه ۱ — Physical
+### Responsibilities
 
-### وظیفه
+- Cable, fiber, antenna, connector, and pinout.
+- Signaling, timing, frequency, wavelength, and modulation.
+- Supported distance and link speed.
+- Physical interface state.
 
-تبدیل bitها به سیگنال و انتقال آن‌ها روی Media فیزیکی. این لایه معنی IP یا Port را نمی‌فهمد.
+### Devices and examples
 
-### موضوع‌های اصلی
+Copper and fiber cabling, transceivers, patch panels, antennas, hubs, repeaters, and the physical portion of a network interface.
 
-- ولتاژ و سیگنال الکتریکی روی Copper؛
-- Pulse نور روی Fiber؛
-- موج رادیویی، Frequency، Channel و Modulation در Wireless؛
-- Connector، Pinout، Pin/Pair، Polarity؛
-- سرعت Link، Duplex فیزیکی/Negotiation؛
-- طول مجاز کابل، Attenuation و Interference؛
-- Transceiver و Optical Power؛
-- PoE Power و Budget.
+### Common symptoms
 
-### تجهیزات و نمونه‌ها
+- Link light is off.
+- Interface is down/down.
+- Signal or optical power is outside limits.
+- CRC errors increase because of damaged media or interference.
+- The wrong optic, wavelength, or fiber type is installed.
 
-Cable، Patch Panel، Repeater، Hub قدیمی، Antenna، Transceiver، Media Converter و بخش Physical کارت شبکه.
+### Diagnostic question
 
-### نشانه‌های خرابی
+**Do valid signals exist at both ends of the link?**
 
-- Link Light خاموش؛
-- Interface `down/down`؛
-- کابل قطع یا Connector بد؛
-- Fiber TX/RX جابه‌جا؛
-- Optic یا Wavelength ناسازگار؛
-- توان PoE ناکافی؛
-- CRC و Errorهای رو‌به‌افزایش به علت نویز/کابل؛
-- Signal ضعیف Wireless.
+## Layer 2 — Data Link
 
-### سؤال تشخیصی
+### Purpose
 
-آیا دو طرف واقعاً می‌توانند bitها را روی Media ردوبدل کنند؟
+Layer 2 delivers frames across one local broadcast domain. Ethernet uses MAC addresses for local delivery.
 
-## لایه ۲ — Data Link
+### Ethernet frame fields
 
-### وظیفه
-
-تحویل Frame در یک Link یا Broadcast Domain محلی، تشخیص مرز فریم و خطای فریم و کنترل دسترسی به Media.
-
-### زیرلایه‌ها
-
-- **MAC:** آدرس‌دهی و دسترسی به Media؛
-- **LLC:** رابط منطقی با لایهٔ بالاتر در مدل IEEE.
-
-### Ethernet Frame ساده‌شده
-
-| فیلد | نقش |
+| Field | Purpose |
 |---|---|
-| Preamble/SFD | هم‌زمان‌سازی و تشخیص آغاز Frame |
-| Destination MAC | گیرندهٔ Layer 2 در همین Link/VLAN |
-| Source MAC | فرستندهٔ Layer 2 |
-| 802.1Q Tag اختیاری | VLAN ID و Priority |
-| EtherType/Length | نوع Payload، مانند IPv4، ARP یا IPv6 |
-| Payload | Packet لایهٔ ۳ و Padding لازم |
-| FCS | تشخیص خطای فریم با CRC؛ معمولاً برای اصلاح نیست |
+| Preamble/SFD | Synchronizes the receiver and marks the frame start |
+| Destination MAC | Local-link receiver or multicast/broadcast group |
+| Source MAC | Sending interface on the local link |
+| Optional 802.1Q tag | VLAN ID and priority information |
+| EtherType/length | Identifies the upper-layer payload |
+| Payload | Usually an IP packet |
+| FCS | Detects transmission errors in the frame |
 
-### تصمیم Switch
+### How a switch decides
 
-Switch از **Source MAC** یاد می‌گیرد و با **Destination MAC** ارسال می‌کند:
+1. The switch learns the **source MAC** on the incoming port and VLAN.
+2. It searches the MAC table for the **destination MAC**.
+3. If known on another forwarding port, it sends the frame only there.
+4. If unknown, it floods within that VLAN except the incoming port.
+5. Broadcasts are flooded within the VLAN.
+6. Dynamic MAC entries age out after inactivity.
 
-- Known Unicast → فقط پورت مقصد؛
-- Unknown Unicast → Flood در VLAN به‌جز پورت ورودی؛
-- Broadcast → Flood در همان VLAN؛
-- MAC مقصد روی همان پورت ورودی → Filter؛
-- Loop → STP باید مسیر افزونه را Block/Discard کند.
+### Common symptoms
 
-### مفاهیم مهم
+- Wrong access VLAN or missing VLAN on a trunk.
+- Native VLAN mismatch.
+- STP blocking an unexpected path or preventing a loop correctly.
+- MAC flapping and broadcast storms during a Layer 2 loop.
+- LACP members suspended because their settings do not match.
 
-Ethernet، Wi-Fi MAC، VLAN، Trunk 802.1Q، STP، LACP، LLDP/CDP، ARP در مرز Layer 2/3 و MAC Table.
+### Diagnostic question
 
-### نشانه‌های خرابی
+**Is the correct frame reaching the correct port in the correct VLAN?**
 
-- VLAN اشتباه؛
-- Trunk اجازهٔ VLAN را نمی‌دهد؛
-- Native VLAN mismatch؛
-- STP Blocking یا Loop؛
-- MAC Flapping؛
-- Port Security violation؛
-- Frameهای Giant/Runts یا FCS Error؛
-- Wi-Fi Association مشکل دارد.
+## Layer 3 — Network
 
-### سؤال تشخیصی
+### Purpose
 
-آیا Frame در VLAN و Link درست به MAC درست تحویل می‌شود؟
+Layer 3 moves packets between IP networks. Routers make forwarding decisions based on destination prefixes.
 
-## لایه ۳ — Network
+### Important IPv4 header fields
 
-### وظیفه
-
-آدرس‌دهی منطقی و انتخاب مسیر میان شبکه‌های مختلف.
-
-### IPv4 Headerهای مهم
-
-| فیلد | کاربرد |
+| Field | Purpose |
 |---|---|
-| Version | IPv4 |
-| IHL | طول Header |
-| DSCP/ECN | علامت‌گذاری QoS و اعلان ازدحام |
-| Total Length | اندازهٔ Packet |
-| Identification/Flags/Fragment Offset | Fragmentation در IPv4 |
-| TTL | در هر Router کم می‌شود تا Loop بی‌نهایت نشود |
-| Protocol | Payload مثل TCP=6، UDP=17، ICMP=1 |
-| Header Checksum | خطای Header IPv4؛ در هر Hop با تغییر TTL بازحساب می‌شود |
-| Source/Destination IP | مبدأ و مقصد منطقی |
+| Source IP | Original logical sender; NAT may translate it |
+| Destination IP | Logical destination |
+| TTL | Decreases at every router to stop indefinite loops |
+| Protocol | Identifies TCP, UDP, ICMP, GRE, and other payloads |
+| Fragmentation fields | Support IPv4 fragmentation behavior |
 
-### تصمیم Router
+IPv6 uses a fixed base header and a Hop Limit instead of IPv4 TTL. It uses extension headers for optional functions.
 
-۱. مقصد IP را می‌خواند.  
-۲. Routeهای Matching را پیدا می‌کند.  
-۳. طولانی‌ترین Prefix را انتخاب می‌کند.  
-۴. اگر Prefix یکسان از منابع متفاوت باشد، Preference/Administrative Distance وارد تصمیم می‌شود.  
-۵. Metric مسیرهای یک Protocol مقایسه می‌شود.  
-۶. Next Hop و Interface خروجی Resolve می‌شوند.  
-۷. Frame جدید برای Link بعدی ساخته می‌شود.
+### How a router decides
 
-### پروتکل و تجهیزات
+1. Remove the incoming Layer 2 frame.
+2. Validate and inspect the IP packet.
+3. Decrease TTL or Hop Limit.
+4. Find the longest matching destination prefix.
+5. Apply relevant policy, ACL, NAT, or QoS functions.
+6. Resolve the next-hop link address if needed.
+7. Encapsulate the packet in a new frame for the outgoing link.
 
-IPv4، IPv6، ICMP، IPsec، GRE، OSPF، EIGRP، BGP و Router/Layer 3 Switch/Firewall.
+The source and destination MAC addresses normally change at every routed hop. The end-to-end IP addresses normally remain the same unless a translation technology changes them.
 
-### نشانه‌های خرابی
+### Diagnostic question
 
-- IP یا Mask اشتباه؛
-- Gateway اشتباه؛
-- Route یا Default Route وجود ندارد؛
-- Duplicate IP؛
-- Route برگشت نیست؛
-- ACL Layer 3 Packet را رد می‌کند؛
-- TTL Expired؛
-- MTU/Fragmentation مشکل دارد.
+**Does a valid forward and return route exist, and do policies permit both directions?**
 
-### سؤال تشخیصی
+## Layer 4 — Transport
 
-آیا Packet برای IP مقصد Route معتبر و مسیر برگشت دارد؟
+### Purpose
 
-## لایه ۴ — Transport
+The transport layer identifies application endpoints with ports. TCP adds reliable, ordered delivery and flow control. UDP provides a simpler datagram service.
 
-### وظیفه
+A conversation is commonly identified by the five-tuple:
 
-رساندن داده به Process درست، تفکیک چند ارتباط هم‌زمان و در TCP ایجاد انتقال قابل‌اعتماد، مرتب و کنترل‌شده.
+```text
+source IP, source port, destination IP, destination port, transport protocol
+```
 
-### شناسهٔ Flow
+This allows many simultaneous connections to the same server port.
 
-یک جریان معمولاً با Five-Tuple شناخته می‌شود:
+### Common symptoms
 
-- Source IP
-- Destination IP
-- Protocol
-- Source Port
-- Destination Port
+- SYN packets leave but no SYN-ACK returns.
+- Connection is refused because no service is listening.
+- Retransmissions indicate loss, reordering, or severe delay.
+- A zero window indicates the receiver cannot consume data quickly enough.
+- A firewall permits the IP path but blocks the required port.
 
-مثلاً مرورگر ممکن است از Source Port موقت `53124` به Server Port `443` وصل شود. پاسخ از `443` به `53124` برمی‌گردد.
+### Diagnostic question
 
-### TCP و UDP
+**Can the endpoints establish and maintain the required TCP or UDP conversation?**
 
-TCP و UDP در بخش‌های بعد عمیق بررسی می‌شوند.
+## Layer 5 — Session
 
-### نشانه‌های خرابی
+The session layer describes management of longer conversations: establishment, maintenance, checkpoints, recovery, and orderly termination. In modern software, these functions often exist inside application protocols, libraries, authentication systems, or RPC frameworks rather than as a separate visible protocol.
 
-- Port مقصد بسته است؛
-- Firewall Session را رد می‌کند؛
-- TCP SYN بی‌پاسخ؛
-- Connection Reset؛
-- Retransmission زیاد؛
-- Window بسیار کوچک یا Zero Window؛
-- UDP Response نمی‌رسد؛
-- Port Exhaustion در NAT یا Client.
+A session is not the same thing as a TCP connection. A web login session can survive across several TCP connections by using a cookie or token.
 
-### سؤال تشخیصی
+## Layer 6 — Presentation
 
-آیا داده به Process و Port درست با رفتار انتقال موردنیاز می‌رسد؟
+The presentation layer describes how data is represented:
 
-## لایه ۵ — Session
+- Character encoding such as UTF-8.
+- Serialization such as JSON or XML.
+- Image, audio, and video formats.
+- Compression.
+- Encryption and decryption concepts.
 
-### وظیفه
+TLS is often placed at Layer 6 in OSI teaching, but in real implementations it sits between the application and transport APIs. It is more important to understand its job than to argue about a single layer number.
 
-ایجاد، حفظ، هماهنگی و پایان گفت‌وگو یا Session میان برنامه‌ها. در دنیای TCP/IP، بسیاری از وظایف این لایه داخل Application، Library یا Transport/TLS پیاده‌سازی می‌شوند و Protocol مستقل OSI ندارند.
+## Layer 7 — Application
 
-### نمونهٔ مفهوم
+Layer 7 provides application-facing network behavior:
 
-- Login Session و Token؛
-- نگهداری State در یک ارتباط؛
-- Checkpoint و Resume؛
-- آغاز/پایان Dialog؛
-- RPC Session؛
-- SMB/Database Session.
+- HTTP requests and responses.
+- DNS questions and resource records.
+- DHCP address-assignment messages.
+- SMTP mail transfer.
+- SNMP monitoring operations.
 
-### نشانه‌های خرابی
+An Application-layer failure can exist while lower layers are healthy. A TCP connection to port 443 may succeed while the web service returns HTTP 503 because its backend is unavailable.
 
-- ارتباط Transport برقرار است، اما Session منقضی شده؛
-- Token نامعتبر؛
-- کاربر مرتب Logout می‌شود؛
-- Load Balancer بدون Session Persistence درخواست مرتبط را به Backend نامناسب می‌فرستد.
+## OSI troubleshooting table
 
-### سؤال تشخیصی
-
-آیا دو Application دربارهٔ وضعیت و ادامهٔ گفت‌وگو توافق دارند؟
-
-## لایه ۶ — Presentation
-
-### وظیفه
-
-نمایش و تبدیل داده به قالبی که دو طرف بفهمند: Encoding، Serialization، Compression و Encryption.
-
-### نمونه‌ها
-
-- UTF-8 و تبدیل Character؛
-- JSON، XML، ASN.1؛
-- JPEG/PNG و Codecها؛
-- Gzip Compression؛
-- TLS Encryption در نگاشت آموزشی رایج.
-
-TLS دقیقاً فقط «لایهٔ ۶ OSI» نیست؛ در Stack واقعی میان Application و Transport عمل می‌کند. قرار‌دادن آن در Presentation یک مدل آموزشی برای نقش رمز/نمایش است.
-
-### نشانه‌های خرابی
-
-- Characterهای خراب به علت Encoding؛
-- Certificate نامعتبر؛
-- Cipher/Version مشترک وجود ندارد؛
-- Decompression/Format Error؛
-- Client نوع Content را نمی‌فهمد.
-
-### سؤال تشخیصی
-
-آیا داده با Encoding، Format، Compression و Protection قابل فهم مشترک نمایش داده می‌شود؟
-
-## لایه ۷ — Application
-
-### وظیفه
-
-ارائهٔ سرویس شبکه به برنامهٔ کاربر. این لایه خود برنامهٔ GUI نیست؛ Protocol و منطق سرویس نزدیک به Application است.
-
-### نمونه‌ها
-
-HTTP/HTTPS، DNS، DHCP، SMTP، SMB، FTP/SFTP، SSH، SNMP، LDAP، RDP، SIP و APIها.
-
-### نشانه‌های خرابی
-
-- HTTP 404/500؛
-- DNS `NXDOMAIN` یا `SERVFAIL`؛
-- DHCP Scope خالی؛
-- Authentication رد می‌شود؛
-- API Schema یا Token اشتباه؛
-- SMTP Relay Policy اجازه نمی‌دهد.
-
-### سؤال تشخیصی
-
-آیا سرویس موردنظر درخواست را می‌فهمد، اجازه می‌دهد و پاسخ معتبر می‌دهد؟
-
-## جدول یک‌جای عیب‌یابی OSI
-
-| لایه | اولین Evidenceها | نمونهٔ ابزار |
+| Layer | Evidence to collect | Example problem |
 |---:|---|---|
-| ۱ | Link، Signal، Power، Error Counter | Cable Tester، VFL، Wi-Fi Analyzer، `show interface` |
-| ۲ | VLAN، MAC Table، STP، Frame | `show vlan`، `show mac-address-table`، Wireshark |
-| ۳ | IP/Mask/Gateway، ARP/ND، Route | `ipconfig`، `ip route`، `traceroute`، `show route` |
-| ۴ | Port، SYN/ACK/RST، Retransmission | `ss`، `netstat`، `Test-NetConnection`، Wireshark |
-| ۵ | Session/Token/State | Application Log، Load Balancer Session |
-| ۶ | TLS، Certificate، Encoding | Browser TLS info، `openssl`، Capture |
-| ۷ | DNS/HTTP/Service Response | `dig`، `curl`، Log و API Client |
+| 1 | Link state, optical levels, cable test, error counters | Broken cable or incompatible optic |
+| 2 | MAC table, VLAN, trunk, STP, LACP | VLAN missing from trunk |
+| 3 | IP/prefix, ARP/ND, route table, traceroute | Wrong gateway or missing return route |
+| 4 | Socket state, port test, TCP flags, retransmissions | Firewall drops TCP/443 |
+| 5 | Session identifiers, timeout, authentication state | Expired login session |
+| 6 | Encoding, certificate, cipher, TLS alert | Hostname mismatch |
+| 7 | Application log, HTTP status, DNS answer | HTTP 503 or NXDOMAIN |
 
-## Encapsulation خط‌به‌خط
+## Encapsulation step by step
 
-فرض کنید مرورگر ۱۰۰ Byte دادهٔ HTTP تولید می‌کند:
+For an HTTPS request:
 
-۱. Application پیام HTTP می‌سازد.  
-۲. TLS آن را رمز و Record ایجاد می‌کند.  
-۳. TCP Header با Source/Destination Port و Sequence اضافه می‌کند.  
-۴. IP Header با Source/Destination IP اضافه می‌کند.  
-۵. Ethernet Header/Trailer با MAC و FCS اضافه می‌کند.  
-۶. NIC فریم را به Signal می‌برد.  
-۷. Switch فقط لایهٔ ۲ لازم را بررسی می‌کند.  
-۸. Router Ethernet قدیمی را حذف، IP را پردازش و Ethernet جدید می‌سازد.  
-۹. Server مراحل را برعکس انجام می‌دهد تا HTTP را به Web Server برساند.
+1. HTTP creates a request.
+2. TLS encrypts and authenticates application records.
+3. TCP adds ports, sequence numbers, flags, and checksums.
+4. IP adds logical addresses and routing fields.
+5. Ethernet adds local MAC addresses and an FCS.
+6. The interface transmits signals.
 
-اندازهٔ دقیق به Optionها، TLS Record، TCP/IP Header، VLAN Tag و Media بستگی دارد. MTU معمول Ethernet اغلب ۱۵۰۰ Byte Payload لایهٔ ۳ است، نه اندازهٔ کامل Frame و نه اندازهٔ Application Data.
+At the server, each layer validates and removes its information before passing the payload upward.
 
-## مدل TCP/IP و نگاشت آن به OSI
+## TCP/IP model and OSI mapping
 
-مدل TCP/IP عملی‌تر و معمولاً چهارلایه‌ای است:
-
-| TCP/IP | OSI تقریبی | نمونه |
+| TCP/IP layer | Approximate OSI mapping | Examples |
 |---|---|---|
-| Application | ۵، ۶، ۷ | HTTP، DNS، SSH، TLS، DHCP |
-| Transport | ۴ | TCP، UDP |
-| Internet | ۳ | IPv4، IPv6، ICMP |
-| Network Access/Link | ۱ و ۲ | Ethernet، Wi-Fi، Fiber/Signal |
+| Application | OSI 5–7 | HTTP, DNS, DHCP, TLS, SSH |
+| Transport | OSI 4 | TCP, UDP |
+| Internet | OSI 3 | IPv4, IPv6, ICMP |
+| Link/Network access | OSI 1–2 | Ethernet, Wi-Fi, fiber, copper |
 
-گاهی Network Access به Data Link و Physical شکسته و مدل پنج‌لایه‌ای تدریس می‌شود. این اختلاف به معنی تناقض عملکرد نیست؛ فقط سطح تفکیک مدل‌ها متفاوت است.
+The mapping is approximate. TCP/IP describes the deployed Internet architecture; OSI provides a detailed conceptual model.
 
-## TCP چیست؟
+## TCP in detail
 
-TCP یک Protocol **Connection-Oriented** برای ارائهٔ Byte Stream مرتب و قابل‌اعتماد است.
+TCP is connection-oriented. It provides a byte stream with ordered delivery, acknowledgments, retransmission, receiver flow control, and congestion control.
 
-### TCP چه تضمین‌هایی می‌دهد؟
+### Important TCP header fields
 
-- تشخیص دادهٔ گم‌شده با Sequence/ACK؛
-- Retransmission؛
-- تحویل مرتب Byteها به Application؛
-- جلوگیری از تحویل Duplicate؛
-- Flow Control برای ظرفیت گیرنده؛
-- Congestion Control برای وضعیت شبکه؛
-- Checksum برای تشخیص خطای Segment.
-
-TCP تضمین نمی‌کند Application درخواست را قبول کرده، Server سالم است یا Data روی Disk ذخیره شده؛ فقط رفتار Stream میان Endpointهای TCP را مدیریت می‌کند.
-
-## TCP Header مهم
-
-| فیلد | معنی |
+| Field | Purpose |
 |---|---|
-| Source/Destination Port | Processهای دو طرف |
-| Sequence Number | شمارهٔ اولین Byte این Segment در Stream |
-| Acknowledgment Number | شمارهٔ Byte بعدی موردانتظار |
-| Flags | SYN، ACK، FIN، RST، PSH و دیگر Controlها |
-| Window Size | فضای دریافت اعلام‌شده برای Flow Control |
-| Checksum | تشخیص خطا روی Header/Data با Pseudo Header IP |
-| Options | MSS، Window Scale، SACK، Timestamp و غیره |
+| Source/destination port | Identifies client and server processes |
+| Sequence number | Identifies byte position in the stream |
+| Acknowledgment number | Indicates the next byte expected |
+| Flags | SYN, ACK, FIN, RST, PSH, URG, ECE, and CWR behavior |
+| Window | Advertises receiver capacity |
+| Checksum | Detects corruption across header and data |
+| Options | MSS, window scaling, timestamps, SACK permission |
 
-## TCP Three-Way Handshake دقیق
+### TCP three-way handshake
 
-فرض کنیم Client یک Initial Sequence Number برابر ۱۰۰۰ و Server برابر ۷۰۰۰ انتخاب می‌کند.
-
-### پیام اول — SYN
-
-Client می‌گوید: «می‌خواهم Connection ایجاد کنم؛ Sequence اولیهٔ من ۱۰۰۰ است و Optionهای من این‌هاست.» خود SYN یک شماره از فضای Sequence مصرف می‌کند.
-
-### پیام دوم — SYN-ACK
-
-Server می‌گوید: «درخواستت را دیدم؛ Byte بعدی مورد انتظار من ۱۰۰۱ است. Sequence اولیهٔ من ۷۰۰۰ است.»
-
-### پیام سوم — ACK
-
-Client می‌گوید: «SYN تو را دیدم؛ Byte بعدی مورد انتظار من ۷۰۰۱ است.» Connection وارد حالت Established می‌شود.
-
-نمای ساده:
-
-</div>
-
-<div dir="ltr" align="left">
+Assume a client begins with sequence 1000 and the server with 5000:
 
 ```text
-Client                                  Server
-SYN, Seq=1000 ------------------------->
-                 <---------------------- SYN, ACK, Seq=7000, Ack=1001
-ACK, Seq=1001, Ack=7001 -------------->
+Client → Server: SYN, Seq=1000
+Server → Client: SYN-ACK, Seq=5000, Ack=1001
+Client → Server: ACK, Seq=1001, Ack=5001
 ```
 
-</div>
+#### Line-by-line explanation
 
-<div dir="rtl" align="right">
-
-توضیح خط‌به‌خط:
-
-| خط | معنی |
+| Line | Meaning |
 |---|---|
-| `SYN, Seq=1000` | Client درخواست شروع و Sequence اولیهٔ خود را اعلام می‌کند. |
-| `SYN, ACK, Seq=7000, Ack=1001` | Server هم SYN خودش را می‌فرستد و SYN Client را با انتظار شمارهٔ بعد تأیید می‌کند. |
-| `ACK, Seq=1001, Ack=7001` | Client SYN Server را تأیید می‌کند؛ دو جهت مستقل Sequence دارند. |
+| SYN | Client requests a connection and announces its initial sequence number |
+| SYN-ACK | Server accepts, acknowledges 1001, and announces its own initial sequence |
+| ACK | Client acknowledges 5001; both sides can now exchange data |
 
-### چرا دو پیام کافی نیست؟
+SYN and FIN each consume one sequence number even without application payload.
 
-هر طرف باید ثابت کند هم می‌تواند پیام طرف مقابل را دریافت کند و هم Sequence اولیهٔ خودش به طرف مقابل رسیده است. سه پیام وضعیت دوطرفه را هماهنگ می‌کند و احتمال اشتباه با Segment قدیمی را کاهش می‌دهد.
+### Acknowledgment and retransmission
 
-## ACK، Retransmission و SACK
+TCP acknowledgments are normally cumulative. If the receiver acknowledges 4001, it has accepted all earlier bytes in order and expects byte 4001. Selective Acknowledgment can identify non-contiguous blocks so the sender retransmits less data.
 
-TCP معمولاً ACK تجمعی می‌فرستد. `Ack=5001` یعنی تمام Byteها تا ۵۰۰۰ دریافت شده و Byte ۵۰۰۱ انتظار می‌رود. اگر Segment گم شود، ACK تکراری یا Timeout می‌تواند Retransmission را تحریک کند.
+A retransmission does not automatically prove congestion. It may result from physical loss, overloaded queues, wireless retries, a path change, filtering, or delayed acknowledgments. Use captures from suitable points and compare timing.
 
-**Selective Acknowledgment (SACK)** اجازه می‌دهد گیرنده Rangeهای دریافت‌شدهٔ بعد از Gap را اعلام کند تا فرستنده فقط بخش‌های واقعاً گم‌شده را دوباره بفرستد.
+### Flow control and congestion control
 
-## Flow Control و Congestion Control
+- **Flow control** protects the receiver. The advertised window states how much more data it can accept.
+- **Congestion control** protects the network. The sender changes its transmission behavior based on signs of congestion.
 
-- **Flow Control:** گیرنده با Receive Window می‌گوید چه مقدار Buffer دارد. هدف جلوگیری از غرق‌کردن Endpoint است.
-- **Congestion Control:** فرستنده با الگوریتم‌هایی مانند Slow Start/Congestion Avoidance نرخ را با ظرفیت شبکه تطبیق می‌دهد. هدف جلوگیری از ازدحام مسیر است.
+A TCP zero-window event usually means the receiving application or host is not draining its buffer. Packet loss and increasing retransmissions more often point to the path or congestion.
 
-Receive Window و Congestion Window دو محدودیت جدا هستند؛ مقدار مؤثر ارسال از محدودکننده‌تر پیروی می‌کند.
-
-## پایان TCP
-
-پایان عادی هر جهت جداست و معمولاً FIN/ACK در چهار پیام دیده می‌شود. `FIN` یعنی «در این جهت Data دیگری ندارم». `RST` پایان فوری و غیرعادی یا رد Connection است.
-
-</div>
-
-<div dir="ltr" align="left">
+### Normal TCP close
 
 ```text
-Client                                  Server
-FIN, ACK ------------------------------>
-                 <---------------------- ACK
-                 <---------------------- FIN, ACK
-ACK ----------------------------------->
+Client → Server: FIN
+Server → Client: ACK
+Server → Client: FIN
+Client → Server: ACK
 ```
 
-</div>
+Each direction closes independently. `RST` aborts a connection immediately and may be sent when a port is closed, state is invalid, or an application terminates abruptly.
 
-<div dir="rtl" align="right">
+## UDP in detail
 
-توضیح خط‌به‌خط:
+UDP is connectionless. Its header contains source port, destination port, length, and checksum. It does not provide built-in:
 
-| خط | معنی |
-|---|---|
-| `FIN, ACK` از Client | Client جهت ارسال خودش را می‌بندد و داده‌های قبلی را تأیید می‌کند. |
-| `ACK` از Server | دریافت FIN را تأیید می‌کند؛ ممکن است هنوز در جهت خودش Data بفرستد. |
-| `FIN, ACK` از Server | Server نیز جهت ارسال خود را می‌بندد. |
-| `ACK` از Client | پایان Server را تأیید می‌کند؛ حالت TIME_WAIT از Segmentهای دیررس محافظت می‌کند. |
+- Connection establishment.
+- Delivery acknowledgment.
+- Retransmission.
+- Ordering.
+- Receiver flow control.
 
-## UDP چیست؟
+An application can build these functions above UDP when needed. QUIC, for example, implements secure reliable streams over UDP.
 
-UDP یک Protocol Connectionless مبتنی بر Datagram است. Header سادهٔ آن Source Port، Destination Port، Length و Checksum دارد.
+### TCP and UDP comparison
 
-UDP به‌صورت داخلی این موارد را تضمین نمی‌کند:
-
-- Handshake؛
-- تحویل؛
-- ترتیب؛
-- Retransmission؛
-- Flow/Congestion Control مانند TCP.
-
-این موضوع به معنی «UDP همیشه داده گم می‌کند» نیست. شبکه ممکن است همهٔ Datagramها را تحویل دهد و Application می‌تواند Reliability خاص خودش را بسازد.
-
-### کاربردهای UDP
-
-- DNS Queryهای معمول؛
-- DHCP؛
-- NTP؛
-- Voice/Video زنده که Data دیررس از Data گم‌شده بدتر است؛
-- بازی آنلاین؛
-- QUIC که Reliability، Security و Streamها را در User Space روی UDP پیاده می‌کند.
-
-## مقایسه TCP و UDP
-
-| ویژگی | TCP | UDP |
+| Characteristic | TCP | UDP |
 |---|---|---|
-| Connection State | دارد | در Transport پایه ندارد |
-| نوع داده | Byte Stream | Datagram با مرز پیام |
-| ترتیب و Retransmit | دارد | Application باید تصمیم بگیرد |
-| Header/Overhead | بیشتر | کمتر |
-| Multicast/Broadcast | معمولاً خیر | می‌تواند استفاده شود |
-| کاربرد | HTTPS سنتی، SSH، SMB، Mail | DNS، DHCP، NTP، Media و QUIC |
+| Connection setup | Yes | No built-in setup |
+| Reliable ordered stream | Yes | No |
+| Header overhead | Higher | Lower |
+| Multicast/broadcast use | No native use | Supported by suitable applications |
+| Typical examples | HTTPS, SSH, SMTP, SMB | DNS queries, DHCP, NTP, voice/video |
+| Best fit | Correct ordered delivery matters | Low delay, simple request/response, or application-controlled reliability |
 
-انتخاب بر اساس نیاز Application است، نه اینکه یکی مطلقاً بهتر یا سریع‌تر باشد.
+"UDP is faster" is incomplete. UDP has less protocol machinery, but actual performance depends on the application, loss, path, and recovery design.
 
-## TLS چیست؟
+## TLS in detail
 
-TLS سه هدف اصلی دارد:
+TLS protects application traffic by providing:
 
-- **Confidentiality:** شنودگر محتوای Application را نخواند؛
-- **Integrity:** تغییر Data تشخیص داده شود؛
-- **Authentication:** معمولاً Client هویت Server را با Certificate و PKI بررسی کند؛ Client Certificate نیز اختیاری است.
+- **Confidentiality:** observers cannot read encrypted content.
+- **Integrity:** unauthorized changes are detected.
+- **Authentication:** usually the client authenticates the server; mutual TLS can authenticate both.
 
-TLS روی TCP معمولاً بعد از TCP Handshake آغاز می‌شود. HTTPS یعنی HTTP داخل TLS. در HTTP/3، QUIC روی UDP، TLS 1.3 را داخل طراحی خود ادغام می‌کند.
+TLS does not hide every detail. An observer can still see IP addresses, timing, sizes, and often some connection metadata. TLS also does not make a vulnerable application safe.
 
-## Certificate و PKI به زبان ساده
+## Certificates and PKI
 
-Certificate معمولاً شامل Public Key، نام‌ها در SAN، صادرکننده، زمان اعتبار، Serial و Signature است. Client موارد زیر را بررسی می‌کند:
-
-- زنجیره به Root CA مورد اعتماد برسد؛
-- Signature هر مرحله معتبر باشد؛
-- Hostname در SAN وجود داشته باشد؛
-- زمان Not Before/Not After درست باشد؛
-- استفادهٔ Key/Certificate مناسب باشد؛
-- Revocation/Policy طبق پیاده‌سازی رعایت شود.
-
-Certificate شامل Private Key Server نیست. Private Key باید محرمانه بماند.
-
-## TLS 1.3 Handshake مرحله‌به‌مرحله
-
-### ۱. ClientHello
-
-Client نسخه‌های پشتیبانی‌شده، Cipher Suiteها، Random، Key Share موقت، SNI برای نام دامنه، ALPN برای HTTP/1.1 یا HTTP/2 و Extensionهای دیگر را می‌فرستد.
-
-### ۲. ServerHello
-
-Server نسخه، Cipher Suite و Key Share را انتخاب می‌کند. با ECDHE دو طرف بدون ارسال مستقیم Session Key، Secret مشترک مشتق می‌کنند. از این نقطه بخش زیادی از Handshake رمز می‌شود.
-
-### ۳. EncryptedExtensions
-
-Server Extensionهای مذاکره‌شده مانند ALPN را در کانال رمز‌شده اعلام می‌کند.
-
-### ۴. Certificate و CertificateVerify
-
-Server زنجیرهٔ Certificate را می‌فرستد. `CertificateVerify` با Private Key ثابت می‌کند Server مالک کلید متناظر Certificate است و Transcript Handshake دست‌کاری نشده است.
-
-### ۵. Finished سرور
-
-Server با Key مشتق‌شده MACی روی Transcript می‌سازد تا صحت Handshake تا اینجا ثابت شود.
-
-### ۶. Validation در Client
-
-Client Certificate، Hostname، زنجیره، زمان، Signature و Policy را بررسی می‌کند. اگر معتبر نباشد، باید Connection را متوقف یا Warning جدی نشان دهد.
-
-### ۷. Finished کلاینت
-
-Client پیام Finished خود را می‌فرستد. اگر Mutual TLS لازم باشد، Client نیز Certificate و اثبات مالکیت ارائه می‌کند.
-
-### ۸. Application Data
-
-HTTP یا Protocol برنامه با کلیدهای Application Traffic رمز می‌شود. Keyهای ارسال Client و Server جدا هستند.
-
-نمای ساده:
-
-</div>
-
-<div dir="ltr" align="left">
+A certificate binds an identity to a public key. A certificate authority signs that statement. A typical chain is:
 
 ```text
-Client                                                     Server
-ClientHello + supported_versions + key_share ------------->
-                 <------------------------------------------ ServerHello + key_share
-                 <------------------------------------------ EncryptedExtensions
-                 <------------------------------------------ Certificate
-                 <------------------------------------------ CertificateVerify
-                 <------------------------------------------ Finished
-Validate certificate and handshake transcript
-Finished ------------------------------------------------->
-Encrypted application data <=============================> Encrypted application data
+Trusted root CA
+  └── Intermediate CA
+        └── www.realsam.ir server certificate
 ```
 
-</div>
+The server keeps the private key secret and sends its certificate chain. The client checks:
 
-<div dir="rtl" align="right">
+1. Signatures lead to a trusted root.
+2. The current time is inside each certificate's validity period.
+3. The hostname appears in Subject Alternative Name.
+4. Key usage and extended key usage permit the operation.
+5. Revocation information is handled according to policy.
 
-توضیح خط‌به‌خط:
+## TLS 1.3 handshake step by step
 
-| خط | معنی |
-|---|---|
-| `ClientHello` | قابلیت‌ها، نام مقصد و Key Share پیشنهادی Client را آغاز می‌کند. |
-| `ServerHello` | انتخاب‌ها و سهم Server برای مشتق‌کردن Secret را اعلام می‌کند. |
-| `EncryptedExtensions` | نتیجهٔ Extensionهای مذاکره‌شده را در بخش رمز‌شده می‌دهد. |
-| `Certificate` | هویت ادعایی Server و Public Key را در زنجیرهٔ PKI ارائه می‌کند. |
-| `CertificateVerify` | مالکیت Private Key و صحت Transcript را ثابت می‌کند. |
-| `Finished` سرور | ثابت می‌کند Server Keyهای Handshake درست را دارد. |
-| Validation | Client باید اعتماد، نام، زمان و Signatureها را بررسی کند. |
-| `Finished` کلاینت | Client نیز صحت Secret/Transcript را ثابت می‌کند. |
-| Application Data | دادهٔ برنامه با AEAD رمز و Integrity-Protected می‌شود. |
+### 1. ClientHello
 
-### چرا Wireshark Certificate را می‌بیند ولی HTTP را نه؟
+The client sends supported TLS versions, cipher suites, random material, key share, extensions, and usually SNI for `www.realsam.ir`. It may also offer ALPN protocols such as HTTP/2.
 
-در TLS 1.3 حتی Certificate معمولاً بعد از ServerHello رمز است. بدون Session Key، Capture فقط Metadataهایی مثل IP، Port، اندازه/زمان Packet، ClientHello و بعضی Extensionهای اولیه را می‌بیند. با Key Log مجاز از Client آزمایشگاهی می‌توان رمزگشایی آموزشی انجام داد.
+### 2. ServerHello
 
-### TLS 1.2 چه تفاوت مهمی دارد؟
+The server chooses the TLS version and cipher suite, returns its key share, and establishes shared handshake keys from the key agreement.
 
-TLS 1.2 Handshake معمولاً پیام‌های بیشتری دارد، Certificate به‌صورت آشکار دیده می‌شود و Cipher Suite مفهوم گسترده‌تری شامل Key Exchange دارد. TLS 1.3 الگوریتم‌های قدیمی را حذف، Handshake را کوتاه‌تر و Forward Secrecy را در روش‌های عادی اجباری‌تر کرده است.
+### 3. Encrypted server messages
 
-### Session Resumption و 0-RTT
+The server sends EncryptedExtensions, its Certificate chain, CertificateVerify, and Finished. CertificateVerify proves possession of the private key. Finished authenticates the handshake transcript.
 
-Client می‌تواند با PSK/Ticket Session قبلی سریع‌تر Resume کند. 0-RTT امکان ارسال Early Data را می‌دهد، اما Replay Risk دارد؛ Application نباید عملیات غیرقابل‌تکرار حساس را بدون کنترل Replay در 0-RTT بپذیرد.
+### 4. Client validation
 
-## بررسی TCP و TLS با ابزار
+The client validates chain, signatures, dates, hostname, usage, and policy. If validation fails, a secure client stops instead of silently accepting the connection.
 
-</div>
+### 5. Client Finished
 
-<div dir="ltr" align="left">
+The client sends its Finished message. Both sides derive application traffic keys and exchange encrypted application data.
+
+### TLS 1.2 versus 1.3
+
+TLS 1.3 removes obsolete algorithms, encrypts more handshake messages, and normally requires fewer round trips than TLS 1.2. Older systems may still use TLS 1.2 with strong configuration. SSL and early TLS versions should not be enabled for compatibility without a documented, risk-accepted requirement.
+
+### Session resumption and 0-RTT
+
+Resumption avoids repeating all work for a returning client. TLS 1.3 can support early data, but 0-RTT data can be replayed. Applications must not use replay-sensitive operations in early data unless they have explicit protection.
+
+## Inspect TCP and TLS safely
 
 ```bash
-ss -ntp
-tcpdump -ni any 'tcp port 443'
-openssl s_client -connect www.realsam.ir:443 -servername www.realsam.ir
+ss -tnp
+sudo tcpdump -ni any 'host 192.0.2.80 and tcp port 443'
+openssl s_client -connect www.realsam.ir:443 -servername www.realsam.ir -showcerts
 curl -v https://www.realsam.ir/
 ```
 
-</div>
+### Line-by-line explanation
 
-<div dir="rtl" align="right">
-
-توضیح خط‌به‌خط:
-
-| فرمان | معنی |
+| Line | What it does |
 |---|---|
-| `ss -ntp` | Socketهای TCP، State، آدرس/Port و Process را با مجوز مناسب نشان می‌دهد. |
-| `tcpdump -ni any 'tcp port 443'` | روی همهٔ Interfaceها بدون Resolve نام، Packetهای TCP Port 443 را Capture می‌کند؛ Payload TLS رمز است. |
-| `openssl s_client ... -servername ...` | TLS Connection می‌سازد و SNI صحیح می‌فرستد تا Certificate/Handshake Server بررسی شود. خروجی را با مفهوم Validation کامل اشتباه نگیرید. |
-| `curl -v https://...` | مراحل Resolve، Connection، TLS و HTTP Headerها را Verbose نمایش می‌دهد؛ ممکن است اطلاعات حساس Header را نشان دهد. |
+| `ss -tnp` | Lists TCP sockets, numeric addresses, state, and process information when permitted |
+| `tcpdump` | Captures only TCP/443 traffic for the documentation address; packet capture requires authorization |
+| `openssl s_client` | Opens TLS with the correct SNI and prints the certificate chain and handshake details |
+| `curl -v` | Displays connection, TLS, and HTTP progress without disabling certificate validation |
 
-Filterهای آموزشی Wireshark:
+Never use `-k` or `--insecure` as a general fix. It suppresses certificate validation and can hide an on-path attack.
 
-| Filter | کاربرد |
+## Useful Wireshark display filters
+
+```text
+arp
+dns
+tcp.flags.syn == 1
+tcp.analysis.retransmission
+tcp.window_size_value == 0
+tls
+ip.addr == 192.0.2.80 && tcp.port == 443
+```
+
+A packet capture can contain credentials, cookies, DNS names, personal data, and proprietary content. Capture the minimum required traffic, restrict access, and delete it according to policy.
+
+## Layered web troubleshooting example
+
+| Observation | Likely area |
 |---|---|
-| `arp` | ARP Request/Reply |
-| `dns` | DNS Query/Response |
-| `tcp.flags.syn == 1` | Packetهای دارای SYN |
-| `tcp.analysis.retransmission` | Retransmission تشخیص‌داده‌شده |
-| `tcp.stream eq 0` | یک Stream خاص |
-| `tls.handshake` | پیام‌های Handshake قابل تشخیص |
-| `icmp or icmpv6` | پیام‌های کنترلی IP |
+| No link and interface down | Layer 1 |
+| Wrong VLAN or missing MAC learning | Layer 2 |
+| No route or wrong gateway | Layer 3 |
+| SYN retransmits with no reply | Layer 3/4 path, firewall, or server |
+| TLS hostname/chain failure | Layer 6 concept and PKI |
+| HTTP 401/403 | Application authentication/authorization |
+| HTTP 502/503 | Proxy, backend, or capacity |
 
-Capture شبکه می‌تواند Credential، Token، Cookie، IP و اطلاعات شخصی داشته باشد. فقط روی سیستم/شبکهٔ مجاز Capture کنید و فایل را امن نگه دارید.
+## End-of-chapter check
 
-## سناریوی عیب‌یابی لایه‌ای
+You should be able to:
 
-کاربر می‌گوید «سایت باز نمی‌شود»:
-
-۱. لایه ۱: آیا Link و Wi-Fi Signal برقرار است؟  
-۲. لایه ۲: آیا VLAN/Association درست است؟  
-۳. لایه ۳: IP، Mask، Gateway، ARP و Route چیست؟  
-۴. DNS: نام Resolve می‌شود؟  
-۵. لایه ۴: TCP 443 SYN-ACK می‌دهد یا Timeout/RST است؟  
-۶. TLS: Certificate، Hostname، Time و Cipher/Version درست است؟  
-۷. HTTP: Status Code چیست؟  
-۸. Application: آیا Browser/Proxy/Auth/Server Log علت را نشان می‌دهد؟
-
-این ترتیب مانع تعویض تصادفی تنظیمات می‌شود. ممکن است با روش Divide and Conquer از میانه شروع کنید، اما هر فرض باید با Evidence آزمایش شود.
-
-## آمادگی پایان فصل
-
-باید بتوانید:
-
-- هر هفت لایه را با وظیفه، PDU، آدرس، دستگاه، Protocol و خرابی توضیح دهید؛
-- نگاشت OSI و TCP/IP را بدون ادعای مرز کاملاً فیزیکی بیان کنید؛
-- Encapsulation را از HTTP تا Signal و برعکس دنبال کنید؛
-- TCP Handshake، Sequence، ACK، Window، Retransmission، FIN و RST را بخوانید؛
-- تفاوت TCP و UDP را بر اساس نیاز Application توضیح دهید؛
-- TLS 1.3 Handshake و نقش Certificate/PKI/ECDHE/Finished را مرحله‌ای بیان کنید؛
-- تشخیص دهید خرابی «Link»، «Route»، «Port»، «TLS» یا «Application» است.
-
-بعدی: [دامنه ۱ — مفاهیم شبکه](02-networking-concepts.md)
-
-</div>
+- Explain every OSI layer without relying only on a mnemonic.
+- Follow encapsulation and identify which addresses change at a router.
+- Read SYN, SYN-ACK, ACK, FIN, RST, retransmission, and zero-window behavior.
+- Explain exactly what TCP provides and what UDP does not provide.
+- Describe a TLS 1.3 handshake and the purpose of certificate validation.
+- Select evidence for each layer instead of restarting devices blindly.
