@@ -2,6 +2,8 @@
 
 This chapter covers Domain 2: routing, switching, wireless, and physical installation. Cisco IOS commands teach the concept; exact syntax varies by platform and version.
 
+Review [Ethernet, switching, and MAC](foundations/03-ethernet-switching-and-mac.md) and the [complete IPv4/routing/ARP scenario](foundations/04-ipv4-routing-and-arp.md) before configuring VLANs, SVIs, and routes.
+
 ## Reference scenario
 
 | VLAN | Name | Subnet | Gateway | Purpose |

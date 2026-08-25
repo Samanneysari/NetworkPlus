@@ -2,6 +2,18 @@
 
 This chapter assumes no IT background. By the end, you should understand what a network is, why addresses and protocols exist, and what happens after a user enters a web address.
 
+## Foundation learning path
+
+This chapter gives a short end-to-end picture. Use the following lessons for the full beginner treatment, practical commands, verification, and failure modes:
+
+1. [Computers, operating systems, hypervisors, number systems, and network rates](foundations/01-computers-and-operating-systems.md)
+2. [Networks, client/server, peer-to-peer, domains/workgroups, scope, and OSI](foundations/02-network-models-and-scopes.md)
+3. [Ethernet, MAC addresses, hubs, switching, flooding, and collision domains](foundations/03-ethernet-switching-and-mac.md)
+4. [IPv4, masks, routing tables, gateways, and a complete ARP scenario](foundations/04-ipv4-routing-and-arp.md)
+5. [Ports, TCP/UDP, ACK, NAT/PAT, ping, TTL, traceroute, and netstat](foundations/05-transport-nat-and-diagnostics.md)
+
+The foundation lessons are prerequisites, not replacements for the exam-domain chapters. They explain how the pieces fit together before the course adds vendor configuration, security, operations, and structured troubleshooting.
+
 ## What is a network?
 
 A network is a group of devices that exchange data through agreed rules. The devices may be computers, phones, servers, cameras, printers, switches, routers, or cloud systems. The connection may use copper, fiber, or radio.

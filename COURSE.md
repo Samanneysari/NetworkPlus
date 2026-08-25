@@ -25,7 +25,7 @@ Do not memorize a command before understanding the path of the data. For every p
 
 | Week | Topic | Measurable outcome |
 |---:|---|---|
-| 1 | Network foundations | Explain a complete web request in your own words |
+| 1 | Computing and network foundations | Explain OS/VM roles, Ethernet/IP addressing, ARP, routing, transport, and a complete web request |
 | 2 | OSI and encapsulation | Name each layer, PDU, identifier, device, and common fault |
 | 3 | TCP/IP, TCP, UDP, ICMP, and ports | Explain handshakes, acknowledgments, windows, and UDP trade-offs |
 | 4 | IPv4, binary, CIDR, and VLSM | Correctly solve at least 30 subnetting problems without tools |
@@ -69,6 +69,10 @@ Record the following for every lab:
 
 Reading alone is not enough. You should be able to:
 
+- Distinguish an OS, vendor, hypervisor, VM, container, and network operating system.
+- Explain bandwidth, bit rate, throughput, and goodput with units and a bottleneck example.
+- Compare client-server, peer-to-peer, workgroup, domain, and PAN/LAN/CAN/MAN/WAN scope.
+- Follow switch learning, unknown-unicast flooding, ARP, gateway selection, and routed re-encapsulation.
 - Explain a web request from DNS through TLS and HTTP.
 - Identify Ethernet, IP, TCP, UDP, DNS, and TLS in a packet capture.
 - Calculate networks, gateways, broadcasts, host ranges, and summaries.

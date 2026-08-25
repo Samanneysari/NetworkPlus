@@ -2,6 +2,8 @@
 
 This chapter covers Domain 1 except Objective 1.1, which is taught in the dedicated OSI chapter. The goal is to select the correct appliance, service, medium, address, and architecture for a real requirement.
 
+The [foundation learning path](foundations/README.md) provides the prerequisite explanations of computing platforms, network scope, Ethernet switching, IPv4/ARP, transport, NAT, and diagnostic commands.
+
 ## 1.2 — Appliances, applications, and functions
 
 ### Routers, switches, and security devices

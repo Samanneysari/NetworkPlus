@@ -34,18 +34,24 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 
 1. Read the [course guide and study plan](COURSE.md).
 2. If you are completely new, begin with [Networking from Zero](docs/00-network-from-zero.md).
-3. Study [OSI, TCP/IP, TCP, UDP, and TLS](docs/01-osi-tcp-ip-tls.md) carefully.
-4. Complete the five exam-domain chapters in order.
-5. Perform the matching [hands-on labs](labs/README.md).
-6. Practice [IPv4 subnetting](practice/subnetting.md) without a calculator.
-7. Complete the [200 original questions](practice/questions.md), then review the [explained answers](practice/answers.md).
-8. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
+3. Complete the five foundation lessons in order:
+   - [Computers, operating systems, hypervisors, number systems, and network rates](docs/foundations/01-computers-and-operating-systems.md)
+   - [Networks, client/server, peer-to-peer, domains/workgroups, scope, and OSI](docs/foundations/02-network-models-and-scopes.md)
+   - [Ethernet, MAC addresses, hubs, switching, flooding, and collision domains](docs/foundations/03-ethernet-switching-and-mac.md)
+   - [IPv4, masks, routing tables, gateways, and a complete ARP scenario](docs/foundations/04-ipv4-routing-and-arp.md)
+   - [Ports, TCP/UDP, ACK, NAT/PAT, ping, TTL, traceroute, and netstat](docs/foundations/05-transport-nat-and-diagnostics.md)
+4. Study [OSI, TCP/IP, TCP, UDP, and TLS](docs/01-osi-tcp-ip-tls.md) carefully.
+5. Complete the five exam-domain chapters in order.
+6. Perform the matching [hands-on labs](labs/README.md).
+7. Practice [IPv4 subnetting](practice/subnetting.md) without a calculator.
+8. Complete the [200 original questions](practice/questions.md), then review the [explained answers](practice/answers.md).
+9. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
 
 ## Course map
 
 | Section | Official weight | Main coverage |
 |---|---:|---|
-| Foundations | — | Data, frames, packets, clients, servers, addressing, and the complete web request path |
+| Foundations | — | OS/VM basics, number systems, network scope, Ethernet, IPv4, ARP, transport, NAT, diagnostics, and a complete request path |
 | OSI and transport | Part of Domain 1 | Seven OSI layers, TCP/IP, TCP, UDP, TLS 1.3, and encapsulation |
 | 1. Networking Concepts | 23% | Appliances, cloud, protocols, media, topology, IPv4/IPv6, and modern networking |
 | 2. Network Implementation | 20% | Routing, switching, VLANs, STP, LACP, wireless, and physical installation |
@@ -59,6 +65,7 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 |---|---|
 | [OBJECTIVES.md](OBJECTIVES.md) | Maps every official objective from 1.1 through 5.5 to lessons, labs, and questions |
 | [docs/00-network-from-zero.md](docs/00-network-from-zero.md) | Absolute beginner starting point |
+| [docs/foundations/README.md](docs/foundations/README.md) | Computing, Ethernet, IPv4, ARP, transport, NAT, and diagnostic foundations |
 | [docs/01-osi-tcp-ip-tls.md](docs/01-osi-tcp-ip-tls.md) | Deep explanation of OSI, TCP/UDP, and TLS |
 | [docs/02-networking-concepts.md](docs/02-networking-concepts.md) | Domain 1 |
 | [docs/03-network-implementation.md](docs/03-network-implementation.md) | Domain 2 |

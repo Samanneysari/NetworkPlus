@@ -217,6 +217,8 @@ Good RSSI alone is not enough. Also inspect SNR, channel utilization, retries, c
 
 ## 5.5 — Tools and commands
 
+For beginner-level interpretation of `General failure`, `Destination host unreachable`, `Request timed out`, RTT, TTL, `tracert`, `netstat`, and TCP states, first review [Ports, TCP/UDP, NAT/PAT, and diagnostics](foundations/05-transport-nat-and-diagnostics.md).
+
 ### Linux
 
 ```bash

@@ -29,6 +29,23 @@ Use this sheet only after studying the full lessons. If you cannot explain why a
 
 TCP opens with `SYN → SYN-ACK → ACK`. A normal close uses `FIN → ACK → FIN → ACK`. UDP has no built-in connection, ordering, acknowledgment, or retransmission. TLS 1.3 broadly uses ClientHello, ServerHello, encrypted server parameters and certificate proof, Finished messages, then application data.
 
+## Foundation distinctions
+
+| Do not confuse | Correct distinction |
+|---|---|
+| Vendor and operating system | Microsoft and Cisco are vendors; Windows and Cisco IOS families are operating systems; Linux is a kernel used by distributions |
+| Hypervisor, VM, and container | A hypervisor manages VMs with guest operating systems; containers normally share a host kernel |
+| Bit and byte | Eight bits make one byte; `Mb/s` is not `MB/s` |
+| Bandwidth, throughput, and goodput | Capacity, actual transfer rate, and useful application payload rate |
+| Workgroup and domain | Local per-computer management versus centralized Active Directory identity/policy |
+| Client-server and peer-to-peer | Central service roles versus peers that can serve one another directly |
+| Hub and switch | Shared Layer 1 collision domain versus Layer 2 source learning and destination forwarding |
+| Network address and host address | All host bits zero identifies the subnet; a host/interface address uses an assignable value |
+| MAC and IP | Local-link delivery identifier versus routed logical address |
+| NAT and firewall | Translation changes addressing; firewall policy explicitly permits or denies traffic |
+
+For a remote IPv4 destination, a host ARPs for the **next-hop/default-gateway MAC**, not the remote server's MAC. The router removes the incoming Ethernet frame, decrements TTL, selects a route, resolves the next local neighbor if needed, and builds a new frame. The IP source/destination normally stay end to end unless NAT occurs; MAC addresses change at routed boundaries.
+
 ## Numbers worth knowing
 
 - Domain weights: Concepts 23%, Implementation 20%, Operations 19%, Security 14%, Troubleshooting 24%.
@@ -117,6 +134,17 @@ ACLs are processed top to bottom, first match wins, and an implicit deny exists 
 | Broken real-time audio | Jitter, loss, queues, or wireless retries |
 
 Bandwidth is capacity, throughput is actual transfer, goodput is useful application data, latency is delay, jitter is changing delay, and loss is missing packets. A baseline and counter rate are more useful than one isolated snapshot.
+
+### Ping and path evidence
+
+| Result | Meaning |
+|---|---|
+| Echo reply | ICMP round trip worked; it does not prove the application or TCP port works |
+| Destination host unreachable | A local/intermediate device reported it could not deliver; inspect who generated it |
+| Request timed out | No acceptable reply arrived before timeout; filtering is possible and target-down is not proven |
+| General failure | Windows could not send locally; inspect interface, route, stack, VPN/filter, and local policy |
+| TTL expired | A router discarded the packet at TTL zero; expected during traceroute, suspicious when normal traffic loops |
+| Traceroute `*` | That probe response was absent; later hops prove forwarding continued beyond it |
 
 ## Readiness checklist
 
