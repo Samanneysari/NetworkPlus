@@ -18,6 +18,12 @@ const markdownFiles = walk(root)
 const required = [
   'README.md', 'COURSE.md', 'OBJECTIVES.md', 'SUMMARY.md', 'GLOSSARY.md',
   'REFERENCES.md', 'docs/00-network-from-zero.md', 'docs/01-osi-tcp-ip-tls.md',
+  'docs/foundations/README.md',
+  'docs/foundations/01-computers-and-operating-systems.md',
+  'docs/foundations/02-network-models-and-scopes.md',
+  'docs/foundations/03-ethernet-switching-and-mac.md',
+  'docs/foundations/04-ipv4-routing-and-arp.md',
+  'docs/foundations/05-transport-nat-and-diagnostics.md',
   'docs/02-networking-concepts.md', 'docs/03-network-implementation.md',
   'docs/04-network-operations.md', 'docs/05-network-security.md',
   'docs/06-network-troubleshooting.md', 'labs/README.md',
@@ -86,10 +92,55 @@ const requiredTerms = [
   '802.1x', 'dhcp snooping', 'dynamic arp inspection', 'port security', 'screened subnet',
   'troubleshooting methodology', 'crosstalk', 'attenuation', 'crc', 'runts', 'giants',
   'err-disabled', 'poe budget', 'pool exhaustion', 'duplicate ip', 'latency', 'jitter',
-  'packet loss', 'wireshark', 'tcpdump', 'nmap', 'lldp', 'cdp', 'tdr', 'otdr'
+  'packet loss', 'wireshark', 'tcpdump', 'nmap', 'lldp', 'cdp', 'tdr', 'otdr',
+  'hypervisor', 'operating system', 'linux', 'windows', 'cisco', 'bit rate',
+  'decimal', 'hexadecimal', 'peer-to-peer', 'workgroup', 'single point of failure',
+  'personal area network', 'campus area network', 'metropolitan area network',
+  'decapsulation', 'simplex', 'half-duplex', 'full-duplex', 'collision domain',
+  'unknown unicast', 'switch flooding', 'network address', 'broadcast address',
+  'subnet mask', 'arp request', 'arp reply', 'general failure',
+  'destination host unreachable', 'request timed out', 'round-trip time',
+  'netstat', 'ack flag'
 ];
 for (const term of requiredTerms) {
   if (!corpus.includes(term)) errors.push(`Official coverage term is missing: ${term}`);
+}
+
+const foundationCoverage = {
+  'docs/foundations/01-computers-and-operating-systems.md': [
+    'operating system', 'linux', 'microsoft', 'cisco', 'hypervisor', 'virtual machine',
+    'bit', 'byte', 'binary', 'decimal', 'hexadecimal', 'bit rate', 'bandwidth', 'throughput'
+  ],
+  'docs/foundations/02-network-models-and-scopes.md': [
+    'client', 'server', 'peer-to-peer', 'workgroup', 'active directory domain',
+    'single point of failure', 'personal area network', 'local area network',
+    'campus area network', 'metropolitan area network', 'wide area network',
+    'encapsulation', 'decapsulation', 'simplex', 'half-duplex', 'full-duplex'
+  ],
+  'docs/foundations/03-ethernet-switching-and-mac.md': [
+    'mac address', 'hub', 'switch', 'unknown-unicast', 'flood', 'collision domain',
+    'broadcast domain', 'mac address table', 'layer 3 switch'
+  ],
+  'docs/foundations/04-ipv4-routing-and-arp.md': [
+    'ip address', 'octet', 'subnet mask', 'network portion', 'host portion',
+    'network address', 'broadcast address', 'private', 'public', 'routing table',
+    'default gateway', 'arp request', 'arp reply', 'complete arp'
+  ],
+  'docs/foundations/05-transport-nat-and-diagnostics.md': [
+    'port', 'tcp', 'udp', 'ack flag', 'nat', 'pat', 'ping', 'ttl', 'tracert',
+    'general failure', 'destination host unreachable', 'request timed out',
+    'round-trip time', 'netstat'
+  ]
+};
+
+for (const [file, terms] of Object.entries(foundationCoverage)) {
+  const path = join(root, file);
+  if (!existsSync(path)) continue;
+  const text = readFileSync(path, 'utf8').toLowerCase();
+  if (!text.includes('## foundation checks')) errors.push(`${file}: missing Foundation checks`);
+  for (const term of terms) {
+    if (!text.includes(term)) errors.push(`${file}: missing foundation topic ${term}`);
+  }
 }
 
 function numberedEntries(file) {
