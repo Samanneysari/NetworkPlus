@@ -1,5 +1,7 @@
 # Chapter 1 — OSI, TCP/IP, TCP, UDP, and TLS
 
+If terms such as operating system, MAC table, subnet mask, ARP, port, and routing table are new, complete the [foundation learning path](foundations/README.md) first. This chapter then deepens the protocol and layer behavior.
+
 This chapter explains how networking responsibilities are divided into layers, how TCP and UDP differ, and how TLS protects an application connection.
 
 ## Why use layers?

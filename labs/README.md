@@ -16,17 +16,40 @@ Only scan, capture, or disrupt systems you own or have explicit permission to te
 
 Use only RFC 1918, `2001:db8::/32`, and the IPv4 documentation ranges for public examples.
 
-## Lab 01 — Encapsulation and OSI
+## Lab 01 — Ethernet, ARP, encapsulation, and OSI
 
-**Objectives:** 1.1 and 1.2.
+**Objectives:** 1.1, 1.2, 1.7, 2.2, 5.3, and 5.5.
 
-1. Start Wireshark on the lab interface.
-2. Open an authorized HTTPS site or local `www.realsam.ir` lab service.
-3. Filter `dns`, `tcp.flags.syn == 1`, and `tls` separately.
-4. Record MAC addresses, IP addresses, ports, and protocols for five packets.
-5. Explain which addresses change at a router and which remain end to end.
+Use two authorized lab endpoints and their default gateway. Record interface names before substituting them in commands.
 
-**Fault:** Point the VM at a nonexistent DNS resolver and distinguish DNS failure from TLS failure.
+```bash
+ip -brief address
+ip route
+ip route get 192.0.2.80
+ip neighbor show
+sudo tcpdump -eni any 'arp or icmp'
+ping -c 2 192.0.2.80
+ip neighbor show
+```
+
+| Line | Purpose |
+|---|---|
+| Address summary | Records interface state, address/prefix, and the local MAC |
+| Route table | Records connected, specific, and default routes |
+| Route lookup | Predicts source, interface, and next hop for the destination |
+| First neighbor display | Captures ARP/ND state before traffic |
+| Packet capture | Shows Ethernet headers for authorized ARP and ICMP packets |
+| Two pings | Generates a small, bounded test after the prediction |
+| Final neighbor display | Shows which next-hop mapping was learned |
+
+Perform two cases:
+
+1. Ping an endpoint in the same subnet and prove that ARP resolves the endpoint MAC.
+2. Ping an endpoint in a different subnet and prove that ARP resolves the gateway MAC, while the IP destination remains the remote endpoint.
+
+In Wireshark, inspect `arp`, `icmp`, `dns`, `tcp.flags.syn == 1`, and `tls` separately. Record the source/destination MAC, source/destination IP, protocol, port where applicable, and OSI layer. On a managed lab switch, record `show mac address-table` before and after the test and explain source-MAC learning and unknown-unicast/broadcast flooding.
+
+**Fault:** In an isolated lab, configure a gateway outside the endpoint's local prefix. Predict the failed ARP behavior, capture the evidence, restore the correct gateway, and verify the real service. Separately point the VM at a nonexistent DNS resolver and distinguish ARP/gateway success from DNS failure and TLS failure.
 
 ## Lab 02 — TCP, UDP, and TLS
 
