@@ -7,13 +7,13 @@ const errors = [];
 function walk(directory) {
   return readdirSync(directory).flatMap((entry) => {
     const path = join(directory, entry);
+    if (path === join(root, '.git')) return [];
     return statSync(path).isDirectory() ? walk(path) : [path];
   });
 }
 
 const markdownFiles = walk(root)
-  .filter((path) => extname(path) === '.md')
-  .filter((path) => !path.includes(`${join(root, '.git')}`));
+  .filter((path) => extname(path) === '.md');
 
 const required = [
   'README.md', 'COURSE.md', 'OBJECTIVES.md', 'SUMMARY.md', 'GLOSSARY.md',
