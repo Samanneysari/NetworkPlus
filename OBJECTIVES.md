@@ -1,6 +1,8 @@
-# N10-009 Objective Coverage Map
+# N10-009 V9 Objective Coverage Map — Document Version 6.0
 
-This table maps every top-level objective in the official N10-009 v4.0 outline to its lesson, lab, and practice-question range. The detailed bullets under each official objective are explicitly covered in the linked chapter.
+This table maps every top-level objective in the N10-009 V9 objective document, version 6.0, to its lesson, lab, and practice-question range. The [detailed v6.0 coverage map](objectives/n10-009-v6-detailed-map.md) maps the nested exam-scope bullets to specific course material and identifies the required depth: explain, select, configure, verify, or troubleshoot.
+
+The five domains and their weights remain Networking Concepts 23%, Network Implementation 20%, Network Operations 19%, Network Security 14%, and Network Troubleshooting 24%. Version 6.0 also expands the acronym and suggested-lab-tool lists; those are covered in the [acronym guide](appendices/acronyms.md) and [tools and lab checklist](appendices/tools-lab-checklist.md).
 
 ## Domain 1 — Networking Concepts — 23%
 
@@ -52,4 +54,4 @@ This table maps every top-level objective in the official N10-009 v4.0 outline t
 | 5.4 | Troubleshoot performance problems | [Network Troubleshooting](docs/06-network-troubleshooting.md) | Labs 14 and 25, Q185–192 |
 | 5.5 | Select the correct troubleshooting tool or protocol | [Transport, NAT, and diagnostics](docs/foundations/05-transport-nat-and-diagnostics.md), [Network Troubleshooting](docs/06-network-troubleshooting.md) | Labs 01, 05, and 25–26, Q193–200 |
 
-Run `npm run check` to verify that all codes, files, links, questions, labs, and English-only rules remain valid.
+Run `npm run check` to verify all objective codes, detailed-map sections, files, links, exams, questions, labs, acronym entries, and English-only rules.

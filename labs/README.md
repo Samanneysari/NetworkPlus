@@ -382,3 +382,7 @@ Choose hidden faults from: native-VLAN mismatch, missing allowed VLAN, wrong def
 | Security, rollback, and documentation | 20 |
 
 A good answer states assumptions and trade-offs. Many design scenarios have more than one valid solution.
+
+## Reproducible lab assets
+
+The [executable lab packs](packs/README.md) add starter and solution configurations, synthetic PCAPs, topology diagrams, fault cards, expected evidence, survey/baseline templates, and a scored capstone. Use them after the matching guided lab rather than reading solutions first.

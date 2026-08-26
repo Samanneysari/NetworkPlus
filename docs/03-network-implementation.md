@@ -305,11 +305,34 @@ An autonomous AP is configured independently. A lightweight AP receives policy a
 
 Hidden SSIDs do not provide meaningful security. Maximum transmit power on every AP can worsen contention and roaming.
 
+### Capacity, coverage, and roaming scenario
+
+An office may show `-52 dBm` RSSI and still perform poorly. Strong signal does not prove clean airtime or sufficient capacity.
+
+1. Confirm the affected band, channel, width, BSSID, and client capability.
+2. Measure noise/SNR, retry rate, channel utilization, and nearby co-channel cells.
+3. Test against a local wired server to remove ISP uncertainty.
+4. Compare one client with several simultaneous clients.
+5. Walk between cells and correlate roaming time with voice loss.
+6. Change one variable, such as channel width or transmit power, then repeat the same test.
+
+| Finding | Likely interpretation | Network+ response |
+|---|---|---|
+| Strong RSSI, low SNR | High noise/interference | Locate interference or choose a cleaner channel/band |
+| Strong RSSI, high channel use | Contention/capacity issue | Reduce cell load, width, or unnecessary SSIDs |
+| Client stays on distant AP | Roaming/power/cell-size issue | Review AP power, placement, and client behavior |
+| 2.4 GHz channels overlap | Poor channel plan | Use non-overlapping 20 MHz channels where allowed |
+| Authentication fails only on Enterprise SSID | AAA/certificate/time issue | Check EAP method, RADIUS reachability, certificate, and clock |
+
+Do not memorize one universal RSSI threshold. Application requirements, survey method, client type, and vendor design guidance define acceptance criteria.
+
 ## 2.4 — Physical installation
 
 ### MDF, IDF, racks, and panels
 
 The Main Distribution Frame is the central distribution and provider/backbone point. An Intermediate Distribution Frame serves a floor or area near endpoints. Rack diagrams show rack units, airflow, power, and equipment location. Permanent horizontal cabling terminates on patch panels, then patch cords connect it to switches.
+
+The provider **demarcation point** separates provider and customer responsibility. A **smart jack** may terminate and monitor a carrier circuit. A **cross-connect** joins termination fields without running a new end-to-end cable. Record the demarc, circuit ID, provider contact, and test boundary before an outage.
 
 ### Installation checklist
 
@@ -333,6 +356,22 @@ Real power (W) ≈ Voltage (V) × Current (A) × Power factor
 For AC systems, power factor, startup load, continuous-load limits, redundancy, and local electrical codes matter.
 
 Power over Ethernet sends data and power over Ethernet cabling. The PSE, such as a switch, supplies power; the PD, such as an access point, receives it. Verify standard, class, per-port power, total budget, cable quality, and temperature. A device can boot with insufficient power while disabling radios or other features.
+
+PoE budget example:
+
+```text
+6 access points × 25.5 W = 153 W
+10 phones × 7 W       =  70 W
+Planned device load   = 223 W
+```
+
+A 240 W switch budget leaves only 17 W of theoretical headroom. That is a weak design because device models, negotiated classes, cable loss, USB accessories, and future growth can consume it. Select a larger budget or distribute powered devices. Do not confuse switch input power, per-port maximum, and total deliverable PoE budget.
+
+### Physical-installation verification record
+
+For every installed link, record both endpoint labels, patch-panel port, switch port, VLAN/purpose, media/category, length or loss result, tester ID, date, and technician. A cable map answers *where it goes*; a certification result answers *whether it meets the required performance*.
+
+Before replacing a fiber transceiver, compare connector, fiber type, supported speed, wavelength, reach, lane count, device compatibility, receive power, and cleanliness. Identical physical shape does not prove compatibility.
 
 ### Environment and fire protection
 

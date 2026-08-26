@@ -29,7 +29,24 @@ const required = [
   'docs/06-network-troubleshooting.md', 'labs/README.md',
   'practice/questions.md', 'practice/answers.md', 'practice/subnetting.md',
   'practice/subnetting-answers.md', 'appendices/ports-protocols.md',
-  'appendices/commands-tools.md'
+  'appendices/commands-tools.md', 'appendices/acronyms.md',
+  'appendices/tools-lab-checklist.md',
+  'objectives/n10-009-v6-detailed-map.md',
+  'practice/exams/README.md', 'practice/exams/form-a.md',
+  'practice/exams/form-a-answers.md', 'practice/exams/form-b.md',
+  'practice/exams/form-b-answers.md', 'practice/exams/form-c.md',
+  'practice/exams/form-c-answers.md', 'practice/exams/form-d.md',
+  'practice/exams/form-d-answers.md', 'practice/pbq/README.md',
+  'practice/pbq/solutions.md', 'practice/command-output/README.md',
+  'practice/command-output/answers.md', 'labs/packs/README.md',
+  'labs/packs/ethernet-arp/README.md', 'labs/packs/vlan-routing/README.md',
+  'labs/packs/ospf-nat/README.md', 'labs/packs/services/README.md',
+  'labs/packs/wireless-monitoring/README.md', 'labs/packs/capstone/README.md',
+  'interview/README.md', 'interview/technical-questions.md',
+  'interview/ticket-scenarios.md', 'interview/behavioral.md',
+  'career/README.md', 'career/01-windows-ad.md', 'career/02-linux-networking.md',
+  'career/03-firewalls-and-vpn.md', 'career/04-cloud-networking.md',
+  'career/05-network-automation.md'
 ];
 
 for (const file of required) {
@@ -65,6 +82,12 @@ const expectedObjectives = [
 for (const code of expectedObjectives) {
   const count = (objectives.match(new RegExp(`\\| ${code.replace('.', '\\.')} \\|`, 'g')) ?? []).length;
   if (count !== 1) errors.push(`OBJECTIVES.md: objective ${code} appears ${count} times`);
+}
+
+const detailedObjectives = readFileSync(join(root, 'objectives/n10-009-v6-detailed-map.md'), 'utf8');
+for (const code of expectedObjectives) {
+  const count = (detailedObjectives.match(new RegExp(`^### ${code.replace('.', '\\.')} `, 'gm')) ?? []).length;
+  if (count !== 1) errors.push(`Detailed v6.0 map: objective ${code} appears ${count} times`);
 }
 
 const corpus = markdownFiles.map((path) => readFileSync(path, 'utf8')).join('\n').toLowerCase();
@@ -164,6 +187,50 @@ for (const file of ['practice/subnetting.md', 'practice/subnetting-answers.md'])
   }
 }
 
+for (const form of ['a', 'b', 'c', 'd']) {
+  for (const suffix of ['', '-answers']) {
+    const file = `practice/exams/form-${form}${suffix}.md`;
+    const numbers = numberedEntries(file);
+    const expected = Array.from({ length: 90 }, (_, index) => index + 1);
+    if (numbers.length !== 90 || numbers.some((number, index) => number !== expected[index])) {
+      errors.push(`${file}: expected one ordered entry for every number 1..90`);
+    }
+  }
+}
+
+for (const [file, pattern, expectedCount] of [
+  ['practice/pbq/README.md', /^## PBQ \d{2} /gm, 12],
+  ['practice/pbq/solutions.md', /^## PBQ \d{2}$/gm, 12],
+  ['practice/command-output/README.md', /^## Case \d{2} /gm, 15],
+  ['practice/command-output/answers.md', /^## Case \d{2}$/gm, 15]
+]) {
+  const text = readFileSync(join(root, file), 'utf8');
+  const count = (text.match(pattern) ?? []).length;
+  if (count !== expectedCount) errors.push(`${file}: expected ${expectedCount} numbered sections, found ${count}`);
+}
+
+const officialAcronyms = `A ACL AES AH AP API APIPA APU ARP AUP BCP BGP BNC BPDU BSSID BYOD CAM CDN CDP CIA CIDR CLI CNAME CPU CRC DAC DAS DCI DDoS DHCP DLP DNS DNSSEC DoH DoS DoT DR EAP EAPoL EIGRP EOL EOS ESP ESSID EULA FC FHRP FQDN FTP FTPS GDPR GRE GUI HTTP HTTPS HSRP IaaS IaC IAM iBGP ICMP ICS IDF IDS IGMP IGP IIoT IIS IKE IoT IP IPAM IPS IPsec IS-IS ISP LACP LAN LC LDAP LDAPS LLDP LTE MAC MDF MDIX MFA MIB MIMO MOU MPLS MPO MTBF MTTR MTU MX NaaS NAC NAS NAT NDA NFV NIC NS NTP NTS OOB OS OSPF OSI OT PaaS PAT PCI_DSS PDU PKI PoE PPTP PSK PSU PTP PTR QoS QSFP RADIUS RDP RFID RIP RPO RSSI RSTP RTO RTP RX SaaS SAML SAN SASE SC SCADA SCTP SDN SD-WAN SFP SFTP SIP SIEM SLA SLAAC SMB SMTP SMTPS SNMP SOA SPAN SQL SSE SSH SSID SSL SSO ST STP SVI TACACS+ TCP TFTP TKIP TLS TTL TX TXT UDP UPS URL USB UTM UTP VIP VLAN VLSM VM VNC VoIP VPC VPN VRF VRRP VTP VXLAN WAN WAF WAP WEP WLAN WPA WPS XML ZTA`
+  .split(/\s+/).map((value) => value.replace('_', ' '));
+const acronymGuide = readFileSync(join(root, 'appendices/acronyms.md'), 'utf8');
+for (const acronym of officialAcronyms) {
+  if (!acronymGuide.includes(`| ${acronym} |`)) errors.push(`Acronym guide is missing ${acronym}`);
+}
+
+for (const asset of [
+  'labs/packs/ethernet-arp/captures/arp-icmp.pcap',
+  'labs/packs/services/captures/dns-a.pcap',
+  'labs/packs/capstone/captures/tcp-handshake.pcap',
+  'labs/packs/vlan-routing/sw1-starter.cfg',
+  'labs/packs/vlan-routing/sw1-solution.cfg',
+  'labs/packs/ospf-nat/starter.cfg',
+  'labs/packs/ospf-nat/solution.cfg',
+  'labs/packs/services/dhcpd-sample.conf',
+  'labs/packs/wireless-monitoring/survey-template.csv'
+]) {
+  const path = join(root, asset);
+  if (!existsSync(path) || statSync(path).size === 0) errors.push(`Missing or empty lab-pack asset: ${asset}`);
+}
+
 const labs = readFileSync(join(root, 'labs/README.md'), 'utf8');
 for (let number = 1; number <= 26; number += 1) {
   const id = String(number).padStart(2, '0');
@@ -176,4 +243,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Documentation checks passed: ${markdownFiles.length} English Markdown files, 25 objectives, 200 questions, 26 labs.`);
+console.log(`Documentation checks passed: ${markdownFiles.length} English Markdown files, 25 objectives, 200 topic questions, 4x90 exams, 12 PBQs, 15 command cases, 26 guided labs, and 6 executable lab packs.`);

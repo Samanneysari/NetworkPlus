@@ -1,10 +1,11 @@
 {
   "name": "networkplus-n10-009-course",
   "private": true,
-  "version": "1.0.0",
-  "description": "Complete English Network+ N10-009 course documentation",
+  "version": "2.0.0",
+  "description": "Complete English Network+ N10-009 v6.0 course, labs, exams, and interview preparation",
   "scripts": {
-    "check": "node scripts/check-docs.mjs"
+    "check": "node scripts/check-docs.mjs",
+    "build:pcaps": "node scripts/build-sample-pcaps.mjs"
   },
   "engines": {
     "node": ">=20"

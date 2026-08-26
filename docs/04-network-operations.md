@@ -74,6 +74,41 @@ Monitor traffic, performance, availability, and configuration. Useful interface 
 
 Every alert needs an owner, severity, runbook, and escalation path.
 
+### Monitoring workflow and evidence
+
+Monitoring is useful only when it leads to a repeatable decision:
+
+1. Define the service and user-visible success condition.
+2. Record a baseline for normal time, day, season, and workload.
+3. Select a metric that detects failure without excessive noise.
+4. Set warning/critical thresholds and a minimum duration.
+5. Attach owner, escalation, evidence links, and a safe first action.
+6. Test the alert and review false positives after real incidents.
+
+Example interface alert:
+
+```text
+Alert: WAN packet loss > 3% for 5 minutes
+Evidence: ICMP probe, interface errors/discards, provider handoff state
+First action: compare two destinations and the local gateway
+Escalate: network on-call after local-path evidence is collected
+Recovery: loss < 1% for 10 minutes and application test succeeds
+```
+
+The line-by-line purpose is important: the threshold detects a sustained problem; multiple evidence sources prevent one failed probe from becoming a false outage; the first action separates local and upstream failure; the recovery condition prevents alert flapping.
+
+### Counter-delta example
+
+An interface shows 80,000 CRC errors, but the number alone does not prove a current fault:
+
+```text
+10:00 CRC = 80000, input packets = 41000000
+10:10 CRC = 80120, input packets = 41120000
+Delta   CRC =   120, input packets =   120000
+```
+
+The current sample added 120 CRC errors in 120,000 packets, or 0.1%. Investigate media, termination, interference, and duplex while correlating the increase with user impact. Do not clear counters until the baseline is recorded.
+
 ## 3.3 — Disaster recovery
 
 | Metric | Question |
@@ -92,6 +127,31 @@ An RPO of five minutes is not satisfied by a daily backup. An RTO of one hour re
 | Hot | Close to production and continuously maintained | Higher cost, shorter RTO |
 
 Active-active sites serve traffic simultaneously but create state and consistency complexity. Active-passive keeps a standby site for failover. A tabletop exercise tests reasoning and roles; a practical restore/failover test validates technology and timing.
+
+### Recovery design scenario
+
+A payroll service has an RPO of 15 minutes and an RTO of two hours:
+
+- A nightly backup cannot meet the RPO because up to 24 hours of changes may be lost.
+- A cold site that requires hardware delivery probably cannot meet the RTO.
+- Replication every five minutes may meet the data objective only if failed/corrupt replication is detected.
+- A warm or hot capability may meet the time objective only if identity, DNS, routing, firewall policy, credentials, staff access, and application dependencies are included.
+
+Recovery is not proven by a successful backup job. Restore representative data, validate integrity and permissions, start the service, test from a user path, measure elapsed time, and record gaps.
+
+### Business continuity and disaster recovery
+
+Business Continuity Planning keeps critical business functions operating, possibly through manual or alternate processes. Disaster Recovery restores technology and data. They overlap but are not synonyms.
+
+| Test | What it validates | Limitation |
+|---|---|---|
+| Checklist review | Required items and ownership exist | Does not prove execution |
+| Tabletop | People reason through an event | Does not exercise systems |
+| Restore test | Backup can produce usable data | May not validate full application path |
+| Failover test | Alternate service path can operate | Can introduce production risk; plan rollback |
+| Full interruption | End-to-end recovery under realistic loss | Highest risk and coordination cost |
+
+After every test or incident, update contacts, dependencies, runbooks, recovery measurements, and corrective actions. A document that is never exercised is an assumption, not a recovery capability.
 
 ## 3.4 — DHCP, SLAAC, DNS, and time
 
