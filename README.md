@@ -15,7 +15,7 @@ The course uses plain English. Each major topic follows the same learning patter
 
 Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentation-only public ranges. Never run scanning, interception, or disruptive labs on systems you do not own or have explicit permission to test.
 
-> This course follows the official **N10-009 Exam Objectives, version 4.0**. CompTIA can change availability and retirement dates. Always verify current exam information on the [official CompTIA page](https://www.comptia.org/certifications/network) before registering.
+> This course follows the **N10-009 V9 Exam Objectives document, version 6.0**. CompTIA can change availability, policies, and retirement dates. Always verify current registration information on the [official CompTIA page](https://www.comptia.org/certifications/network) before registering.
 
 ## Exam details at the time of writing
 
@@ -44,8 +44,11 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 5. Complete the five exam-domain chapters in order.
 6. Perform the matching [hands-on labs](labs/README.md).
 7. Practice [IPv4 subnetting](practice/subnetting.md) without a calculator.
-8. Complete the [200 original questions](practice/questions.md), then review the [explained answers](practice/answers.md).
-9. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
+8. Complete the [200 original topic questions](practice/questions.md), then review the [explained answers](practice/answers.md).
+9. Complete the [12 PBQs](practice/pbq/README.md), [command-output cases](practice/command-output/README.md), and [executable lab packs](labs/packs/README.md).
+10. Take all [four 90-question timed exams](practice/exams/README.md) without notes.
+11. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
+12. For job preparation, complete [Interview Preparation](interview/README.md) and the separate [Career Extension](career/README.md).
 
 ## Course map
 
@@ -64,6 +67,7 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 | File | Purpose |
 |---|---|
 | [OBJECTIVES.md](OBJECTIVES.md) | Maps every official objective from 1.1 through 5.5 to lessons, labs, and questions |
+| [Detailed v6.0 map](objectives/n10-009-v6-detailed-map.md) | Maps nested objective bullets to content and required depth |
 | [docs/00-network-from-zero.md](docs/00-network-from-zero.md) | Absolute beginner starting point |
 | [docs/foundations/README.md](docs/foundations/README.md) | Computing, Ethernet, IPv4, ARP, transport, NAT, and diagnostic foundations |
 | [docs/01-osi-tcp-ip-tls.md](docs/01-osi-tcp-ip-tls.md) | Deep explanation of OSI, TCP/UDP, and TLS |
@@ -76,9 +80,17 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 | [practice/questions.md](practice/questions.md) | 200 original practice questions |
 | [practice/answers.md](practice/answers.md) | Separate explained answer key |
 | [practice/subnetting.md](practice/subnetting.md) | CIDR, VLSM, and 40 subnetting exercises |
+| [practice/exams/README.md](practice/exams/README.md) | Four weighted, full-length 90-question exams with answer keys |
+| [practice/pbq/README.md](practice/pbq/README.md) | 12 independent performance-based scenarios |
+| [practice/command-output/README.md](practice/command-output/README.md) | 15 command-output troubleshooting cases |
+| [labs/packs/README.md](labs/packs/README.md) | Reproducible topologies, configs, PCAPs, fault cards, and solutions |
+| [interview/README.md](interview/README.md) | Technical, ticket, behavioral, and portfolio interview preparation |
+| [career/README.md](career/README.md) | Clearly separated junior-job extensions at Network+ depth |
 | [GLOSSARY.md](GLOSSARY.md) | Plain-English networking glossary |
 | [appendices/ports-protocols.md](appendices/ports-protocols.md) | Port and protocol reference |
 | [appendices/commands-tools.md](appendices/commands-tools.md) | Linux, Windows, Cisco, and physical-tool reference |
+| [appendices/acronyms.md](appendices/acronyms.md) | Complete v6.0 acronym working-knowledge guide |
+| [appendices/tools-lab-checklist.md](appendices/tools-lab-checklist.md) | Expanded tool-selection and evidence checklist |
 
 ## Suggested lab environment
 

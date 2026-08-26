@@ -24,7 +24,7 @@ The goal of this repository is technically accurate, beginner-friendly networkin
 npm run check
 ```
 
-The validator checks required files, internal links, code fences, foundation-topic coverage, all 25 objectives, 200 questions, 26 labs, and rejects Persian/Arabic-script characters so the repository remains consistently English.
+The validator checks required files, internal links, code fences, foundation-topic coverage, all 25 objectives, detailed v6.0 sections, 200 topic questions, four 90-question exams and answer keys, PBQs, command-output cases, 26 guided labs, lab-pack assets, and complete acronym entries. It rejects Persian/Arabic-script characters so the repository remains consistently English.
 
 ## Writing style
 

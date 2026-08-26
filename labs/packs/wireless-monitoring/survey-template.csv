@@ -1,0 +1,2 @@
+timestamp_utc,location,wall_context,client,ap,bssid_anonymized,band_ghz,channel,width_mhz,rssi_dbm,noise_dbm,snr_db,utilization_pct,retry_pct,local_down_mbps,local_up_mbps,roam_ms,notes
+2026-08-25T10:00:00Z,Example desk,One drywall wall,Example client,AP-1,AP-1-R1,5,36,40,-55,-92,37,42,8,250,180,45,Replace with measured data

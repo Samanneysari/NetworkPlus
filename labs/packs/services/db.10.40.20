@@ -1,0 +1,8 @@
+$TTL 300
+@ IN SOA ns1.lab.example. hostmaster.lab.example. (
+  2026082501 3600 600 86400 300
+)
+  IN NS ns1.lab.example.
+10 IN PTR ns1.lab.example.
+25 IN PTR mail.lab.example.
+80 IN PTR app.lab.example.

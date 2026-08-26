@@ -4,7 +4,8 @@ This course paraphrases and teaches the material; it does not copy standards or 
 
 ## Exam
 
-- [CompTIA Network+ N10-009 Exam Objectives v4.0 (PDF)](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf)
+- [CompTIA Network+ N10-009 Exam Objectives v4.0 (official PDF retained for provenance)](https://comptiacdn.azureedge.net/webcontent/docs/default-source/exam-objectives/comptia-network-n10-009-exam-objectives-(4-0)-(1).pdf)
+- [CompTIA Network+ N10-009 V9 Exam Objectives document v6.0 (PDF mirror)](https://www.examcompass.com/comptia-certifications/network-plus/comptia-network-plus-n10-009-exam-objectives.pdf)
 - [CompTIA Network+ certification page](https://www.comptia.org/certifications/network)
 
 ## Protocols and architecture
@@ -36,6 +37,7 @@ This course paraphrases and teaches the material; it does not copy standards or 
 - [BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/)
 - [OpenSSH manuals](https://www.openssh.com/manual.html)
 - [Cisco Packet Tracer](https://www.netacad.com/cisco-packet-tracer)
+- [Cisco CCST Networking exam and entry-level career path](https://www.cisco.com/site/us/en/learn/training-certifications/exams/ccst-networking.html)
 - [Microsoft Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)
 - [Microsoft netstat command](https://learn.microsoft.com/windows-server/administration/windows-commands/netstat)
 - [Microsoft workgroup protocol glossary](https://learn.microsoft.com/openspecs/windows_protocols/ms-brws/f95bb7d5-6c67-4957-bebc-41687f07e21a)

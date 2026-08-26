@@ -69,6 +69,35 @@ A Virtual Private Cloud is a logically isolated cloud network containing subnets
 
 **Scalability** is the ability to grow. Vertical scaling makes one node larger; horizontal scaling adds nodes. **Elasticity** changes capacity up and down with demand. **Multitenancy** serves several customers on shared infrastructure while maintaining logical isolation.
 
+**Network as a Service (NaaS)** exposes managed connectivity or security capabilities as an on-demand service. The customer still owns requirements, identity, data classification, and verification even when the provider operates the infrastructure.
+
+### Cloud packet-path scenario
+
+A private application instance must download updates but must not accept unsolicited Internet connections:
+
+1. The instance sends a packet to its subnet's default virtual router.
+2. The subnet route table selects the default route toward a NAT gateway.
+3. A stateful security group permits the outbound flow and recognizes its return traffic.
+4. A stateless network ACL must permit the required outbound and return directions.
+5. The NAT gateway translates the private source address before using the Internet gateway.
+6. The reply follows the recorded translation and security state back to the instance.
+
+An Internet gateway alone does not make a private instance reachable, and a NAT gateway is not a replacement for security policy.
+
+### Cloud troubleshooting at Network+ depth
+
+Use the same Layer 1–7 reasoning even when Layer 1 is provider-managed:
+
+| Symptom | First evidence | Common cause |
+|---|---|---|
+| Only one subnet fails | Effective subnet routes and network ACL | Missing route or one-way stateless rule |
+| IP works but name fails | Resolver setting and DNS query result | Wrong cloud DNS setting or blocked UDP/TCP 53 |
+| Outbound Internet fails from private subnet | Default route and NAT-gateway health | Route points to the wrong gateway or gateway is unavailable |
+| Peered networks cannot communicate | Both route tables and address plans | Missing return route or overlapping prefixes |
+| TCP opens but application is denied | Security-group logs and service policy | Wrong port/source identity or host firewall |
+
+At this level, be able to read a route table and policy, explain responsibility, and isolate the control. Advanced provider-specific architecture is outside the Network+ scope.
+
 ## 1.4 — Ports, protocols, services, and traffic types
 
 A logical port identifies a service on a host. Server port 443 is not a physical socket. A client normally chooses a temporary ephemeral port and connects to the server's known port.
@@ -273,6 +302,39 @@ IaC stores intended infrastructure state in version-controlled files. Benefits i
 - **NAT64 with DNS64:** allows IPv6-only clients to reach IPv4-only services; applications using literal IPv4 addresses may fail.
 
 IPv6 is not automatically secure. Firewalling, patching, logging, and monitoring are required for both stacks.
+
+### IPv6 addressing and Neighbor Discovery
+
+IPv6 addresses contain 128 bits and are written in hexadecimal groups. Leading zeroes in a group can be removed, and one longest run of all-zero groups can be compressed with `::` once.
+
+| Address/prefix | Meaning |
+|---|---|
+| `::1/128` | Loopback |
+| `fe80::/10` | Link-local; routers do not forward it |
+| `2000::/3` | Global unicast space |
+| `fc00::/7` | Unique local space |
+| `ff00::/8` | Multicast |
+| `2001:db8::/32` | Documentation examples |
+
+IPv6 normally uses Neighbor Discovery rather than ARP. Router Advertisements can announce a prefix, default-router information, and configuration flags. SLAAC allows a client to build its address without a DHCPv6 address lease. DHCPv6 can still provide stateful addressing or additional options depending on design.
+
+Example endpoint evidence:
+
+```bash
+ip -6 address show dev eth0
+ip -6 route show
+ip -6 neighbor show
+ping -6 -c 3 fe80::1%eth0
+```
+
+| Line | Interpretation |
+|---|---|
+| Address | Confirms scope, prefix length, and preferred/tentative state |
+| Route | Confirms on-link prefixes and the learned/default next hop |
+| Neighbor | Shows IPv6-to-MAC resolution state |
+| Scoped ping | A link-local destination needs an interface zone such as `%eth0` |
+
+If a host has a link-local address but no global address or default route, inspect Router Advertisements before blaming DNS. If IPv4 works and IPv6 fails, verify firewall policy and routes for both stacks rather than disabling IPv6 as the first action.
 
 ### Wi-Fi generations
 

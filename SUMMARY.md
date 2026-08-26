@@ -155,4 +155,19 @@ Bandwidth is capacity, throughput is actual transfer, goodput is useful applicat
 - I have built and deliberately broken VLAN, STP, routing, NAT, DHCP, and DNS labs.
 - I can propose layered controls and explain trade-offs.
 - I completed the 200 questions and explained why wrong options are wrong.
-- I completed the capstone with evidence, rollback, and a clear report.
+- I completed the PBQs and command-output cases without reading solutions first.
+- I completed at least three unseen 90-question exams at or above the course readiness gate.
+- I completed the executable capstone with evidence, rollback, and a clear report.
+- I can answer interview tickets without guessing or exceeding my authority.
+
+## Final resources
+
+- [Detailed N10-009 v6.0 map](objectives/n10-009-v6-detailed-map.md)
+- [Complete acronym guide](appendices/acronyms.md)
+- [Tools and lab checklist](appendices/tools-lab-checklist.md)
+- [Four full timed exams](practice/exams/README.md)
+- [Performance-based practice](practice/pbq/README.md)
+- [Command-output troubleshooting](practice/command-output/README.md)
+- [Executable lab packs](labs/packs/README.md)
+- [Interview Preparation](interview/README.md)
+- [Career Extension](career/README.md)

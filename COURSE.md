@@ -21,7 +21,7 @@ Do not memorize a command before understanding the path of the data. For every p
 - Which table or policy is consulted?
 - What evidence would prove the theory?
 
-## Suggested 14-week plan
+## Suggested 16-week plan
 
 | Week | Topic | Measurable outcome |
 |---:|---|---|
@@ -38,7 +38,9 @@ Do not memorize a command before understanding the path of the data. For every p
 | 11 | DHCP, DNS, NTP/PTP/NTS, VPNs, and management | Troubleshoot address assignment and name resolution end to end |
 | 12 | Security, PKI, IAM, attacks, and segmentation | Match threats to preventive, detective, and corrective controls |
 | 13 | Troubleshooting methodology and tools | Resolve five faults using evidence instead of guesses |
-| 14 | Capstone lab and timed review | Complete the final lab and two timed practice sessions |
+| 14 | Capstone lab and timed review | Complete the final lab, PBQs, and first full timed exam |
+| 15 | Exam remediation | Review weak domains and complete two unseen full timed exams |
+| 16 | Interview and career extension | Present a lab incident, solve ticket scenarios, and complete the relevant job-facing lessons |
 
 ## How to perform a lab correctly
 
@@ -81,3 +83,28 @@ Reading alone is not enough. You should be able to:
 - Treat `ping` as limited evidence rather than a universal answer.
 - Design a change with backup, rollback, validation, and documentation.
 - Recommend multiple defensive controls for a stated threat.
+
+## Readiness gates
+
+### N10-009 exam gate
+
+- Every row in the [detailed v6.0 objective map](objectives/n10-009-v6-detailed-map.md) is explainable at its stated depth.
+- At least three unseen [90-question forms](practice/exams/README.md) score 85% or higher under the course timer.
+- PBQs and multi-select questions are completed without leaving required parts blank.
+- Subnetting, common ports, acronyms, route choice, and troubleshooting output are handled under time pressure.
+
+The 85% threshold is a conservative course benchmark, not CompTIA's unpublished scoring formula.
+
+### Practical gate
+
+- Complete all six [executable lab packs](labs/packs/README.md) with before/after evidence.
+- Diagnose at least one hidden fault without the solution file.
+- Interpret ARP/ICMP, DNS, and TCP PCAPs and protect sensitive capture data.
+- Produce a diagram, address plan, change/rollback, ticket timeline, and end-to-end validation.
+
+### Interview gate
+
+- Answer unfamiliar questions using scope, evidence, safe test, correction, and verification.
+- Explain one real or clearly identified lab incident using STAR and technical evidence.
+- Know the boundary of your authority and experience; escalate instead of bluffing.
+- Complete only the [Career Extension](career/README.md) lessons relevant to the target role.

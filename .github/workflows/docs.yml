@@ -18,5 +18,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Rebuild synthetic packet captures
+        run: npm run build:pcaps
+      - name: Verify generated assets are reproducible
+        run: git diff --exit-code
       - name: Validate course structure and links
         run: npm run check

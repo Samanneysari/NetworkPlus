@@ -1,0 +1,4 @@
+metric,target,normal_range,warning,critical,duration,owner,first_evidence,escalation,recovery
+wan_packet_loss,198.51.100.20,<1%,>2%,>5%,5m,Network operations,Gateway and two remote probes,Provider after clean local path,<1% for 10m plus app test
+ap_channel_utilization,AP group,<50%,>65%,>80%,10m,Wireless owner,Client count and retry rate,Wireless escalation,<60% for 15m
+poe_budget_used,Access switch,<70%,>80%,>90%,5m,Network operations,Per-port allocation and denied events,Capacity/change owner,<80% for 10m
