@@ -18,6 +18,7 @@ const markdownFiles = walk(root)
 const required = [
   'README.md', 'COURSE.md', 'OBJECTIVES.md', 'SUMMARY.md', 'GLOSSARY.md',
   'REFERENCES.md', 'docs/00-network-from-zero.md', 'docs/01-osi-tcp-ip-tls.md',
+  'REVIEW.md', 'docs/objective-workbook.md', 'docs/07-ccna-readiness-bridge.md',
   'docs/foundations/README.md',
   'docs/foundations/01-computers-and-operating-systems.md',
   'docs/foundations/02-network-models-and-scopes.md',
@@ -88,6 +89,58 @@ const detailedObjectives = readFileSync(join(root, 'objectives/n10-009-v6-detail
 for (const code of expectedObjectives) {
   const count = (detailedObjectives.match(new RegExp(`^### ${code.replace('.', '\\.')} `, 'gm')) ?? []).length;
   if (count !== 1) errors.push(`Detailed v6.0 map: objective ${code} appears ${count} times`);
+}
+
+const objectiveWorkbook = readFileSync(join(root, 'docs/objective-workbook.md'), 'utf8');
+for (const [index, code] of expectedObjectives.entries()) {
+  const heading = new RegExp(`^## ${code.replace('.', '\\.')} `, 'gm');
+  const count = (objectiveWorkbook.match(heading) ?? []).length;
+  if (count !== 1) errors.push(`Objective workbook: objective ${code} appears ${count} times`);
+
+  const start = objectiveWorkbook.search(heading);
+  if (start < 0) continue;
+  const nextCode = expectedObjectives[index + 1];
+  const next = nextCode
+    ? objectiveWorkbook.slice(start + 1).search(new RegExp(`^## ${nextCode.replace('.', '\\.')} `, 'm'))
+    : objectiveWorkbook.slice(start + 1).search(/^## Workbook completion test/m);
+  const end = next < 0 ? objectiveWorkbook.length : start + 1 + next;
+  const section = objectiveWorkbook.slice(start, end);
+
+  for (const example of [1, 2, 3]) {
+    if (!new RegExp(`^### Worked example ${example} `, 'm').test(section)) {
+      errors.push(`Objective workbook ${code}: missing Worked example ${example}`);
+    }
+  }
+  if ((section.match(/^### Worked example /gm) ?? []).length !== 3) {
+    errors.push(`Objective workbook ${code}: expected exactly three worked examples`);
+  }
+  if (!section.includes('**Purpose:**')) errors.push(`Objective workbook ${code}: missing purpose`);
+  if (!section.includes('**Check:**') || !section.includes('**Answer:**')) {
+    errors.push(`Objective workbook ${code}: missing explained check`);
+  }
+}
+
+const ccnaBridge = readFileSync(join(root, 'docs/07-ccna-readiness-bridge.md'), 'utf8');
+for (let number = 1; number <= 12; number += 1) {
+  if (!new RegExp(`^## ${number}\\. `, 'm').test(ccnaBridge)) {
+    errors.push(`CCNA bridge: missing numbered section ${number}`);
+  }
+}
+
+const ciscoBlocks = [...ccnaBridge.matchAll(/```cisco\n([\s\S]*?)\n```/g)];
+if (ciscoBlocks.length < 8) errors.push(`CCNA bridge: expected at least 8 Cisco worked examples`);
+for (const block of ciscoBlocks) {
+  const after = ccnaBridge.slice(block.index + block[0].length, block.index + block[0].length + 1800);
+  if (!/\| Line \| Exact purpose \|/.test(after)) {
+    const firstLine = block[1].split('\n')[0];
+    errors.push(`CCNA bridge: Cisco block beginning "${firstLine}" lacks a nearby explanation table`);
+  }
+  const commandLines = block[1].split('\n').filter((line) => line.trim() && !line.trim().startsWith('!')).length;
+  const tableRows = (after.match(/^\|[^\n]+\|[^\n]+\|$/gm) ?? []).length - 2;
+  if (tableRows < Math.ceil(commandLines / 2)) {
+    const firstLine = block[1].split('\n')[0];
+    errors.push(`CCNA bridge: explanation table is too shallow for block beginning "${firstLine}"`);
+  }
 }
 
 const corpus = markdownFiles.map((path) => readFileSync(path, 'utf8')).join('\n').toLowerCase();
@@ -243,4 +296,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Documentation checks passed: ${markdownFiles.length} English Markdown files, 25 objectives, 200 topic questions, 4x90 exams, 12 PBQs, 15 command cases, 26 guided labs, and 6 executable lab packs.`);
+console.log(`Documentation checks passed: ${markdownFiles.length} English Markdown files, 25 objectives with 75 workbook examples, 200 topic questions, 4x90 exams, 12 PBQs, 15 command cases, 26 guided labs, 6 executable lab packs, and a 12-part CCNA bridge.`);

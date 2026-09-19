@@ -42,13 +42,15 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
    - [Ports, TCP/UDP, ACK, NAT/PAT, ping, TTL, traceroute, and netstat](docs/foundations/05-transport-nat-and-diagnostics.md)
 4. Study [OSI, TCP/IP, TCP, UDP, and TLS](docs/01-osi-tcp-ip-tls.md) carefully.
 5. Complete the five exam-domain chapters in order.
-6. Perform the matching [hands-on labs](labs/README.md).
-7. Practice [IPv4 subnetting](practice/subnetting.md) without a calculator.
-8. Complete the [200 original topic questions](practice/questions.md), then review the [explained answers](practice/answers.md).
-9. Complete the [12 PBQs](practice/pbq/README.md), [command-output cases](practice/command-output/README.md), and [executable lab packs](labs/packs/README.md).
-10. Take all [four 90-question timed exams](practice/exams/README.md) without notes.
-11. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
-12. For job preparation, complete [Interview Preparation](interview/README.md) and the separate [Career Extension](career/README.md).
+6. Use the [objective workbook](docs/objective-workbook.md) to interpret three explained examples for every official objective.
+7. Perform the matching [hands-on labs](labs/README.md).
+8. Practice [IPv4 subnetting](practice/subnetting.md) without a calculator.
+9. Complete the [200 original topic questions](practice/questions.md), then review the [explained answers](practice/answers.md).
+10. Complete the [12 PBQs](practice/pbq/README.md), [command-output cases](practice/command-output/README.md), and [executable lab packs](labs/packs/README.md).
+11. Take all [four 90-question timed exams](practice/exams/README.md) without notes.
+12. Use the [final review sheet](SUMMARY.md) during the last stage of preparation.
+13. Before beginning CCNA, complete the [CCNA readiness bridge](docs/07-ccna-readiness-bridge.md) without copying its configurations.
+14. For job preparation, complete [Interview Preparation](interview/README.md) and the separate [Career Extension](career/README.md).
 
 ## Course map
 
@@ -76,6 +78,8 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 | [docs/04-network-operations.md](docs/04-network-operations.md) | Domain 3, including complete DNS and reverse DNS coverage |
 | [docs/05-network-security.md](docs/05-network-security.md) | Domain 4 |
 | [docs/06-network-troubleshooting.md](docs/06-network-troubleshooting.md) | Domain 5 |
+| [docs/objective-workbook.md](docs/objective-workbook.md) | Three explained examples and a knowledge check for every N10-009 objective |
+| [docs/07-ccna-readiness-bridge.md](docs/07-ccna-readiness-bridge.md) | Practical Cisco bridge and measurable CCNA entry gate |
 | [labs/README.md](labs/README.md) | 26 guided labs with controlled fault injection |
 | [practice/questions.md](practice/questions.md) | 200 original practice questions |
 | [practice/answers.md](practice/answers.md) | Separate explained answer key |
@@ -91,6 +95,7 @@ Examples use the domain `realsam.ir`, RFC 1918 private addresses, and documentat
 | [appendices/commands-tools.md](appendices/commands-tools.md) | Linux, Windows, Cisco, and physical-tool reference |
 | [appendices/acronyms.md](appendices/acronyms.md) | Complete v6.0 acronym working-knowledge guide |
 | [appendices/tools-lab-checklist.md](appendices/tools-lab-checklist.md) | Expanded tool-selection and evidence checklist |
+| [REVIEW.md](REVIEW.md) | Honest course-completeness assessment and validation limits |
 
 ## Suggested lab environment
 

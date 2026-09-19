@@ -42,6 +42,8 @@ Do not memorize a command before understanding the path of the data. For every p
 | 15 | Exam remediation | Review weak domains and complete two unseen full timed exams |
 | 16 | Interview and career extension | Present a lab incident, solve ticket scenarios, and complete the relevant job-facing lessons |
 
+After week 16, complete the [CCNA readiness bridge](docs/07-ccna-readiness-bridge.md) if CCNA is your next goal. It is an entry gate, not a replacement for a current CCNA course.
+
 ## How to perform a lab correctly
 
 Record the following for every lab:
@@ -101,6 +103,14 @@ The 85% threshold is a conservative course benchmark, not CompTIA's unpublished 
 - Diagnose at least one hidden fault without the solution file.
 - Interpret ARP/ICMP, DNS, and TCP PCAPs and protect sensitive capture data.
 - Produce a diagram, address plan, change/rollback, ticket timeline, and end-to-end validation.
+
+### CCNA entry gate
+
+- Complete the [CCNA readiness bridge](docs/07-ccna-readiness-bridge.md) from a blank topology.
+- Explain every configuration line before entering it.
+- Predict routes, frame destinations, STP state, ACL matches, and NAT behavior before viewing show output.
+- Inject and diagnose one VLAN/trunk, one OSPF, one ACL, and one return-path fault.
+- Treat this as permission to **start learning CCNA**, not as evidence that CCNA is already complete.
 
 ### Interview gate
 

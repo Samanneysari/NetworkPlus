@@ -1,6 +1,6 @@
 # N10-009 V9 Objective Coverage Map — Document Version 6.0
 
-This table maps every top-level objective in the N10-009 V9 objective document, version 6.0, to its lesson, lab, and practice-question range. The [detailed v6.0 coverage map](objectives/n10-009-v6-detailed-map.md) maps the nested exam-scope bullets to specific course material and identifies the required depth: explain, select, configure, verify, or troubleshoot.
+This table maps every top-level objective in the N10-009 V9 objective document, version 6.0, to its lesson, lab, and practice-question range. The [detailed v6.0 coverage map](objectives/n10-009-v6-detailed-map.md) maps the nested exam-scope bullets to specific course material and identifies the required depth: explain, select, configure, verify, or troubleshoot. The [objective workbook](docs/objective-workbook.md) adds three explained examples and a check question for each objective.
 
 The five domains and their weights remain Networking Concepts 23%, Network Implementation 20%, Network Operations 19%, Network Security 14%, and Network Troubleshooting 24%. Version 6.0 also expands the acronym and suggested-lab-tool lists; those are covered in the [acronym guide](appendices/acronyms.md) and [tools and lab checklist](appendices/tools-lab-checklist.md).
 

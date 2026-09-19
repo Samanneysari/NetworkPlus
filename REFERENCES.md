@@ -1,6 +1,6 @@
 # Official References
 
-This course paraphrases and teaches the material; it does not copy standards or vendor documentation. Access date: 2026-08-25. Current CompTIA registration information always takes precedence.
+This course paraphrases and teaches the material; it does not copy standards or vendor documentation. Last review: 2026-09-19. Current certification-provider information always takes precedence.
 
 ## Exam
 
@@ -37,6 +37,8 @@ This course paraphrases and teaches the material; it does not copy standards or 
 - [BIND 9 Administrator Reference Manual](https://bind9.readthedocs.io/)
 - [OpenSSH manuals](https://www.openssh.com/manual.html)
 - [Cisco Packet Tracer](https://www.netacad.com/cisco-packet-tracer)
+- [Cisco CCNA certification and current exam path](https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html)
+- [Cisco 200-301 CCNA exam page](https://www.cisco.com/site/us/en/learn/training-certifications/exams/ccna.html)
 - [Cisco CCST Networking exam and entry-level career path](https://www.cisco.com/site/us/en/learn/training-certifications/exams/ccst-networking.html)
 - [Microsoft Windows commands](https://learn.microsoft.com/windows-server/administration/windows-commands/windows-commands)
 - [Microsoft netstat command](https://learn.microsoft.com/windows-server/administration/windows-commands/netstat)

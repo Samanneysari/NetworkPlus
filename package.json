@@ -4,7 +4,10 @@
   "version": "2.0.0",
   "description": "Complete English Network+ N10-009 v6.0 course, labs, exams, and interview preparation",
   "scripts": {
-    "check": "node scripts/check-docs.mjs",
+    "check:docs": "node scripts/check-docs.mjs",
+    "check:assets": "node scripts/check-lab-assets.mjs",
+    "check": "npm run check:docs && npm run check:assets",
+    "test": "npm run check",
     "build:pcaps": "node scripts/build-sample-pcaps.mjs"
   },
   "engines": {
